@@ -659,26 +659,115 @@
         .toast-info { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
 
         @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
             .navbar {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .navbar-brand {
+                font-size: 1.2em;
+            }
+
+            .navbar-menu {
+                width: 100%;
+                gap: 8px;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                justify-content: flex-start;
+            }
+
+            .navbar-menu a {
+                white-space: nowrap;
+                flex: 0 0 auto;
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+
+            .container {
+                padding: 0;
             }
 
             .header h1 {
-                font-size: 2em;
+                font-size: 1.75em;
+            }
+
+            .header p {
+                font-size: 0.95em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 18px;
             }
 
             .options-grid {
                 grid-template-columns: 1fr;
             }
 
+            .category-tabs {
+                justify-content: stretch;
+            }
+
+            .category-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .test-container,
+            .question-card,
+            .results-container,
+            .empty-state {
+                border-radius: 18px;
+                padding: 16px;
+            }
+
             .test-header {
                 flex-direction: column;
                 text-align: center;
+                gap: 12px;
             }
 
             .result-details {
                 gap: 20px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 88vh;
+                padding: 16px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .toast {
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.45em;
+            }
+
+            .navbar-brand {
+                font-size: 1.05em;
+            }
+
+            .test-header h2 {
+                font-size: 1.15em;
             }
         }
     </style>
