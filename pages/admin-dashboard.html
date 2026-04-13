@@ -137,8 +137,9 @@
             color: white;
             padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            gap: 14px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
@@ -146,25 +147,69 @@
             animation: slideIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .navbar-brand {
+        .navbar-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .navbar-project-name {
             display: flex;
             align-items: center;
-            gap: 10px;
             font-size: 1.3em;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-right: auto;
+            white-space: nowrap;
         }
 
-        .navbar-brand i {
+        .navbar-logo i {
             animation: rotate 10s linear infinite;
             color: #ffd700;
             filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
         }
 
-        .navbar-right {
-            display: flex;
+        .top-search-btn {
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border-radius: 20px;
+            height: 38px;
+            padding: 0 14px;
+            display: inline-flex;
             align-items: center;
-            gap: 25px;
+            gap: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .top-search-btn:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        .menu-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.18);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255,255,255,0.28);
         }
 
         .notification-bell {
@@ -284,6 +329,56 @@
 
         .profile-menu a:last-child:hover {
             background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .top-search-panel {
+            position: sticky;
+            top: 74px;
+            z-index: 960;
+            margin: 10px 20px 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 12px;
+            padding: 12px;
+            display: none;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+        }
+
+        .top-search-panel.show {
+            display: block;
+        }
+
+        .top-search-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .top-search-inner input {
+            flex: 1;
+            height: 40px;
+            border: 1px solid #ced6ff;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 0.95em;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 16, 35, 0.45);
+            z-index: 950;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
         }
 
         /* Logout Button */
@@ -1521,12 +1616,50 @@
         }
 
         @media (max-width: 768px) {
+            .admin-navbar {
+                padding: 12px 16px;
+            }
+
+            .top-search-btn {
+                width: 36px;
+                padding: 0;
+                justify-content: center;
+                font-size: 0;
+            }
+
+            .top-search-btn i {
+                font-size: 1rem;
+            }
+
+            .profile-section {
+                padding: 6px;
+                border-radius: 50%;
+            }
+
+            .profile-section span,
+            .profile-section .fa-chevron-down {
+                display: none;
+            }
+
             .admin-container {
                 grid-template-columns: 1fr;
             }
 
             .admin-sidebar {
-                display: none;
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: min(84vw, 300px);
+                max-height: 100vh;
+                transform: translateX(-100%);
+                transition: transform 0.25s ease;
+                z-index: 980;
+            }
+
+            body.admin-sidebar-open .admin-sidebar {
+                transform: translateX(0);
             }
 
             .stats-grid {
@@ -1541,8 +1674,21 @@
                 width: 100%;
             }
 
-            .navbar-brand span {
-                display: none;
+            .navbar-project-name {
+                font-size: 1.05em;
+                max-width: 140px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .top-search-panel {
+                top: 70px;
+                margin: 8px 12px 0;
+                padding: 10px;
+            }
+
+            .top-search-inner input {
+                height: 36px;
             }
         }
     </style>
@@ -1553,25 +1699,36 @@
 
     <!-- Admin Navbar -->
     <div class="admin-navbar">
-        <div class="navbar-brand">
+        <div class="navbar-logo">
             <i class="fas fa-shield-alt"></i>
-            <span>Career Bridge Admin Panel</span>
         </div>
-        <div class="navbar-right">
-            <div class="notification-bell" onclick="showNotifications()" data-tooltip="Notifications">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notificationCount">0</span>
-            </div>
-            <div class="profile-section" onclick="toggleProfileMenu()">
-                <div class="profile-pic" id="profilePic">A</div>
-                <span id="adminName">Admin</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+        <div class="navbar-project-name">Career Bridge Admin Panel</div>
+        <button class="top-search-btn" onclick="toggleTopSearch()" aria-label="Search">
+            <i class="fas fa-search"></i> Search
+        </button>
+        <div class="notification-bell" onclick="showNotifications()" data-tooltip="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notificationCount">0</span>
+        </div>
+        <div class="profile-section" onclick="toggleProfileMenu()">
+            <div class="profile-pic" id="profilePic">A</div>
+            <span id="adminName">Admin</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <button class="menu-btn" onclick="toggleAdminSidebar()" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="top-search-panel" id="topSearchPanel">
+        <div class="top-search-inner">
+            <input type="text" id="topSearchInput" placeholder="Search companies, users, reports or jobs..." onkeydown="if(event.key==='Enter'){applyTopSearch();}">
+            <button class="action-btn btn-view" onclick="applyTopSearch()"><i class="fas fa-search"></i> Search</button>
+            <button class="action-btn" style="background:#e2e8ff; color:#4052ab;" onclick="closeTopSearch()"><i class="fas fa-times"></i> Close</button>
         </div>
     </div>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeAdminSidebar()"></div>
 
     <!-- Profile Menu -->
     <div class="profile-menu" id="profileMenu">
@@ -1583,7 +1740,7 @@
 
     <div class="admin-container">
         <!-- Sidebar -->
-        <div class="admin-sidebar">
+        <div class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-section">
                 <div class="sidebar-title">Main</div>
                 <a href="#" class="sidebar-item active" data-tab="dashboard" onclick="switchAdminTab('dashboard')">
@@ -4513,6 +4670,78 @@
             document.getElementById('profileMenu').classList.toggle('show');
         };
 
+        window.toggleAdminSidebar = function() {
+            if (window.innerWidth > 768) {
+                return;
+            }
+            document.body.classList.toggle('admin-sidebar-open');
+            document.getElementById('sidebarBackdrop')?.classList.toggle('show');
+        };
+
+        window.closeAdminSidebar = function() {
+            document.body.classList.remove('admin-sidebar-open');
+            document.getElementById('sidebarBackdrop')?.classList.remove('show');
+        };
+
+        window.toggleTopSearch = function() {
+            const panel = document.getElementById('topSearchPanel');
+            if (!panel) return;
+            panel.classList.toggle('show');
+            if (panel.classList.contains('show')) {
+                const input = document.getElementById('topSearchInput');
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        };
+
+        window.closeTopSearch = function() {
+            document.getElementById('topSearchPanel')?.classList.remove('show');
+        };
+
+        window.applyTopSearch = function() {
+            const query = (document.getElementById('topSearchInput')?.value || '').trim();
+            if (!query) {
+                closeTopSearch();
+                return;
+            }
+
+            const q = query.toLowerCase();
+            let targetTab = 'verify-companies';
+
+            if (q.includes('user') || q.includes('email')) {
+                targetTab = 'users';
+            } else if (q.includes('report') || q.includes('issue')) {
+                targetTab = 'reports';
+            } else if (q.includes('job')) {
+                targetTab = 'jobs';
+            }
+
+            switchAdminTab(targetTab);
+
+            setTimeout(() => {
+                if (targetTab === 'users') {
+                    const field = document.getElementById('userSearch');
+                    if (field) {
+                        field.value = query;
+                        if (window.searchUsers) searchUsers();
+                    }
+                } else if (targetTab === 'reports') {
+                    const field = document.getElementById('reportSearch');
+                    if (field) {
+                        field.value = query;
+                        if (window.loadReports) loadReports();
+                    }
+                } else {
+                    const field = document.getElementById('companySearch');
+                    if (field) {
+                        field.value = query;
+                        if (window.searchCompanies) searchCompanies();
+                    }
+                }
+            }, 60);
+
+            closeTopSearch();
+        };
+
         window.switchAdminTab = function(tab) {
             console.log('Switching to:', tab);
             
@@ -4525,6 +4754,7 @@
             });
 
             closeModal('profileMenu');
+            closeAdminSidebar();
             
             // Load tab data
             if (tab === 'verify-companies') loadVerificationRequests();
@@ -4634,6 +4864,28 @@
                 !profileSection.contains(e.target) && 
                 !profileMenu.contains(e.target)) {
                 profileMenu.classList.remove('show');
+            }
+
+            const searchPanel = document.getElementById('topSearchPanel');
+            const searchBtn = document.querySelector('.top-search-btn');
+            if (searchPanel && searchBtn && !searchPanel.contains(e.target) && !searchBtn.contains(e.target)) {
+                closeTopSearch();
+            }
+
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('adminSidebar');
+                const menuBtn = document.querySelector('.menu-btn');
+                const insideSidebar = sidebar && sidebar.contains(e.target);
+                const onMenuBtn = menuBtn && menuBtn.contains(e.target);
+                if (!insideSidebar && !onMenuBtn) {
+                    closeAdminSidebar();
+                }
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeAdminSidebar();
             }
         });
 
