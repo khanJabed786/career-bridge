@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Bridge - AI-Powered Career Guidance Platform</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="AI-powered career guidance platform with smart resume builder, job matching, interview preparation, and skill assessment. Join thousands of successful professionals.">
+    <meta name="keywords" content="career guidance, job search, resume builder, AI interview, skill assessment, job matching, career growth">
+    <meta name="author" content="Career Bridge">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Career Bridge - AI-Powered Career Guidance">
+    <meta property="og:description" content="Your AI-powered career guide for resume optimization, job matching, and interview preparation">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://careerbridge.com/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ALL YOUR EXISTING CSS STAYS EXACTLY THE SAME */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Professional Color Palette */
+            --primary-50: #eef7ff;
+            --primary-100: #d9eeff;
+            --primary-200: #b8ddff;
+            --primary-300: #89c7ff;
+            --primary-400: #52a8f5;
+            --primary-500: #2b86d4;
+            --primary-600: #1f6cb3;
+            --primary-700: #1c588f;
+            --primary-800: #1a476f;
+            --primary-900: #173b59;
+            
+            --secondary-500: #2b86d4;
+            --secondary-600: #1f6cb3;
+            --accent-500: #2b86d4;
+            --accent-600: #1f6cb3;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --dark: #0f172a;
+            --dark-50: #f8fafc;
+            --dark-100: #f1f5f9;
+            --dark-200: #e2e8f0;
+            --dark-300: #cbd5e1;
+            --dark-400: #94a3b8;
+            --dark-500: #64748b;
+            --dark-600: #475569;
+            --dark-700: #334155;
+            --dark-800: #1e293b;
+            --dark-900: #0f172a;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1f6cb3 0%, #2b86d4 55%, #52a8f5 100%);
+            --gradient-primary-hover: linear-gradient(135deg, #1c588f 0%, #1f6cb3 55%, #2b86d4 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-dark: linear-gradient(135deg, #0f3f5d 0%, #0b2f45 100%);
+            --unified-page-bg: linear-gradient(135deg, #1c588f 0%, #1f6cb3 50%, #2b86d4 100%);
+            --section-bg-light: #eef7ff;
+            --auto-bg-1: #eef7ff;
+            --auto-bg-2: #dbeafe;
+            --auto-bg-3: #d9eeff;
+            --auto-bg-4: #bfdbfe;
+
+            /* Card Design Tokens */
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-bg-soft: rgba(255, 255, 255, 0.78);
+            --card-border: rgba(31, 108, 179, 0.14);
+            --card-border-strong: rgba(31, 108, 179, 0.28);
+            --card-shadow: 0 10px 24px rgba(15, 48, 92, 0.12);
+            --card-shadow-hover: 0 18px 38px rgba(15, 48, 92, 0.22);
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-3xl: 2rem;
+            --radius-full: 9999px;
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+            /* Animation timings */
+            --bg-shift-duration: 30s;
+            --section-shift-duration: 24s;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--dark-900);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--unified-page-bg);
+            background-size: 200% 200%;
+            animation: page-bg-shift var(--bg-shift-duration) ease-in-out infinite;
+            min-height: 100vh;
+            position: relative;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        @keyframes page-bg-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Professional Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+            animation: hue-drift 42s ease-in-out infinite;
+        }
+
+        @keyframes hue-drift {
+            0% { filter: hue-rotate(0deg) saturate(100%); }
+            50% { filter: hue-rotate(8deg) saturate(106%); }
+            100% { filter: hue-rotate(0deg) saturate(100%); }
+        }
+
+        .gradient-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.22;
+            animation: sphere-float 30s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        .gradient-sphere:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at 30% 50%, #2b86d4, #1f6cb3);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .gradient-sphere:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at 70% 80%, #52a8f5, #2b86d4);
+            bottom: -200px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .gradient-sphere:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at 50% 50%, #1f6cb3, #1c588f);
+            top: 40%;
+            left: 30%;
+            animation-delay: -10s;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            animation: grid-shift 15s linear infinite;
+        }
+
+        @keyframes sphere-float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.2); }
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 10s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Professional Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(31, 108, 179, 0.2);
+            box-shadow: var(--shadow-lg);
+            padding: 0.75rem 5%;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-brand i {
+            font-size: 2rem;
+            color: var(--primary-500);
+            animation: rocket-shake 3s ease-in-out infinite;
+        }
+
+        @keyframes rocket-shake {
+            0%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(5deg); }
+            20% { transform: rotate(-5deg); }
+            30% { transform: rotate(3deg); }
+            40% { transform: rotate(-3deg); }
+            50% { transform: rotate(0deg); }
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: var(--dark-700);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .navbar-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width var(--transition-base);
+        }
+
+        .navbar-menu a:hover {
+            color: var(--primary-600);
+        }
+
+        .navbar-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Modern Buttons */
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all var(--transition-bounce);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 6px 18px rgba(31, 108, 179, 0.3);
+            position: relative;
+            background-size: 200% auto;
+        }
+
+        .btn-primary:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(31, 108, 179, 0.35);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-600);
+            border: 2px solid transparent;
+            background-image: linear-gradient(white, white), var(--gradient-primary);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-lg {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+            background: linear-gradient(135deg, #1c588f 0%, #1f6cb3 45%, #2b86d4 70%, #52a8f5 100%);
+            background-size: 220% 220%;
+            animation: hero-bg-shift 24s ease-in-out infinite;
+        }
+
+        @keyframes hero-bg-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fade-in-up 1s ease-out;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius-full);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            animation: badge-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes badge-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+            50% { box-shadow: 0 0 40px rgba(255,255,255,0.4); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-gradient-text {
+            background: linear-gradient(to right, #ffffff, #dbeafe, #bfdbfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fade-in-up 1s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            animation: fade-in-up 1s ease-out 0.4s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            animation: fade-in-up 1s ease-out 0.6s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat-item {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+            background: linear-gradient(to right, #ffffff, #dbeafe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Announcements Section */
+        .announcements-section {
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 10;
+            background: var(--unified-page-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-3xl) var(--radius-3xl) 0 0;
+            margin-top: -2rem;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark-900);
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            color: var(--dark-500);
+            font-size: 1.1rem;
+        }
+
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .announcement-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 251, 255, 0.96) 100%);
+            border-radius: var(--radius-2xl);
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 280px;
+            will-change: transform;
+        }
+
+        .announcement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .announcement-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(82, 168, 245, 0.16), transparent 45%);
+            pointer-events: none;
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--card-border-strong);
+        }
+
+        .announcement-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--dark-200);
+            background: var(--dark-100);
+        }
+
+        .announcement-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .announcement-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-md);
+            letter-spacing: 0.25px;
+        }
+
+        .announcement-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-900);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .announcement-content {
+            color: var(--dark-600);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .announcement-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--dark-400);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--dark-200);
+            padding-top: 15px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .announcement-meta i {
+            color: var(--primary-500);
+            margin-right: 5px;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 20px;
+            background: var(--unified-page-bg);
+            position: relative;
+            z-index: 10;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 50px auto 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 250, 255, 0.96) 100%);
+            padding: 40px 30px;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            transition: all var(--transition-bounce);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(31, 108, 179, 0.07), rgba(43, 134, 212, 0.09));
+            opacity: 0;
+            transition: opacity var(--transition-base);
+            pointer-events: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--card-border-strong);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 12px 24px rgba(31, 108, 179, 0.28);
+            transition: all var(--transition-bounce);
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-900);
+            margin-bottom: 15px;
+            line-height: 1.35;
+        }
+
+        .feature-card p {
+            color: var(--dark-600);
+            line-height: 1.6;
+            margin-top: auto;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 80px 20px;
+            background: var(--unified-page-bg);
+            background-size: 200% 200%;
+            animation: section-bg-shift var(--section-shift-duration) ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M10 10 L90 90 M90 10 L10 90" stroke="white" stroke-width="1"/></svg>');
+            background-size: 30px 30px;
+        }
+
+        .stats-section .section-header h2 {
+            color: white;
+            -webkit-text-fill-color: white;
+        }
+
+        .stats-section .section-header p {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 50px auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: var(--card-bg-soft);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.35);
+            border-radius: var(--radius-2xl);
+            padding: 40px 30px;
+            text-align: center;
+            transition: all var(--transition-bounce);
+            box-shadow: 0 12px 28px rgba(10, 33, 63, 0.2);
+            min-height: 215px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.24);
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: 0 18px 38px rgba(10, 33, 63, 0.28);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 80px 20px;
+            background: var(--unified-page-bg);
+            position: relative;
+            z-index: 10;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 50px auto 0;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 251, 255, 0.95) 100%);
+            border-radius: var(--radius-2xl);
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-bounce);
+            position: relative;
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--card-border-strong);
+        }
+
+        .testimonial-card:hover .author-avatar {
+            transform: scale(1.08);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 6rem;
+            color: rgba(31, 108, 179, 0.22);
+            font-family: serif;
+            opacity: 0.5;
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            color: var(--dark-700);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid var(--dark-200);
+            padding-top: 20px;
+            margin-top: auto;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: transform var(--transition-base);
+        }
+
+        .author-info h4 {
+            font-weight: 700;
+            color: var(--dark-900);
+            margin-bottom: 5px;
+        }
+
+        .author-info p {
+            color: var(--dark-500);
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--unified-page-bg);
+            background-size: 200% 200%;
+            animation: section-bg-shift calc(var(--section-shift-duration) - 4s) ease-in-out infinite;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .announcements-section .section-container,
+        .features-section .section-container,
+        .stats-section .section-container,
+        .testimonials-section .section-container,
+        .footer .section-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255, 255, 255, 0.05) 20px,
+                rgba(255, 255, 255, 0.05) 40px
+            );
+            animation: shine 20s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons .btn {
+            min-width: 220px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--unified-page-bg);
+            background-size: 200% 200%;
+            animation: section-bg-shift calc(var(--section-shift-duration) + 6s) ease-in-out infinite;
+            color: white;
+            padding: 80px 20px 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes section-bg-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width var(--transition-base);
+        }
+
+        .footer-section:hover h4::after {
+            width: 60px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.86);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.28);
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.9) !important;
+            line-height: 1.7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-bounce);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-5px) rotate(360deg);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-bounce);
+            z-index: 99;
+            box-shadow: var(--shadow-xl);
+            border: none;
+            font-size: 1.3rem;
+            transform: scale(0);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        /* Loading Bar */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: translateX(-100%);
+            animation: loading 1s ease infinite;
+            z-index: 1001;
+            display: none;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            animation: modal-fade-in 0.3s ease-out;
+        }
+
+        @keyframes modal-fade-in {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(8px);
+            }
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            animation: modal-scale-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes modal-scale-in {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-200);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark-400);
+            background: none;
+            border: none;
+            transition: all var(--transition-base);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 30px;
+            border-radius: var(--radius-full);
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: toast-slide-in 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 400px;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @keyframes toast-slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes toast-slide-out {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #1f6cb3 0%, #2b86d4 100%);
+        }
+
+        /* Trusted By Section */
+        .trusted-by {
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 10;
+            background: var(--unified-page-bg);
+            backdrop-filter: blur(10px);
+            margin: 20px auto;
+            max-width: 900px;
+            border-radius: var(--radius-2xl);
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+
+        .announcements-section .section-header h2,
+        .features-section .section-header h2,
+        .testimonials-section .section-header h2 {
+            color: white;
+            -webkit-text-fill-color: white;
+            background: none;
+        }
+
+        .announcements-section .section-header p,
+        .features-section .section-header p,
+        .testimonials-section .section-header p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .trusted-by h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .company-logos {
+            display: flex;
+            align-items: center;
+            width: fit-content;
+            animation: logos-marquee 12s linear infinite;
+            will-change: transform;
+        }
+
+        .company-logos-wrap {
+            width: 100%;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .company-logos-group {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-right: 24px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        @keyframes logos-marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .company-logos span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.14);
+            padding: 10px 25px;
+            border-radius: var(--radius-full);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.28);
+            transition: all var(--transition-base);
+            font-size: 1.1rem;
+            font-weight: 500;
+            animation: logo-circle-motion 6s linear infinite;
+            will-change: transform;
+        }
+
+        .company-logos span:nth-child(even) {
+            animation-direction: reverse;
+            animation-duration: 7s;
+        }
+
+        @keyframes logo-circle-motion {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(5px, -4px); }
+            50% { transform: translate(0, -8px); }
+            75% { transform: translate(-5px, -4px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .company-logos span:hover {
+            transform: translateY(-8px) scale(1.03);
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .company-logos i {
+            font-size: 1.3rem;
+            color: #bfdbfe;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .navbar-right {
+                margin-left: auto;
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .navbar-right .btn {
+                padding: 0.65rem 1rem;
+                font-size: 0.88rem;
+            }
+
+            .navbar-menu {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                gap: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .announcements-grid,
+            .features-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .company-logos span {
+                width: auto;
+                justify-content: center;
+            }
+
+            .company-logos {
+                animation-duration: 10s;
+            }
+
+            .announcement-card,
+            .feature-card,
+            .testimonial-card {
+                animation: none;
+                min-height: auto;
+            }
+
+            .stat-card {
+                min-height: 180px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+
+            /* Keep only trusted companies marquee running on user request */
+            .company-logos {
+                animation: logos-marquee 16s linear infinite !important;
+            }
+
+            .company-logos span {
+                animation: logo-circle-motion 8s linear infinite !important;
+            }
+
+            body,
+            .hero,
+            .stats-section,
+            .cta-section,
+            .footer,
+            .animated-bg {
+                animation: none !important;
+            }
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform-origin: 0 50%;
+            z-index: 1001;
+            transform: scaleX(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+            border-radius: var(--radius-full);
+            border: 3px solid var(--dark-100);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-600), var(--secondary-600));
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Loading Bar -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-rocket"></i>
+            Career Bridge
+        </div>
+        <div class="navbar-menu">
+            <a href="#features">Features</a>
+            <a href="#stats">Impact</a>
+            <a href="#testimonials">Success</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="navbar-right" id="navbarRight">
+            <a href="pages/login.html" class="btn btn-secondary">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+            <a href="pages/signup.html" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Join Free
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-up">
+                <i class="fas fa-crown"></i> India's #1 AI Career Platform
+            </div>
+            <h1 data-aos="fade-up" data-aos-delay="100">
+                <span class="hero-gradient-text">AI-Powered</span><br>
+                Career Guidance for<br>
+                <span class="hero-gradient-text">Tomorrow's Leaders</span>
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200">
+                Join 50,000+ professionals who accelerated their careers with our intelligent platform. 
+                Get personalized job matches, AI interview coaching, and skill development.
+            </p>
+            
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="300">
+                <a href="pages/signup.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i> Get Started Free
+                </a>
+                <a href="#features" class="btn btn-outline btn-lg">
+                    <i class="fas fa-play"></i> See How It Works
+                </a>
+            </div>
+
+            <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">50K+</span>
+                    <span class="hero-stat-label">Active Users</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">500+</span>
+                    <span class="hero-stat-label">Partner Companies</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">95%</span>
+                    <span class="hero-stat-label">Success Rate</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="trusted-by" data-aos="fade-up">
+        <h3>TRUSTED BY LEADING COMPANIES</h3>
+        <div class="company-logos-wrap">
+            <div class="company-logos">
+                <div class="company-logos-group">
+                    <span><i class="fab fa-google"></i> Google</span>
+                    <span><i class="fab fa-microsoft"></i> Microsoft</span>
+                    <span><i class="fab fa-amazon"></i> Amazon</span>
+                    <span><i class="fab fa-meta"></i> Meta</span>
+                    <span><i class="fab fa-apple"></i> Apple</span>
+                    <span><i class="fab fa-linkedin"></i> LinkedIn</span>
+                    <span><i class="fab fa-adobe"></i> Adobe</span>
+                    <span><i class="fab fa-spotify"></i> Spotify</span>
+                </div>
+                <div class="company-logos-group" aria-hidden="true">
+                    <span><i class="fab fa-google"></i> Google</span>
+                    <span><i class="fab fa-microsoft"></i> Microsoft</span>
+                    <span><i class="fab fa-amazon"></i> Amazon</span>
+                    <span><i class="fab fa-meta"></i> Meta</span>
+                    <span><i class="fab fa-apple"></i> Apple</span>
+                    <span><i class="fab fa-linkedin"></i> LinkedIn</span>
+                    <span><i class="fab fa-adobe"></i> Adobe</span>
+                    <span><i class="fab fa-spotify"></i> Spotify</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Announcements Section -->
+    <section class="announcements-section" id="announcements">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2><i class="fas fa-bullhorn"></i> Latest Updates</h2>
+                <p>Stay informed with our latest features and opportunities</p>
+            </div>
+            
+            <div class="announcements-grid" id="announcementsContainer">
+                <!-- Announcements will be loaded here dynamically -->
+                <div class="announcement-card" data-aos="fade-up">
+                    <span class="announcement-badge"><i class="fas fa-spinner fa-spin"></i> Loading</span>
+                    <h3 class="announcement-title">Loading announcements...</h3>
+                    <p class="announcement-content">Please wait while we load the latest updates from our platform.</p>
+                    <div class="announcement-meta">
+                        <span><i class="fas fa-calendar"></i> --</span>
+                        <span><i class="fas fa-users"></i> --</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Everything You Need to Succeed</h2>
+                <p>AI-powered tools designed to accelerate your career journey</p>
+            </div>
+
+            <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Smart Resume Builder</h3>
+                <p>Create ATS-optimized resumes with AI scoring and real-time feedback. Get instant suggestions to improve your profile.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Intelligent Job Matching</h3>
+                <p>Our AI analyzes thousands of jobs to find perfect matches based on your skills, experience, and preferences.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Interview Coach</h3>
+                <p>Practice with our AI interviewer and get detailed feedback on your responses, confidence, and body language.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-microphone-alt"></i>
+                </div>
+                <h3>Voice Search</h3>
+                <p>Find jobs hands-free with voice commands. Just speak what you're looking for and let AI do the rest.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Skill Assessment</h3>
+                <p>Take aptitude tests and identify skill gaps with detailed analytics. Get personalized learning recommendations.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon-wrapper">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3>Real-time Updates</h3>
+                <p>Get instant notifications when companies view your profile or update your application status.</p>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our Impact in Numbers</h2>
+                <p>Real results from real professionals</p>
+            </div>
+            
+            <div class="stats-grid" id="statsGrid">
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stat-number" data-target="500">0</div>
+                <div class="stat-label">Partner Companies</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Job Listings</div>
+            </div>
+
+            <div class="stat-card" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stat-number" data-target="95">0</div>
+                <div class="stat-label">Success Rate (%)</div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Success Stories</h2>
+                <p>Hear from professionals who transformed their careers</p>
+            </div>
+
+            <div class="testimonials-grid">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-text">
+                    "Career Bridge's AI interview coach was a game-changer! I practiced 20+ interviews and got my dream job at Google. The real-time feedback helped me improve my responses significantly."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="author-info">
+                        <h4>Rahul Sharma</h4>
+                        <p>Software Engineer at Google</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-text">
+                    "The resume builder increased my interview calls by 300%! The ATS optimization suggestions were spot-on. I got offers from 5 top companies within a month."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="author-info">
+                        <h4>Priya Patel</h4>
+                        <p>Product Manager at Amazon</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="testimonial-text">
+                    "As a recruiter, Career Bridge has transformed how we find talent. The matching algorithm is incredibly accurate, saving us 20+ hours per week in screening."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="author-info">
+                        <h4>Michael Chen</h4>
+                        <p>HR Director at Microsoft</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 data-aos="fade-up">Ready to Transform Your Career?</h2>
+        <p data-aos="fade-up" data-aos-delay="100">Join 50,000+ professionals who are already accelerating their careers with Career Bridge</p>
+        <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
+            <a href="pages/signup.html" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket"></i> Start Your Journey
+            </a>
+            <a href="pages/login.html" class="btn btn-outline btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="section-container footer-content">
+            <div class="footer-section" data-aos="fade-up">
+                <h4>Career Bridge</h4>
+                <p style="color: var(--dark-400); margin-bottom: 20px;">AI-powered career guidance platform helping professionals achieve their dreams.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
+                <h4>For Students</h4>
+                <ul>
+                    <li><a href="pages/resume-builder.html"><i class="fas fa-chevron-right"></i> Resume Builder</a></li>
+                    <li><a href="pages/job-search.html"><i class="fas fa-chevron-right"></i> Job Search</a></li>
+                    <li><a href="pages/interview-prep.html"><i class="fas fa-chevron-right"></i> Interview Prep</a></li>
+                    <li><a href="pages/aptitude-tests.html"><i class="fas fa-chevron-right"></i> Skill Tests</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
+                <h4>For Companies</h4>
+                <ul>
+                    <li><a href="pages/company-dashboard.html"><i class="fas fa-chevron-right"></i> Post Jobs</a></li>
+                    <li><a href="pages/view-applications.html"><i class="fas fa-chevron-right"></i> Find Candidates</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Resources</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section" data-aos="fade-up" data-aos-delay="300">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="pages/help-center.html"><i class="fas fa-chevron-right"></i> Help Center</a></li>
+                    <li><a href="pages/contact-us.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    <li><a href="pages/privacy-policy.html"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="pages/terms-of-service.html"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Career Bridge. All rights reserved. | Made with <i class="fas fa-heart" style="color: #ec4899;"></i> for career growth</p>
+        </div>
+    </footer>
+
+    <!-- Announcement Details Modal -->
+    <div id="announcementModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('announcementModal')">×</button>
+            <div class="modal-header"><i class="fas fa-bullhorn"></i> Announcement Details</div>
+            <div class="modal-body" id="announcementDetailsContent"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config/supabase-config.js"></script>
+    
+    <script>
+        (function() {
+            'use strict';
+            
+            console.log('✅ Career Bridge Landing Page - Fixed Version');
+
+            // ============================================
+            // CONSTANTS
+            // ============================================
+            const STORAGE_KEYS = {
+                ANNOUNCEMENTS: 'announcements'
+            };
+
+            // ============================================
+            // INITIALIZE AOS ANIMATIONS
+            // ============================================
+            AOS.init({
+                duration: 800,
+                once: false,
+                mirror: true,
+                offset: 100,
+                easing: 'ease-out-cubic'
+            });
+
+            // ============================================
+            // CREATE FLOATING PARTICLES
+            // ============================================
+            function createParticles() {
+                const particleCount = 50;
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Random properties
+                    const size = Math.random() * 6 + 2;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.animationDuration = Math.random() * 20 + 10 + 's';
+                    
+                    document.querySelector('.animated-bg').appendChild(particle);
+                }
+            }
+            // ============================================
+            // ESCAPE HTML (XSS Protection)
+            // ============================================
+            function escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function sanitizeImageUrl(url) {
+                if (!url || typeof url !== 'string') return '';
+                const trimmed = url.trim();
+                if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('data:image/')) {
+                    return trimmed;
+                }
+                return '';
+            }
+            // ============================================
+            // LOAD ANNOUNCEMENTS - FIXED: Now uses localStorage
+            // ============================================
+            function loadAnnouncements() {
+                const container = document.getElementById('announcementsContainer');
+                if (!container) return;
+
+                try {
+                    // Get announcements from localStorage (where admin saves them)
+                    const savedAnnouncements = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
+                    let announcements = savedAnnouncements ? JSON.parse(savedAnnouncements) : [];
+                    
+                    console.log('📢 Loaded announcements from localStorage:', announcements.length);
+
+                    // If no announcements, show professional defaults
+                    if (announcements.length === 0) {
+                        announcements = [
+                            {
+                                id: 'ann1',
+                                title: '🚀 AI Interview Coach Launch',
+                                content: 'Practice interviews with our advanced AI coach! Get real-time feedback on your responses and improve your interview skills with personalized coaching.',
+                                target_audience: 'all',
+                                created_at: new Date().toISOString(),
+                                badge: '✨ New Feature'
+                            },
+                            {
+                                id: 'ann2',
+                                title: '🎯 500+ Top Companies Hiring Now',
+                                content: 'Google, Microsoft, Amazon, and 500+ leading companies are actively hiring through our platform. Apply now and get noticed by top recruiters.',
+                                target_audience: 'student',
+                                created_at: new Date().toISOString(),
+                                badge: '🔥 Hot Opportunity'
+                            },
+                            {
+                                id: 'ann3',
+                                title: '🏆 Success Story: 10K+ Placements',
+                                content: 'We\'ve helped over 10,000 professionals land their dream jobs this year. Join our community and start your success story today!',
+                                target_audience: 'all',
+                                created_at: new Date().toISOString(),
+                                badge: '🎉 Milestone'
+                            }
+                        ];
+                    }
+
+                    // Filter announcements based on expiry
+                    const now = new Date();
+                    const validAnnouncements = announcements.filter(ann => {
+                        if (!ann.expiry_date) return true;
+                        return new Date(ann.expiry_date) > now;
+                    });
+
+                    // Sort by date (newest first)
+                    validAnnouncements.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+                    // Display announcements (max 3)
+                    const displayAnnouncements = validAnnouncements.slice(0, 3);
+
+                    if (displayAnnouncements.length === 0) {
+                        container.innerHTML = `
+                            <div class="announcement-card" data-aos="fade-up">
+                                <span class="announcement-badge">📢 Info</span>
+                                <h3 class="announcement-title">No Announcements</h3>
+                                <p class="announcement-content">Check back later for updates!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = displayAnnouncements.map((ann, index) => {
+                        const date = new Date(ann.created_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        
+                        const badge = ann.badge || (ann.target_audience === 'all' ? '📢 Announcement' : 
+                                                    ann.target_audience === 'student' ? '🎓 Students' : 
+                                                    ann.target_audience === 'company' ? '🏢 Companies' : '✨ Update');
+
+                        // Check if announcement has an image
+                        const imageUrl = sanitizeImageUrl(ann.image);
+                        const imageHtml = imageUrl ? 
+                            `<img src="${imageUrl}" alt="Announcement image" class="announcement-image" loading="lazy" onerror="this.style.display='none'">` : '';
+
+                        return `
+                            <div class="announcement-card" onclick="showAnnouncementDetails('${ann.id}')" data-aos="fade-up" data-aos-delay="${index * 100}">
+                                <span class="announcement-badge"><i class="fas fa-star"></i> ${badge}</span>
+                                ${imageHtml}
+                                <h3 class="announcement-title">${escapeHtml(ann.title)}</h3>
+                                <p class="announcement-content">${escapeHtml(ann.content.substring(0, 120))}${ann.content.length > 120 ? '...' : ''}</p>
+                                <div class="announcement-meta">
+                                    <span><i class="fas fa-calendar-alt"></i> ${date}</span>
+                                    <span><i class="fas fa-users"></i> ${ann.target_audience === 'all' ? 'Everyone' : 
+                                                                        ann.target_audience === 'student' ? 'Students' : 
+                                                                        ann.target_audience === 'company' ? 'Companies' : 'All Users'}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Refresh AOS for new elements
+                    AOS.refresh();
+
+                } catch (error) {
+                    console.error('Error loading announcements:', error);
+                    container.innerHTML = `
+                        <div class="announcement-card" data-aos="fade-up">
+                            <span class="announcement-badge">⚠️ Error</span>
+                            <h3 class="announcement-title">Unable to load announcements</h3>
+                            <p class="announcement-content">Please refresh the page to try again.</p>
+                        </div>
+                    `;
+                }
+            }
+            // ============================================
+            // SHOW ANNOUNCEMENT DETAILS IN MODAL
+            // ============================================
+            window.showAnnouncementDetails = function(announcementId) {
+                try {
+                    // Find announcement in localStorage
+                    const savedAnnouncements = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
+                    let announcements = savedAnnouncements ? JSON.parse(savedAnnouncements) : [];
+                    
+                    // Also check default announcements
+                    if (announcements.length === 0) {
+                        announcements = [
+                            {
+                                id: 'ann1',
+                                title: '🚀 AI Interview Coach Launch',
+                                content: 'Practice interviews with our advanced AI coach! Get real-time feedback on your responses and improve your interview skills with personalized coaching.',
+                                target_audience: 'all',
+                                created_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'ann2',
+                                title: '🎯 500+ Top Companies Hiring Now',
+                                content: 'Google, Microsoft, Amazon, and 500+ leading companies are actively hiring through our platform. Apply now and get noticed by top recruiters.',
+                                target_audience: 'student',
+                                created_at: new Date().toISOString()
+                            },
+                            {
+                                id: 'ann3',
+                                title: '🏆 Success Story: 10K+ Placements',
+                                content: 'We\'ve helped over 10,000 professionals land their dream jobs this year. Join our community and start your success story today!',
+                                target_audience: 'all',
+                                created_at: new Date().toISOString()
+                            }
+                        ];
+                    }
+                    
+                    const announcement = announcements.find(a => a.id == announcementId);
+
+                    if (!announcement) {
+                        showToast('Announcement not found', 'error');
+                        return;
+                    }
+
+                    const date = new Date(announcement.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const imageUrl = sanitizeImageUrl(announcement.image);
+                    const imageHtml = imageUrl ? 
+                        `<img src="${imageUrl}" alt="Announcement image" style="max-width: 100%; max-height: 300px; border-radius: 12px; margin-bottom: 20px;" loading="lazy" onerror="this.style.display='none'">` : '';
+
+                    const content = `
+                        <div style="background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%); padding: 30px; border-radius: 20px;">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <i class="fas fa-bullhorn" style="font-size: 4rem; color: #1f6cb3; margin-bottom: 15px;"></i>
+                                <h2 style="font-size: 2rem; color: #333; margin-bottom: 10px; background: linear-gradient(135deg, #1f6cb3 0%, #2b86d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${escapeHtml(announcement.title)}</h2>
+                            </div>
+                            
+                            <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                                ${imageHtml}
+                                <p style="color: #4b5563; line-height: 1.8; font-size: 1.1rem; margin-bottom: 25px;">${escapeHtml(announcement.content)}</p>
+                                
+                                <div style="display: flex; gap: 20px; flex-wrap: wrap; border-top: 2px solid #eef2ff; padding-top: 20px;">
+                                    <div style="flex: 1;">
+                                        <p style="color: #6b7280; margin-bottom: 5px;"><i class="fas fa-calendar" style="color: #1f6cb3; margin-right: 8px;"></i> Posted on</p>
+                                        <p style="font-weight: 600; color: #1f2937; font-size: 1.1rem;">${date}</p>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <p style="color: #6b7280; margin-bottom: 5px;"><i class="fas fa-users" style="color: #2b86d4; margin-right: 8px;"></i> Target Audience</p>
+                                        <p style="font-weight: 600; color: #1f2937; font-size: 1.1rem;">${announcement.target_audience === 'all' ? 'All Users' : 
+                                                                            announcement.target_audience === 'student' ? 'Students' : 
+                                                                            announcement.target_audience === 'company' ? 'Companies' : 'All Users'}</p>
+                                    </div>
+                                </div>
+                                ${announcement.expiry_date ? `
+                                    <div style="margin-top: 15px;">
+                                        <p style="color: #6b7280;"><i class="fas fa-hourglass-end" style="color: #ef4444; margin-right: 8px;"></i> Expires on: ${new Date(announcement.expiry_date).toLocaleDateString()}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('announcementDetailsContent').innerHTML = content;
+                    showModal('announcementModal');
+
+                } catch (error) {
+                    console.error('Error loading announcement details:', error);
+                    showToast('Error loading announcement details', 'error');
+                }
+            };
+            // ============================================
+            // ANIMATED COUNTERS
+            // ============================================
+            function animateCounters() {
+                const statNumbers = document.querySelectorAll('.stat-number');
+                
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-target'));
+                    let current = 0;
+                    const increment = target / 100;
+                    
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            stat.textContent = Math.floor(current);
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            stat.textContent = target + (stat.parentElement.querySelector('.stat-label').textContent.includes('Rate') ? '%' : '+');
+                        }
+                    };
+                    
+                    updateCounter();
+                });
+            }
+
+            // Intersection Observer for stats
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounters();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const statsGrid = document.getElementById('statsGrid');
+            if (statsGrid) {
+                observer.observe(statsGrid);
+            }
+            // ============================================
+            // SCROLL PROGRESS INDICATOR
+            // ============================================
+            function handleScrollEffects() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                
+                document.getElementById('scrollProgress').style.transform = `scaleX(${Math.min(1, Math.max(0, scrolled / 100))})`;
+
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                const backToTop = document.getElementById('backToTop');
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            }
+
+            window.addEventListener('scroll', handleScrollEffects, { passive: true });
+            window.scrollToTop = function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
+            // ============================================
+            // SMOOTH SCROLL FOR ANCHOR LINKS
+            // ============================================
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            // ============================================
+            // MODAL FUNCTIONS
+            // ============================================
+            function syncBodyScrollLock() {
+                const hasOpenModal = !!document.querySelector('.modal.show');
+                document.body.classList.toggle('modal-open', hasOpenModal);
+            }
+
+            window.showModal = function(modalId) {
+                document.getElementById(modalId).classList.add('show');
+                syncBodyScrollLock();
+            };
+
+            window.closeModal = function(modalId) {
+                document.getElementById(modalId).classList.remove('show');
+                syncBodyScrollLock();
+            };
+
+            // Close modal on outside click
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.classList.remove('show');
+                    syncBodyScrollLock();
+                }
+            };
+
+            window.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.modal.show').forEach((modalEl) => {
+                        modalEl.classList.remove('show');
+                    });
+                    syncBodyScrollLock();
+                }
+            });
+            // ============================================
+            // TOAST NOTIFICATION
+            // ============================================
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.animation = 'toast-slide-out 0.3s ease-out';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+            // ============================================
+            // LOADING BAR ON NAVIGATION
+            // ============================================
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (!link.href.includes('#') && !link.href.includes('javascript')) {
+                        document.getElementById('loadingBar').style.display = 'block';
+                    }
+                });
+            });
+            // ============================================
+            // CHECK USER LOGIN STATUS
+            // ============================================
+            async function checkUserLogin() {
+                try {
+                    // Check localStorage first (faster)
+                    const userEmail = localStorage.getItem('userEmail');
+                    const userRole = localStorage.getItem('userRole');
+                    
+                    if (userEmail && userRole) {
+                        console.log('✅ User logged in:', userEmail, 'Role:', userRole);
+                        
+                        const navbarRight = document.getElementById('navbarRight');
+                        
+                        let dashboardUrl = 'pages/student-dashboard.html';
+                        if (userRole === 'company') {
+                            dashboardUrl = 'pages/company-dashboard.html';
+                        } else if (userRole === 'admin') {
+                            dashboardUrl = 'pages/admin-dashboard.html';
+                        }
+                        
+                        navbarRight.innerHTML = `
+                            <a href="${dashboardUrl}" class="btn btn-primary">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                            <a href="#" onclick="handleLogout(event)" class="btn btn-secondary">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        `;
+                        return;
+                    }
+                    
+                    // If not in localStorage, try Supabase
+                    if (window.supabase?.client) {
+                        const { data: { user } } = await supabase.client.auth.getUser();
+                        
+                        if (user) {
+                            console.log('✅ User logged in via Supabase:', user.email);
+                            
+                            const navbarRight = document.getElementById('navbarRight');
+                            const role = user.user_metadata?.role || 'student';
+                            
+                            // Save to localStorage
+                            localStorage.setItem('userEmail', user.email);
+                            localStorage.setItem('userRole', role);
+                            
+                            let dashboardUrl = 'pages/student-dashboard.html';
+                            if (role === 'company') {
+                                dashboardUrl = 'pages/company-dashboard.html';
+                            } else if (role === 'admin') {
+                                dashboardUrl = 'pages/admin-dashboard.html';
+                            }
+                            
+                            navbarRight.innerHTML = `
+                                <a href="${dashboardUrl}" class="btn btn-primary">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                                <a href="#" onclick="handleLogout(event)" class="btn btn-secondary">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            `;
+                        }
+                    }
+                } catch (err) {
+                    console.log('Not logged in');
+                }
+            }
+            // Logout handler
+            window.handleLogout = function(e) {
+                if (e) e.preventDefault();
+                
+                if (confirm('Are you sure you want to logout?')) {
+                    // Clear user data from localStorage
+                    const userKeys = ['userEmail', 'userRole', 'userName', 'profilePhoto', 'studentId', 'userId'];
+                    userKeys.forEach(key => localStorage.removeItem(key));
+                    
+                    // Clear auth tokens
+                    const authKeys = ['supabase.auth.token', 'sb-auth-token', 'sb:token'];
+                    authKeys.forEach(key => {
+                        try { localStorage.removeItem(key); } catch (e) {}
+                    });
+                    
+                    // Reload page
+                    window.location.reload();
+                }
+            };
+            // ============================================
+            // INITIALIZE
+            // ============================================
+            function init() {
+                createParticles();
+                loadAnnouncements();
+                checkUserLogin();
+                handleScrollEffects();
+                syncBodyScrollLock();
+                
+                // Refresh AOS on window resize
+                window.addEventListener('resize', () => AOS.refresh());
+                
+                // Refresh announcements every 30 seconds (in case admin adds new ones)
+                setInterval(loadAnnouncements, 30000);
+            }
+
+            init();
+
+        })();
+    </script>
+</body>
+</html>                                                                                                                                                                                                                                                                                                                                                                                          

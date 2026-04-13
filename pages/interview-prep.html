@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Preparation - Career Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #a78bfa;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --shadow: 0 10px 40px rgba(139,92,246,0.1);
+            --shadow-hover: 0 20px 60px rgba(139,92,246,0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes float {
+            0%,100% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(50px,50px) scale(1.1); }
+            50% { transform: translate(0,100px) scale(0.9); }
+            75% { transform: translate(-50px,50px) scale(1.05); }
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .navbar-menu a:hover,
+        .navbar-menu a.active {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1em;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-btn i {
+            font-size: 1.2em;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Questions Grid */
+        .questions-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease-out;
+            cursor: pointer;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .question-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .question-badge {
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge-popular { background: #ffeaa7; color: #d35400; }
+        .badge-new { background: #c8f7c5; color: #27ae60; }
+        .badge-trending { background: #fbb8b8; color: #c0392b; animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .question-content {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .question-content.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tips-section {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tips-section h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tips-section li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            color: #555;
+        }
+
+        .tips-section li::before {
+            content: '✓';
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+        }
+
+        .practice-section {
+            background: #fff9e6;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .practice-section h4 {
+            color: var(--warning);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .practice-answer {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-family: inherit;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            resize: vertical;
+            transition: all 0.3s;
+        }
+
+        .practice-answer:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.1);
+        }
+
+        .practice-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .practice-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-record {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-clear {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .practice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .recording-status {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #fee2e2;
+            border-radius: 10px;
+            color: var(--error);
+            animation: pulse 1.5s infinite;
+        }
+
+        .recording-status.show {
+            display: flex;
+        }
+
+        /* Interview Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .resource-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .resource-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.1) 0%, rgba(124,58,237,0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: var(--primary);
+            margin: 0 auto 20px;
+        }
+
+        .resource-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .resource-description {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .modal-btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideInRight 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .toast-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .toast-error { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .toast-info { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+            }
+
+            .category-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-rocket"></i> Career Bridge
+        </div>
+        <div class="navbar-menu">
+            <a href="student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+            <a href="reports.html"><i class="fas fa-flag"></i> Reports</a>
+            <a href="aptitude.html"><i class="fas fa-brain"></i> Aptitude</a>
+            <a href="#" class="active"><i class="fas fa-calendar-alt"></i> Interview</a>
+            <a href="ai-chat.html"><i class="fas fa-robot"></i> AI Chat</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-calendar-alt"></i> Interview Preparation</h1>
+            <p>Practice with real questions • Get expert tips • Ace your interview</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="stat-value" id="totalQuestions">45</div>
+                <div class="stat-label">Questions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value" id="practiced">23</div>
+                <div class="stat-label">Practiced</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-value" id="timeSpent">12.5h</div>
+                <div class="stat-label">Time Spent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                <div class="stat-value" id="streak">7</div>
+                <div class="stat-label">Day Streak</div>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-btn active" onclick="loadCategory('behavioral')">
+                <i class="fas fa-users"></i> Behavioral
+            </button>
+            <button class="category-btn" onclick="loadCategory('technical')">
+                <i class="fas fa-code"></i> Technical
+            </button>
+            <button class="category-btn" onclick="loadCategory('hr')">
+                <i class="fas fa-handshake"></i> HR
+            </button>
+            <button class="category-btn" onclick="loadCategory('system-design')">
+                <i class="fas fa-server"></i> System Design
+            </button>
+            <button class="category-btn" onclick="loadCategory('all')">
+                <i class="fas fa-star"></i> All Questions
+            </button>
+        </div>
+
+        <!-- Questions Grid -->
+        <div class="questions-grid" id="questionsGrid">
+            <!-- Questions will be loaded here -->
+        </div>
+
+        <!-- Resources Section -->
+        <h2 style="color: white; margin: 40px 0 20px;">📚 Interview Resources</h2>
+        <div class="resources-grid">
+            <div class="resource-card" onclick="viewResource('resume')">
+                <div class="resource-icon"><i class="fas fa-file-pdf"></i></div>
+                <div class="resource-title">Resume Tips</div>
+                <div class="resource-description">Expert tips to make your resume stand out</div>
+            </div>
+            <div class="resource-card" onclick="viewResource('questions')">
+                <div class="resource-icon"><i class="fas fa-question-circle"></i></div>
+                <div class="resource-title">Top 50 Questions</div>
+                <div class="resource-description">Most asked interview questions</div>
+            </div>
+            <div class="resource-card" onclick="viewResource('salary')">
+                <div class="resource-icon"><i class="fas fa-money-bill-wave"></i></div>
+                <div class="resource-title">Salary Negotiation</div>
+                <div class="resource-description">How to negotiate your salary</div>
+            </div>
+            <div class="resource-card" onclick="viewResource('body-language')">
+                <div class="resource-icon"><i class="fas fa-user-tie"></i></div>
+                <div class="resource-title">Body Language</div>
+                <div class="resource-description">Master your interview presence</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Modal -->
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-info-circle"></i> Interview Resource
+                <span class="modal-close" onclick="closeModal('resourceModal')">&times;</span>
+            </div>
+            <div class="modal-body" id="resourceContent">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-primary" onclick="closeModal('resourceModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('✅ Interview prep page loaded');
+
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let savedAnswers = JSON.parse(localStorage.getItem('interviewAnswers')) || {};
+        let currentCategory = 'behavioral';
+
+        // ============================================
+        // INTERVIEW QUESTIONS DATA
+        // ============================================
+        const questions = {
+            behavioral: [
+                {
+                    id: 'b1',
+                    question: "Tell me about yourself",
+                    tips: [
+                        "Keep it concise (2-3 minutes)",
+                        "Highlight relevant experience",
+                        "Mention career goals",
+                        "Show enthusiasm for the role"
+                    ],
+                    sampleAnswer: "I'm a computer science graduate with 2 years of experience in web development. I'm passionate about creating user-friendly applications and have worked on several projects using React and Node.js. I'm looking to grow my skills in a challenging environment.",
+                    difficulty: 'easy',
+                    popularity: 'high'
+                },
+                {
+                    id: 'b2',
+                    question: "Tell me about a time you faced a difficult problem and how you solved it",
+                    tips: [
+                        "Use STAR method: Situation, Task, Action, Result",
+                        "Be specific with examples",
+                        "Focus on your contribution",
+                        "Highlight learnings"
+                    ],
+                    sampleAnswer: "In my previous role, we faced a critical bug that was affecting user experience. I took initiative to debug the issue, found it was related to database queries, optimized them, and reduced load time by 50%.",
+                    difficulty: 'medium',
+                    popularity: 'high'
+                },
+                {
+                    id: 'b3',
+                    question: "Describe a situation where you worked in a team",
+                    tips: [
+                        "Mention your specific role",
+                        "Highlight collaboration",
+                        "Show respect for team members",
+                        "Discuss the positive outcome"
+                    ],
+                    sampleAnswer: "During my final year project, I worked in a team of 4 to build a job portal. I was responsible for the backend development. We used agile methodology and delivered the project on time.",
+                    difficulty: 'medium',
+                    popularity: 'medium'
+                }
+            ],
+            technical: [
+                {
+                    id: 't1',
+                    question: "Explain the concepts of OOP",
+                    tips: [
+                        "Cover: Encapsulation, Inheritance, Polymorphism, Abstraction",
+                        "Provide real-world examples",
+                        "Discuss advantages and use cases"
+                    ],
+                    sampleAnswer: "Object-Oriented Programming has four main concepts: Encapsulation (bundling data and methods), Inheritance (creating parent-child relationships), Polymorphism (same interface different implementations), and Abstraction (hiding complex details).",
+                    difficulty: 'easy',
+                    popularity: 'high'
+                },
+                {
+                    id: 't2',
+                    question: "What is the difference between SQL and NoSQL?",
+                    tips: [
+                        "SQL: Relational, structured data",
+                        "NoSQL: Non-relational, flexible schema",
+                        "Discuss use cases for each"
+                    ],
+                    sampleAnswer: "SQL databases are relational with predefined schemas, best for complex queries and transactions. NoSQL databases are non-relational with dynamic schemas, best for scalability and unstructured data.",
+                    difficulty: 'medium',
+                    popularity: 'high'
+                },
+                {
+                    id: 't3',
+                    question: "How does REST API work?",
+                    tips: [
+                        "Explain HTTP methods: GET, POST, PUT, DELETE",
+                        "Discuss status codes",
+                        "Mention request/response format"
+                    ],
+                    sampleAnswer: "REST APIs use HTTP methods to perform CRUD operations. GET retrieves data, POST creates new resources, PUT updates, DELETE removes. They return data in JSON/XML format with status codes.",
+                    difficulty: 'medium',
+                    popularity: 'high'
+                }
+            ],
+            hr: [
+                {
+                    id: 'h1',
+                    question: "What are your strengths and weaknesses?",
+                    tips: [
+                        "For strengths: Be genuine and relevant",
+                        "For weaknesses: Show self-awareness",
+                        "Mention how you're working on improvements"
+                    ],
+                    sampleAnswer: "My strengths are problem-solving and quick learning. My weakness is public speaking, but I'm actively working on it by participating in team meetings.",
+                    difficulty: 'easy',
+                    popularity: 'high'
+                },
+                {
+                    id: 'h2',
+                    question: "Where do you see yourself in 5 years?",
+                    tips: [
+                        "Show ambition and growth mindset",
+                        "Align with company goals",
+                        "Mention skill development plans"
+                    ],
+                    sampleAnswer: "In 5 years, I see myself as a technical lead, mentoring junior developers and architecting solutions.",
+                    difficulty: 'easy',
+                    popularity: 'medium'
+                },
+                {
+                    id: 'h3',
+                    question: "Why do you want to join our company?",
+                    tips: [
+                        "Research the company thoroughly",
+                        "Mention specific projects or values",
+                        "Connect your skills to their needs"
+                    ],
+                    sampleAnswer: "I admire your company's innovative approach to technology and your focus on employee growth. I believe my skills would make me a valuable addition to your team.",
+                    difficulty: 'medium',
+                    popularity: 'high'
+                }
+            ],
+            'system-design': [
+                {
+                    id: 's1',
+                    question: "Design a URL shortener like TinyURL",
+                    tips: [
+                        "Discuss requirements",
+                        "Estimate traffic and storage",
+                        "Design database schema",
+                        "Discuss API design"
+                    ],
+                    sampleAnswer: "A URL shortener needs to generate unique short codes, handle redirects, and store analytics. We'd use a distributed system with caching for performance.",
+                    difficulty: 'hard',
+                    popularity: 'high'
+                }
+            ]
+        };
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        function init() {
+            loadCategory('behavioral');
+            updateStats();
+        }
+
+        // ============================================
+        // LOAD CATEGORY
+        // ============================================
+        window.loadCategory = function(category) {
+            currentCategory = category;
+            
+            // Update active tab
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            let questionsToShow = [];
+            if (category === 'all') {
+                questionsToShow = [
+                    ...questions.behavioral,
+                    ...questions.technical,
+                    ...questions.hr,
+                    ...questions['system-design']
+                ];
+            } else {
+                questionsToShow = questions[category] || [];
+            }
+
+            displayQuestions(questionsToShow);
+        };
+
+        // ============================================
+        // DISPLAY QUESTIONS
+        // ============================================
+        function displayQuestions(questionsList) {
+            const container = document.getElementById('questionsGrid');
+            if (!container) return;
+
+            if (questionsList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(255,255,255,0.95); border-radius: 30px;">
+                        <i class="fas fa-question-circle" style="font-size: 4em; color: #ddd;"></i>
+                        <p style="color: #999; margin-top: 20px;">No questions found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = questionsList.map((q, index) => {
+                const savedAnswer = savedAnswers[`${currentCategory}_${q.id}`] || '';
+                const badgeClass = q.popularity === 'high' ? 'badge-popular' : 
+                                 q.difficulty === 'hard' ? 'badge-trending' : 'badge-new';
+                const badgeText = q.popularity === 'high' ? '🔥 Popular' :
+                                 q.difficulty === 'hard' ? '⚡ Hard' : '✨ New';
+
+                return `
+                    <div class="question-card" onclick="toggleQuestion('${currentCategory}_${index}')">
+                        <div class="question-header">
+                            <div class="question-title">
+                                <i class="fas fa-question-circle" style="color: var(--primary);"></i>
+                                ${q.question}
+                            </div>
+                            <span class="question-badge ${badgeClass}">${badgeText}</span>
+                        </div>
+
+                        <div class="question-content" id="content_${currentCategory}_${index}">
+                            <div class="tips-section">
+                                <h4><i class="fas fa-lightbulb"></i> Expert Tips</h4>
+                                <ul>
+                                    ${q.tips.map(tip => `<li>${tip}</li>`).join('')}
+                                </ul>
+                            </div>
+
+                            <div class="tips-section" style="background: #e8f5e8;">
+                                <h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Sample Answer</h4>
+                                <p style="color: #333; line-height: 1.6;">${q.sampleAnswer}</p>
+                            </div>
+
+                            <div class="practice-section">
+                                <h4><i class="fas fa-pen"></i> Practice Your Answer</h4>
+                                <textarea class="practice-answer" 
+                                          placeholder="Write your answer here..."
+                                          onchange="saveAnswer('${currentCategory}', '${q.id}', this.value)">${savedAnswer}</textarea>
+                                
+                                <div class="practice-actions">
+                                    <button class="practice-btn btn-save" onclick="event.stopPropagation(); saveAnswer('${currentCategory}', '${q.id}', document.querySelector('#content_${currentCategory}_${index} .practice-answer').value)">
+                                        <i class="fas fa-save"></i> Save Answer
+                                    </button>
+                                    <button class="practice-btn btn-record" onclick="event.stopPropagation(); startRecording('${currentCategory}', '${q.id}', ${index})">
+                                        <i class="fas fa-microphone"></i> Record
+                                    </button>
+                                    <button class="practice-btn btn-clear" onclick="event.stopPropagation(); clearAnswer('${currentCategory}', '${q.id}', ${index})">
+                                        <i class="fas fa-trash"></i> Clear
+                                    </button>
+                                </div>
+
+                                <div class="recording-status" id="recording_${currentCategory}_${index}">
+                                    <i class="fas fa-circle"></i> Recording... (3 seconds)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // TOGGLE QUESTION
+        // ============================================
+        window.toggleQuestion = function(contentId) {
+            const content = document.getElementById(`content_${contentId}`);
+            if (content) {
+                content.classList.toggle('show');
+            }
+        };
+
+        // ============================================
+        // SAVE ANSWER
+        // ============================================
+        window.saveAnswer = function(category, questionId, answer) {
+            savedAnswers[`${category}_${questionId}`] = answer;
+            localStorage.setItem('interviewAnswers', JSON.stringify(savedAnswers));
+            showToast('✅ Answer saved', 'success');
+        };
+
+        // ============================================
+        // CLEAR ANSWER
+        // ============================================
+        window.clearAnswer = function(category, questionId, index) {
+            const textarea = document.querySelector(`#content_${category}_${index} .practice-answer`);
+            if (textarea) {
+                textarea.value = '';
+                delete savedAnswers[`${category}_${questionId}`];
+                localStorage.setItem('interviewAnswers', JSON.stringify(savedAnswers));
+                showToast('🗑️ Answer cleared', 'info');
+            }
+        };
+
+        // ============================================
+        // START RECORDING
+        // ============================================
+        window.startRecording = function(category, questionId, index) {
+            const status = document.getElementById(`recording_${category}_${index}`);
+            if (!status) return;
+
+            status.classList.add('show');
+
+            // Simulate recording for 3 seconds
+            setTimeout(() => {
+                status.classList.remove('show');
+                
+                const textarea = document.querySelector(`#content_${category}_${index} .practice-answer`);
+                if (textarea) {
+                    const sampleAnswers = {
+                        behavioral: "I handled the situation by staying calm and communicating clearly with my team...",
+                        technical: "Object-Oriented Programming has four main concepts: Encapsulation, Inheritance, Polymorphism, and Abstraction...",
+                        hr: "My greatest strength is my ability to learn quickly and adapt to new situations..."
+                    };
+                    
+                    textarea.value = sampleAnswers[category] || "This is a sample recorded answer.";
+                    saveAnswer(category, questionId, textarea.value);
+                }
+                
+                showToast('🎤 Recording saved!', 'success');
+            }, 3000);
+        };
+
+        // ============================================
+        // VIEW RESOURCE
+        // ============================================
+        window.viewResource = function(type) {
+            let content = '';
+            
+            switch(type) {
+                case 'resume':
+                    content = `
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">📄 Resume Tips for Interviews</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 15px;">✅ Keep it to 1-2 pages maximum</li>
+                            <li style="margin-bottom: 15px;">✅ Use action verbs (Developed, Led, Created)</li>
+                            <li style="margin-bottom: 15px;">✅ Quantify achievements with numbers</li>
+                            <li style="margin-bottom: 15px;">✅ Tailor resume for each job application</li>
+                            <li style="margin-bottom: 15px;">✅ Include relevant skills and technologies</li>
+                            <li style="margin-bottom: 15px;">✅ Proofread for errors</li>
+                        </ul>
+                    `;
+                    break;
+                    
+                case 'questions':
+                    content = `
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">❓ Top 50 Interview Questions</h3>
+                        <ol style="padding-left: 20px;">
+                            <li style="margin-bottom: 10px;">Tell me about yourself</li>
+                            <li style="margin-bottom: 10px;">Why do you want to work here?</li>
+                            <li style="margin-bottom: 10px;">What are your strengths and weaknesses?</li>
+                            <li style="margin-bottom: 10px;">Where do you see yourself in 5 years?</li>
+                            <li style="margin-bottom: 10px;">Why are you leaving your current job?</li>
+                            <li style="margin-bottom: 10px;">Tell me about a challenging situation</li>
+                            <li style="margin-bottom: 10px;">Describe your ideal work environment</li>
+                            <li style="margin-bottom: 10px;">How do you handle stress?</li>
+                            <li style="margin-bottom: 10px;">What are your salary expectations?</li>
+                            <li style="margin-bottom: 10px;">Do you have any questions for us?</li>
+                        </ol>
+                    `;
+                    break;
+                    
+                case 'salary':
+                    content = `
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">💰 Salary Negotiation Guide</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 15px;">✅ Research market rates for your role</li>
+                            <li style="margin-bottom: 15px;">✅ Never give the first number</li>
+                            <li style="margin-bottom: 15px;">✅ Consider total compensation (bonus, benefits)</li>
+                            <li style="margin-bottom: 15px;">✅ Practice your negotiation conversation</li>
+                            <li style="margin-bottom: 15px;">✅ Be confident but reasonable</li>
+                            <li style="margin-bottom: 15px;">✅ Get the offer in writing</li>
+                        </ul>
+                    `;
+                    break;
+                    
+                case 'body-language':
+                    content = `
+                        <h3 style="color: var(--primary); margin-bottom: 15px;">👤 Body Language Tips</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 15px;">✅ Maintain eye contact (but don't stare)</li>
+                            <li style="margin-bottom: 15px;">✅ Sit up straight and lean slightly forward</li>
+                            <li style="margin-bottom: 15px;">✅ Use hand gestures naturally</li>
+                            <li style="margin-bottom: 15px;">✅ Smile and show enthusiasm</li>
+                            <li style="margin-bottom: 15px;">✅ Don't cross your arms</li>
+                            <li style="margin-bottom: 15px;">✅ Nod to show you're listening</li>
+                        </ul>
+                    `;
+                    break;
+            }
+
+            document.getElementById('resourceContent').innerHTML = content;
+            showModal('resourceModal');
+        };
+
+        // ============================================
+        // UPDATE STATS
+        // ============================================
+        function updateStats() {
+            const totalQuestions = Object.values(questions).flat().length;
+            const practiced = Object.keys(savedAnswers).length;
+            const streak = 7; // Demo value
+
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            document.getElementById('practiced').textContent = practiced;
+            document.getElementById('streak').textContent = streak;
+        }
+
+        // ============================================
+        // SHOW TOAST
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+        window.showModal = function(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        };
+
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        };
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

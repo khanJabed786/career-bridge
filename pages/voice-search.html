@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Job Search - Career Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .voice-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .mic-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 60px;
+            cursor: pointer;
+            margin: 30px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .mic-button.listening {
+            animation: pulse 1.5s infinite;
+        }
+
+        .mic-button i {
+            font-size: 60px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 30px rgba(102, 126, 234, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+
+        .status {
+            font-size: 1.1em;
+            color: #666;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+
+        .transcript {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid #667eea;
+        }
+
+        .transcript p {
+            margin: 5px 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .transcript-label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .results {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .result-item {
+            background: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+
+        .result-company {
+            color: #667eea;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .result-details {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .result-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .apply-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .apply-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideUp 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .voice-container {
+                padding: 20px;
+            }
+
+            .mic-button {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .result-details {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="voice-container">
+        <a href="student-dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        
+        <h1><i class="fas fa-microphone-alt"></i> Voice Job Search</h1>
+        <p class="subtitle">Click the microphone and speak what you're looking for</p>
+
+        <button class="mic-button" id="micButton">
+            <i class="fas fa-microphone"></i>
+        </button>
+
+        <div class="status" id="status">Click microphone to start</div>
+
+        <div class="transcript" id="transcript">
+            <div class="transcript-label">You said:</div>
+            <p id="spokenText"></p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" id="resetBtn">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="btn btn-primary" id="searchBtn">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+        <div class="results" id="results"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config/supabase-config.js"></script>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            console.log('✅ Voice search page loaded');
+
+            // ============================================
+            // GLOBAL VARIABLES
+            // ============================================
+            let isListening = false;
+            let transcript = '';
+            let recognition = null;
+            let jobs = [];
+
+            // ============================================
+            // INITIALIZE VOICE RECOGNITION
+            // ============================================
+            function initVoiceRecognition() {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    recognition = new SpeechRecognition();
+                    recognition.continuous = false;
+                    recognition.interimResults = true;
+                    recognition.lang = 'en-US';
+
+                    recognition.onstart = () => {
+                        isListening = true;
+                        updateMicStatus('listening');
+                    };
+
+                    recognition.onresult = (event) => {
+                        transcript = '';
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            transcript += event.results[i][0].transcript;
+                        }
+                        displayTranscript(transcript);
+                    };
+
+                    recognition.onerror = (event) => {
+                        updateMicStatus('error', event.error);
+                    };
+
+                    recognition.onend = () => {
+                        isListening = false;
+                        updateMicStatus('idle');
+                    };
+                } else {
+                    updateMicStatus('unsupported');
+                }
+            }
+
+            // ============================================
+            // UPDATE MIC STATUS
+            // ============================================
+            function updateMicStatus(status, error = null) {
+                const statusDiv = document.getElementById('status');
+                const micBtn = document.getElementById('micButton');
+                
+                if (!statusDiv || !micBtn) return;
+
+                const statusMessages = {
+                    idle: 'Click the microphone and speak your job search',
+                    listening: '🎤 Listening... Speak now',
+                    error: `❌ Error: ${error || 'Please try again'}`,
+                    unsupported: '❌ Speech Recognition not supported in your browser'
+                };
+
+                statusDiv.textContent = statusMessages[status] || '';
+
+                if (status === 'listening') {
+                    micBtn.classList.add('listening');
+                } else {
+                    micBtn.classList.remove('listening');
+                }
+            }
+
+            // ============================================
+            // DISPLAY TRANSCRIPT
+            // ============================================
+            function displayTranscript(text) {
+                const transcriptDiv = document.getElementById('transcript');
+                const spokenText = document.getElementById('spokenText');
+                
+                if (transcriptDiv && spokenText) {
+                    spokenText.textContent = text;
+                    transcriptDiv.style.display = 'block';
+                }
+            }
+
+            // ============================================
+            // TOGGLE LISTENING
+            // ============================================
+            window.toggleListening = function() {
+                if (recognition) {
+                    if (isListening) {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                } else {
+                    showToast('Speech Recognition not supported in your browser', 'warning');
+                }
+            };
+
+            // ============================================
+            // RESET VOICE SEARCH
+            // ============================================
+            window.resetVoiceSearch = function() {
+                transcript = '';
+                document.getElementById('transcript').style.display = 'none';
+                document.getElementById('spokenText').textContent = '';
+                document.getElementById('results').innerHTML = '';
+                updateMicStatus('idle');
+                
+                if (recognition && isListening) {
+                    recognition.stop();
+                }
+                
+                showToast('🔄 Reset complete', 'info');
+            };
+
+            // ============================================
+            // PERFORM VOICE SEARCH
+            // ============================================
+            window.performVoiceSearch = async function() {
+                if (!transcript.trim()) {
+                    showToast('Please speak first or type your search!', 'warning');
+                    return;
+                }
+
+                updateMicStatus('idle');
+                document.getElementById('status').textContent = '🔍 Searching jobs...';
+                
+                const searchBtn = document.getElementById('searchBtn');
+                const originalText = searchBtn.innerHTML;
+                searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+                searchBtn.disabled = true;
+
+                try {
+                    // Parse voice input
+                    const searchCriteria = parseVoiceInput(transcript);
+
+                    // Search jobs
+                    const results = await searchJobsByVoice(searchCriteria);
+
+                    displayVoiceSearchResults(results, transcript);
+
+                } catch (error) {
+                    console.error('Voice search error:', error);
+                    showToast('Error searching jobs', 'error');
+                    document.getElementById('status').textContent = 'Error searching. Please try again.';
+                } finally {
+                    searchBtn.innerHTML = originalText;
+                    searchBtn.disabled = false;
+                }
+            };
+
+            // ============================================
+            // PARSE VOICE INPUT
+            // ============================================
+            function parseVoiceInput(input) {
+                const criteria = {
+                    keywords: [],
+                    location: null,
+                    jobType: null
+                };
+
+                const lower = input.toLowerCase();
+
+                // Extract location
+                const locations = [
+                    'delhi', 'mumbai', 'bangalore', 'pune', 'hyderabad', 'chennai', 
+                    'kolkata', 'ahmedabad', 'noida', 'gurgaon', 'remote', 'work from home'
+                ];
+                
+                locations.forEach(loc => {
+                    if (lower.includes(loc)) {
+                        if (loc === 'work from home' || loc === 'remote') {
+                            criteria.location = 'Remote';
+                        } else {
+                            criteria.location = loc.charAt(0).toUpperCase() + loc.slice(1);
+                        }
+                    }
+                });
+
+                // Extract job type
+                if (lower.includes('full time') || lower.includes('fulltime')) 
+                    criteria.jobType = 'Full-time';
+                else if (lower.includes('part time') || lower.includes('parttime')) 
+                    criteria.jobType = 'Part-time';
+                else if (lower.includes('internship')) 
+                    criteria.jobType = 'Internship';
+                else if (lower.includes('contract')) 
+                    criteria.jobType = 'Contract';
+
+                // Extract keywords (job titles)
+                const jobKeywords = [
+                    'developer', 'engineer', 'designer', 'analyst', 'manager', 
+                    'consultant', 'architect', 'specialist',
+                    'frontend', 'backend', 'full stack', 'devops', 'data scientist',
+                    'machine learning', 'ai', 'software', 'web', 'mobile', 'ios', 'android'
+                ];
+                
+                jobKeywords.forEach(keyword => {
+                    if (lower.includes(keyword)) {
+                        criteria.keywords.push(keyword);
+                    }
+                });
+
+                // If no specific keywords found, use the whole phrase
+                if (criteria.keywords.length === 0 && input.length > 0) {
+                    criteria.keywords = [input];
+                }
+
+                return criteria;
+            }
+
+            // ============================================
+            // SEARCH JOBS BY VOICE
+            // ============================================
+            async function searchJobsByVoice(criteria) {
+                try {
+                    let query = supabase.client
+                        .from('job_posts')
+                        .select('*')
+                        .eq('status', 'active');
+
+                    if (criteria.location) {
+                        query = query.ilike('location', `%${criteria.location}%`);
+                    }
+
+                    if (criteria.jobType) {
+                        query = query.eq('type', criteria.jobType);
+                    }
+
+                    if (criteria.keywords.length > 0) {
+                        // Search in title and description
+                        const keyword = criteria.keywords[0];
+                        query = query.or(`title.ilike.%${keyword}%,description.ilike.%${keyword}%`);
+                    }
+
+                    const { data, error } = await query.limit(10);
+
+                    if (error) throw error;
+                    return data || [];
+
+                } catch (error) {
+                    console.error('Search error:', error);
+                    return [];
+                }
+            }
+
+            // ============================================
+            // DISPLAY VOICE SEARCH RESULTS
+            // ============================================
+            function displayVoiceSearchResults(jobs, voiceInput) {
+                const resultsDiv = document.getElementById('results');
+                
+                if (!resultsDiv) return;
+
+                if (jobs.length === 0) {
+                    resultsDiv.innerHTML = `
+                        <div style="text-align: center; padding: 30px; color: #999;">
+                            <i class="fas fa-search" style="font-size: 3em; margin-bottom: 15px;"></i>
+                            <p>No jobs found matching "${voiceInput}"</p>
+                            <p style="margin-top: 10px;">Try: "software developer in bangalore" or "remote internship"</p>
+                            <button class="btn btn-secondary" onclick="resetVoiceSearch()" style="margin-top: 15px;">
+                                <i class="fas fa-redo"></i> Try Again
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('status').textContent = 'No jobs found';
+                    return;
+                }
+
+                resultsDiv.innerHTML = `
+                    <h3 style="color: #667eea; margin-bottom: 20px;">
+                        <i class="fas fa-check-circle"></i> Found ${jobs.length} jobs for "${voiceInput}"
+                    </h3>
+                    ${jobs.map(job => `
+                        <div class="result-item">
+                            <div class="result-title">${job.title}</div>
+                            <div class="result-company">${job.company_name || 'Company'}</div>
+                            
+                            <div class="result-details">
+                                <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                <span><i class="fas fa-clock"></i> ${job.type}</span>
+                                <span><i class="fas fa-money-bill"></i> ${job.salary}</span>
+                            </div>
+                            
+                            <p style="color: #666; margin-bottom: 15px;">
+                                ${job.description ? job.description.substring(0, 100) + '...' : ''}
+                            </p>
+                            
+                            <div class="result-actions">
+                                <a href="apply-job.html?id=${job.id}" class="apply-link">
+                                    <i class="fas fa-paper-plane"></i> Apply Now
+                                </a>
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+
+                document.getElementById('status').textContent = `✅ Found ${jobs.length} jobs`;
+            }
+
+            // ============================================
+            // SHOW TOAST
+            // ============================================
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i> ${message}`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            // ============================================
+            // CHECK AUTH AND SETUP
+            // ============================================
+            async function setup() {
+                try {
+                    const { data: { user } } = await supabase.auth.getUser();
+                    
+                    if (!user) {
+                        showToast('Please login to continue', 'info');
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 1500);
+                        return;
+                    }
+
+                    // Initialize voice recognition
+                    initVoiceRecognition();
+
+                    // Setup event listeners
+                    document.getElementById('micButton').addEventListener('click', toggleListening);
+                    document.getElementById('resetBtn').addEventListener('click', resetVoiceSearch);
+                    document.getElementById('searchBtn').addEventListener('click', performVoiceSearch);
+
+                } catch (error) {
+                    console.error('Setup error:', error);
+                }
+            }
+
+            setup();
+
+        })();
+    </script>
+</body>
+</html>

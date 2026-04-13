@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Career Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            background: linear-gradient(135deg, #1c588f 0%, #1f6cb3 50%, #2b86d4 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        h1 { margin-bottom: 12px; }
+        p { line-height: 1.7; }
+        .top-link { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 24px; }
+        .search-box {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0 20px;
+        }
+        .chip {
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .chip.active {
+            background: #ffffff;
+            color: #1f6cb3;
+            border-color: #ffffff;
+        }
+        .question {
+            margin: 0 0 8px;
+        }
+        .faq-meta {
+            display: inline-block;
+            font-size: 0.82rem;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.18);
+            margin-bottom: 10px;
+        }
+        .empty-state {
+            display: none;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="top-link" href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <h1>Help Center</h1>
+        <p>Find quick answers with real-time search and category filters.</p>
+
+        <input id="faqSearch" class="search-box" type="text" placeholder="Search question or keyword...">
+
+        <div class="filters" id="faqFilters">
+            <button class="chip active" data-category="all">All</button>
+            <button class="chip" data-category="account">Account</button>
+            <button class="chip" data-category="jobs">Jobs</button>
+            <button class="chip" data-category="resume">Resume</button>
+            <button class="chip" data-category="billing">Billing</button>
+        </div>
+
+        <div class="card faq-item" data-category="resume" data-text="how do i build my resume ats score feedback suggestions">
+            <span class="faq-meta">Resume</span>
+            <h3 class="question">How do I build my resume?</h3>
+            <p>Open Resume Builder, fill details, and use the AI suggestions panel to improve ATS score in real time.</p>
+        </div>
+
+        <div class="card faq-item" data-category="jobs" data-text="apply for jobs track status applications">
+            <span class="faq-meta">Jobs</span>
+            <h3 class="question">How can I apply for jobs?</h3>
+            <p>Go to Job Search, choose a role, click Apply, and track status updates in your dashboard applications tab.</p>
+        </div>
+
+        <div class="card faq-item" data-category="account" data-text="forgot password reset login account access">
+            <span class="faq-meta">Account</span>
+            <h3 class="question">I forgot my password. What should I do?</h3>
+            <p>On the login page, choose password reset and follow email instructions to recover account access.</p>
+        </div>
+
+        <div class="card faq-item" data-category="billing" data-text="subscription refund billing invoice">
+            <span class="faq-meta">Billing</span>
+            <h3 class="question">How do billing and refunds work?</h3>
+            <p>For paid plans, invoices and billing details are visible in account settings. Refunds follow the policy terms.</p>
+        </div>
+
+        <div class="empty-state" id="faqEmpty">No matching help articles found. Try different keywords.</div>
+
+        <div class="card">
+            <h3>Still need help?</h3>
+            <p>
+                <a href="contact-us.html">Contact Us</a> |
+                <a href="privacy-policy.html">Privacy Policy</a> |
+                <a href="terms-of-service.html">Terms of Service</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const searchInput = document.getElementById('faqSearch');
+            const chips = Array.from(document.querySelectorAll('.chip'));
+            const items = Array.from(document.querySelectorAll('.faq-item'));
+            const empty = document.getElementById('faqEmpty');
+            let activeCategory = 'all';
+
+            function filterFaq() {
+                const q = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                items.forEach((item) => {
+                    const category = item.dataset.category;
+                    const text = item.dataset.text || '';
+                    const categoryMatch = activeCategory === 'all' || category === activeCategory;
+                    const searchMatch = !q || text.includes(q);
+                    const visible = categoryMatch && searchMatch;
+                    item.style.display = visible ? 'block' : 'none';
+                    if (visible) visibleCount += 1;
+                });
+
+                empty.style.display = visibleCount ? 'none' : 'block';
+            }
+
+            searchInput.addEventListener('input', filterFaq);
+            chips.forEach((chip) => {
+                chip.addEventListener('click', () => {
+                    chips.forEach((c) => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    activeCategory = chip.dataset.category || 'all';
+                    filterFaq();
+                });
+            });
+
+            filterFaq();
+        })();
+    </script>
+</body>
+</html>

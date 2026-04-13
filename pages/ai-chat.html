@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced AI Assistant - Career Bridge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f6dff;
+            --primary-dark: #0a59d1;
+            --primary-light: #5a9dff;
+            --secondary: #12b7a8;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            
+            --gradient-primary: linear-gradient(135deg, #0f6dff 0%, #15a9c7 100%);
+            --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        /* Dark mode variables */
+        body.dark-mode {
+            --dark: #f8fafc;
+            --light: #0f172a;
+            --gray-100: #334155;
+            --gray-200: #475569;
+            --gray-300: #64748b;
+            --gray-400: #94a3b8;
+            --gray-500: #cbd5e1;
+            --gray-600: #e2e8f0;
+            --gray-700: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Manrope', 'Segoe UI', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes float {
+            0%,100% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(50px,50px) scale(1.1); }
+            50% { transform: translate(0,100px) scale(0.9); }
+            75% { transform: translate(-50px,50px) scale(1.05); }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            z-index: 10;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        body.dark-mode .navbar {
+            background: rgba(15,23,42,0.95);
+            color: white;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            font-size: 1.8em;
+            color: var(--primary);
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .navbar-menu a {
+            color: var(--gray-300);
+        }
+
+        .navbar-menu a:hover,
+        .navbar-menu a.active {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;                                                                                                                                                                                                                         
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Main Grid */
+        .chat-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            height: calc(100vh - 140px);
+            min-height: calc(100vh - 140px);
+        }
+
+        /* Sidebar */
+        .chat-sidebar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: var(--shadow-xl);
+            overflow-y: auto;
+            height: 100%;
+            animation: slideLeft 0.5s ease-out;
+        }
+
+        .chat-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(15, 109, 255, 0.35);
+            border-radius: var(--radius-full);
+        }
+
+        body.dark-mode .chat-sidebar {
+            background: rgba(15,23,42,0.95);
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .resume-role-select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-700);
+            font: inherit;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        body.dark-mode .resume-role-select {
+            background: var(--gray-600);
+            color: var(--gray-300);
+            border-color: var(--gray-500);
+        }
+
+        .resume-role-note {
+            margin-top: 10px;
+            font-size: 0.82em;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        .voice-language-select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--gray-200);
+            background: white;
+            color: var(--gray-700);
+            font: inherit;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        body.dark-mode .voice-language-select {
+            background: var(--gray-600);
+            color: var(--gray-300);
+            border-color: var(--gray-500);
+        }
+
+        .voice-language-note {
+            margin-top: 10px;
+            font-size: 0.82em;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        .sidebar-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark-mode .sidebar-title {
+            color: var(--gray-300);
+        }
+
+        .stats-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            font-size: 1.5em;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .stat-value {
+            color: var(--gray-300);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: var(--gray-500);
+        }
+
+        .trend-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .trend-item {
+            background: var(--gray-100);
+            border-radius: 14px;
+            padding: 12px;
+            border: 1px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .trend-item:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .trend-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .trend-label {
+            color: var(--gray-700);
+            font-size: 0.86em;
+            font-weight: 700;
+        }
+
+        .trend-change {
+            font-size: 0.78em;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.12);
+            color: #047857;
+        }
+
+        .trend-change.down {
+            background: rgba(239, 68, 68, 0.12);
+            color: #b91c1c;
+        }
+
+        .sparkline {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            align-items: end;
+            gap: 4px;
+            height: 28px;
+            margin-top: 6px;
+        }
+
+        .sparkline span {
+            border-radius: 3px 3px 0 0;
+            background: linear-gradient(180deg, #5ea8ff, #0f6dff);
+            opacity: 0.9;
+        }
+
+        .trend-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.75em;
+            color: var(--gray-500);
+        }
+
+        body.dark-mode .trend-item {
+            background: var(--gray-700);
+        }
+
+        body.dark-mode .trend-label {
+            color: var(--gray-300);
+        }
+
+        .category-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.dark-mode .category-btn {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .action-btn.secondary {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .action-btn.secondary {
+            background: var(--gray-600);
+            color: var(--gray-300);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
+            animation: slideRight 0.5s ease-out;
+            height: 100%;
+            min-height: 0;
+        }
+
+        body.dark-mode .chat-container {
+            background: rgba(15,23,42,0.95);
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .chat-header-info h2 {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .chat-header-info p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .mode-badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.2);
+            font-size: 0.78em;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .header-btn:hover {
+            background: white;
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: var(--gray-100);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 0;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(15, 109, 255, 0.35);
+            border-radius: var(--radius-full);
+        }
+
+        body.dark-mode .chat-messages {
+            background: var(--gray-700);
+        }
+
+        .message {
+            display: flex;
+            max-width: 80%;
+            animation: messageIn 0.3s ease-out;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+        }
+
+        .message-content {
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+
+        .bot .message-content {
+            background: white;
+            color: var(--gray-700);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--gray-200);
+        }
+
+        body.dark-mode .bot .message-content {
+            background: var(--gray-600);
+            color: var(--gray-300);
+        }
+
+        .user .message-content {
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.7em;
+            margin-top: 5px;
+            text-align: right;
+            opacity: 0.7;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .message:hover .message-actions {
+            opacity: 1;
+        }
+
+        .message-action-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            border: none;
+            color: var(--gray-600);
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .message-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 20px;
+            border-bottom-left-radius: 4px;
+            width: fit-content;
+        }
+
+        body.dark-mode .typing-indicator {
+            background: var(--gray-600);
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--gray-400);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        body.dark-mode .typing-indicator span {
+            background: var(--gray-300);
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%,60%,100% { transform: translateY(0); opacity: 0.6; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* Suggestions */
+        .chat-suggestions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            flex-shrink: 0;
+        }
+
+        .chat-sidebar .chat-suggestions {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            padding: 0;
+            background: transparent;
+            border-top: 0;
+        }
+
+        .insight-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            padding: 16px 20px;
+            background: linear-gradient(180deg, rgba(15,109,255,0.06), rgba(15,109,255,0));
+            border-top: 1px solid var(--gray-200);
+            flex-shrink: 0;
+        }
+
+        .chat-sidebar .insight-strip {
+            grid-template-columns: 1fr;
+            padding: 0;
+            background: transparent;
+            border-top: 0;
+        }
+
+        .insight-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 14px;
+            padding: 10px 12px;
+        }
+
+        .insight-title {
+            font-size: 0.76em;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-value {
+            margin-top: 4px;
+            font-size: 1.02em;
+            font-weight: 800;
+            color: var(--gray-700);
+        }
+
+        .insight-sub {
+            margin-top: 3px;
+            font-size: 0.75em;
+            color: var(--gray-500);
+        }
+
+        body.dark-mode .insight-strip {
+            border-color: var(--gray-500);
+            background: linear-gradient(180deg, rgba(90,157,255,0.2), rgba(90,157,255,0));
+        }
+
+        body.dark-mode .insight-card {
+            background: var(--gray-600);
+            border-color: var(--gray-500);
+        }
+
+        body.dark-mode .insight-value {
+            color: var(--gray-300);
+        }
+
+        body.dark-mode .chat-suggestions {
+            background: var(--gray-600);
+            border-color: var(--gray-500);
+        }
+
+        .suggestion-btn {
+            padding: 10px 20px;
+            background: var(--gray-100);
+            border: none;
+            border-radius: 30px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark-mode .suggestion-btn {
+            background: var(--gray-500);
+            color: var(--gray-300);
+        }
+
+        .suggestion-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .chat-sidebar .suggestion-btn {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        /* Chat Input */
+        .chat-input-area {
+            padding: 20px;
+            background: white;
+            border-top: 2px solid var(--gray-200);
+            display: flex;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        body.dark-mode .chat-input-area {
+            background: var(--gray-600);
+            border-color: var(--gray-500);
+        }
+
+        .input-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            background: var(--gray-100);
+            border-radius: 30px;
+            padding: 5px;
+        }
+
+        body.dark-mode .input-wrapper {
+            background: var(--gray-500);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            color: var(--gray-700);
+        }
+
+        body.dark-mode .chat-input {
+            color: var(--gray-300);
+        }
+
+        .chat-input:focus {
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .input-action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .input-action-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .input-action-btn.voice.listening {
+            background: var(--gradient-warning);
+            animation: pulse 1.5s infinite;
+        }
+
+        .send-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2em;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Voice Status */
+        .voice-status {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: var(--gray-100);
+            border-radius: 30px;
+            margin-bottom: 10px;
+        }
+
+        .voice-status.show {
+            display: flex;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .voice-wave {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            height: 20px;
+        }
+
+        .voice-wave span {
+            width: 3px;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            animation: wave 1s infinite;
+        }
+
+        .voice-wave span:nth-child(2) { animation-delay: 0.1s; height: 15px; }
+        .voice-wave span:nth-child(3) { animation-delay: 0.2s; height: 20px; }
+        .voice-wave span:nth-child(4) { animation-delay: 0.3s; height: 12px; }
+        .voice-wave span:nth-child(5) { animation-delay: 0.4s; height: 18px; }
+
+        @keyframes wave {
+            0%,100% { transform: scaleY(1); }
+            50% { transform: scaleY(2); }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideInRight 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-2xl);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .toast-success { background: var(--gradient-success); }
+        .toast-error { background: var(--gradient-warning); }
+        .toast-info { background: var(--gradient-primary); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-2xl);
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--gray-600);
+            color: var(--gray-300);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--gray-700);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+        }
+
+        .modal-close {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--gray-400);
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--error);
+            transform: rotate(90deg);
+        }
+
+        .history-item {
+            padding: 15px;
+            border: 1px solid var(--gray-200);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            background: var(--gray-100);
+            transform: translateX(5px);
+        }
+
+        .history-date {
+            font-size: 0.8em;
+            color: var(--gray-500);
+            margin-bottom: 5px;
+        }
+
+        .history-preview {
+            color: var(--gray-700);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .chat-grid {
+                grid-template-columns: 1fr;
+                min-height: calc(100vh - 130px);
+            }
+
+            .chat-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 14px;
+                margin-bottom: 16px;
+            }
+
+            .navbar-menu {
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                gap: 8px;
+            }
+
+            .navbar-menu a {
+                white-space: nowrap;
+                flex: 0 0 auto;
+            }
+
+            .insight-strip {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            .chat-grid {
+                min-height: auto;
+            }
+
+            .chat-container {
+                border-radius: 20px;
+                height: 78vh;
+            }
+
+            .chat-header,
+            .chat-input-area,
+            .chat-suggestions {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .chat-messages {
+                padding: 14px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-robot"></i> Career Bridge AI
+        </div>
+        <div class="navbar-menu">
+            <a href="student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+            <a href="reports.html"><i class="fas fa-flag"></i> Reports</a>
+            <a href="aptitude.html"><i class="fas fa-brain"></i> Aptitude</a>
+            <a href="interview-prep.html"><i class="fas fa-calendar-alt"></i> Interview</a>
+            <a href="#" class="active"><i class="fas fa-robot"></i> AI Chat</a>
+        </div>
+        <div class="navbar-right">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Chat Grid -->
+        <div class="chat-grid">
+            <!-- Sidebar -->
+            <div class="chat-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-chart-bar"></i> Quick Stats
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-comments"></i></div>
+                            <div class="stat-value" id="chatCount">156</div>
+                            <div class="stat-label">Total Chats</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-value" id="avgResponse">2.5s</div>
+                            <div class="stat-label">Avg Response</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-smile"></i></div>
+                            <div class="stat-value" id="satisfaction">98%</div>
+                            <div class="stat-label">Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-wave-square"></i> Market Pulse
+                    </div>
+                    <div class="trend-grid" id="trendGrid"></div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-tags"></i> Categories
+                    </div>
+                    <button class="category-btn active" onclick="filterCategory('all', event)">
+                        <i class="fas fa-star"></i> All Topics
+                    </button>
+                    <button class="category-btn" onclick="filterCategory('interview', event)">
+                        <i class="fas fa-calendar-alt"></i> Interview
+                    </button>
+                    <button class="category-btn" onclick="filterCategory('resume', event)">
+                        <i class="fas fa-file-pdf"></i> Resume
+                    </button>
+                    <button class="category-btn" onclick="filterCategory('salary', event)">
+                        <i class="fas fa-money-bill-wave"></i> Salary
+                    </button>
+                    <button class="category-btn" onclick="filterCategory('skills', event)">
+                        <i class="fas fa-code"></i> Skills
+                    </button>
+                    <button class="category-btn" onclick="filterCategory('jobs', event)">
+                        <i class="fas fa-briefcase"></i> Jobs
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-cog"></i> Actions
+                    </div>
+                    <button class="action-btn" onclick="newChat()">
+                        <i class="fas fa-plus"></i> New Chat
+                    </button>
+                    <button class="action-btn secondary" onclick="showHistory()">
+                        <i class="fas fa-history"></i> Chat History
+                    </button>
+                    <button class="action-btn secondary" onclick="exportChat()">
+                        <i class="fas fa-download"></i> Export Chat
+                    </button>
+                    <button class="action-btn secondary" onclick="clearChat()">
+                        <i class="fas fa-trash"></i> Clear Chat
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-bullseye"></i> Target Role
+                    </div>
+                    <select id="resumeRoleSelect" class="resume-role-select">
+                        <option value="auto">Auto detect</option>
+                        <option value="frontend">Frontend Developer</option>
+                        <option value="backend">Backend Developer</option>
+                        <option value="fullstack">Full Stack Developer</option>
+                        <option value="data">Data Analyst / Data Scientist</option>
+                        <option value="devops">DevOps / Cloud Engineer</option>
+                        <option value="mobile">Mobile App Developer</option>
+                        <option value="ai">AI / ML Engineer</option>
+                    </select>
+                    <div class="resume-role-note">
+                        Choose a role before uploading your resume. Analysis will use this role for missing skills, ATS keywords, and section checks.
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-volume-up"></i> Voice Language
+                    </div>
+                    <select id="voiceLanguageSelect" class="voice-language-select">
+                        <option value="auto">Auto detect</option>
+                        <option value="en">English</option>
+                        <option value="hi">Hindi</option>
+                    </select>
+                    <div class="voice-language-note">
+                        Click any message to read it aloud. Auto mode will pick Hindi for Hindi text and English for English text.
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-chart-line"></i> Live Insights
+                    </div>
+                    <div class="insight-strip" id="insightStrip">
+                        <div class="insight-card">
+                            <div class="insight-title">Hiring Momentum</div>
+                            <div class="insight-value">+18% QoQ</div>
+                            <div class="insight-sub">Tech + Fintech roles</div>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-title">Interview Intensity</div>
+                            <div class="insight-value">4.2 rounds avg</div>
+                            <div class="insight-sub">SDE / Data profiles</div>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-title">Offer Conversion</div>
+                            <div class="insight-value">34% benchmark</div>
+                            <div class="insight-sub">Top 25% candidates</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-title">
+                        <i class="fas fa-bolt"></i> Quick Prompts
+                    </div>
+                    <div class="chat-suggestions" id="chatSuggestions">
+                        <button class="suggestion-btn" onclick="useSuggestion('How to prepare for technical interview?')">
+                            <i class="fas fa-code"></i> Technical interview
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Common resume mistakes')">
+                            <i class="fas fa-file-pdf"></i> Resume mistakes
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to negotiate salary?')">
+                            <i class="fas fa-money-bill-wave"></i> Salary negotiation
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Best skills for 2025')">
+                            <i class="fas fa-chart-line"></i> Skills 2025
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Tell me about yourself answer')">
+                            <i class="fas fa-question-circle"></i> Tell me about yourself
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Companies hiring now')">
+                            <i class="fas fa-building"></i> Hiring companies
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to switch career?')">
+                            <i class="fas fa-sync-alt"></i> Career switch
+                        </button>
+                        <button class="suggestion-btn" onclick="useSuggestion('LinkedIn profile tips')">
+                            <i class="fab fa-linkedin"></i> LinkedIn tips
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <div class="chat-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="chat-header-info">
+                            <h2>AI Career Assistant</h2>
+                            <p>
+                                <span class="status-dot"></span>
+                                Online • Powered by Advanced AI
+                            </p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <span class="mode-badge">Industry Intelligence</span>
+                        <button class="header-btn" onclick="toggleReadChat()" title="Read Chat">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <button class="header-btn" onclick="toggleVoiceMode()" title="Voice Mode">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="header-btn" onclick="showInfo()" title="Info">
+                            <i class="fas fa-info"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Voice Status -->
+                <div class="voice-status" id="voiceStatus">
+                    <div class="voice-wave">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <span>Listening... Speak now</span>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        <div class="message-content">
+                            👋 Hi! I'm your advanced AI career assistant. I can help you with:
+                            
+                            <ul style="margin-top: 10px; margin-left: 20px;">
+                                <li>🎯 Interview preparation & mock interviews</li>
+                                <li>📄 Resume review and optimization</li>
+                                <li>💼 Career guidance & job search strategies</li>
+                                <li>💰 Salary negotiation tips</li>
+                                <li>📊 Skill gap analysis</li>
+                                <li>🏢 Company research & insights</li>
+                            </ul>
+                            
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about your career..." autocomplete="off">
+                        <button class="input-action-btn" onclick="attachFile()" title="Attach File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="input-action-btn voice" id="voiceBtn" onclick="toggleVoiceInput()" title="Voice Input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span><i class="fas fa-history"></i> Chat History</span>
+                <span class="modal-close" onclick="closeModal('historyModal')">&times;</span>
+            </div>
+            <div class="modal-body" id="historyList">
+                <!-- History items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span><i class="fas fa-info-circle"></i> About AI Assistant</span>
+                <span class="modal-close" onclick="closeModal('infoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px;">🤖 <strong>Advanced AI Career Assistant</strong></p>
+                <p style="color: var(--gray-600); margin-bottom: 20px;">
+                    Powered by cutting-edge AI technology to help you with your career journey.
+                </p>
+                
+                <h4 style="margin-bottom: 10px;">✨ Features:</h4>
+                <ul style="list-style: none; margin-bottom: 20px;">
+                    <li style="margin-bottom: 8px;">✓ Smart career guidance</li>
+                    <li style="margin-bottom: 8px;">✓ Interview preparation</li>
+                    <li style="margin-bottom: 8px;">✓ Resume optimization</li>
+                    <li style="margin-bottom: 8px;">✓ Salary insights</li>
+                    <li style="margin-bottom: 8px;">✓ Skill recommendations</li>
+                    <li style="margin-bottom: 8px;">✓ Job market trends</li>
+                </ul>
+                
+                <p style="color: var(--gray-500); font-size: 0.9em;">
+                    Version 2.0 • Updated March 2026
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let chatMessages = document.getElementById('chatMessages');
+        let isTyping = false;
+        let conversationCount = parseInt(localStorage.getItem('chatCount')) || 156;
+        let messageCount = 0;
+        let voiceEnabled = false;
+        let recognition = null;
+        let isListening = false;
+        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        let currentCategory = 'all';
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        let resumeAnalysisInProgress = false;
+        let selectedResumeRole = 'auto';
+        let selectedVoiceLanguage = localStorage.getItem('voiceLanguage') || 'auto';
+        let speechVoicesCache = [];
+        let speechVoicesLoaded = false;
+
+        const resumeSkillProfiles = {
+            frontend: ['html', 'css', 'javascript', 'typescript', 'react', 'next.js', 'vue', 'angular', 'tailwind', 'ui', 'ux', 'testing', 'git', 'api'],
+            backend: ['javascript', 'typescript', 'node', 'node.js', 'express', 'java', 'spring', 'python', 'django', 'flask', 'sql', 'api', 'rest', 'database', 'git'],
+            fullstack: ['html', 'css', 'javascript', 'typescript', 'react', 'next.js', 'node', 'express', 'sql', 'api', 'git', 'testing', 'deployment'],
+            data: ['python', 'sql', 'pandas', 'numpy', 'excel', 'tableau', 'power bi', 'data analysis', 'statistics', 'machine learning', 'ml', 'git'],
+            devops: ['linux', 'git', 'docker', 'kubernetes', 'aws', 'azure', 'gcp', 'terraform', 'jenkins', 'ci/cd', 'monitoring', 'shell'],
+            mobile: ['android', 'kotlin', 'java', 'swift', 'ios', 'flutter', 'react native', 'firebase', 'git', 'api'],
+            ai: ['python', 'machine learning', 'deep learning', 'nlp', 'computer vision', 'tensorflow', 'pytorch', 'llm', 'genai', 'sql', 'git']
+        };
+
+        const resumeRoleProfiles = {
+            frontend: {
+                displayName: 'Frontend Developer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'github', 'portfolio'],
+                bonusKeywords: ['responsive design', 'accessibility', 'component architecture', 'state management', 'api integration', 'testing'],
+                proofPoints: ['Responsive UI', 'Performance', 'Accessibility', 'Component reuse']
+            },
+            backend: {
+                displayName: 'Backend Developer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'api', 'database'],
+                bonusKeywords: ['microservices', 'authentication', 'authorization', 'rest api', 'database design', 'scalability'],
+                proofPoints: ['API design', 'Database work', 'Scalability', 'Security']
+            },
+            fullstack: {
+                displayName: 'Full Stack Developer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'github', 'deployment'],
+                bonusKeywords: ['frontend', 'backend', 'api integration', 'deployment', 'testing', 'ci/cd'],
+                proofPoints: ['End-to-end delivery', 'Deployment', 'API integration', 'Testing']
+            },
+            data: {
+                displayName: 'Data Analyst / Data Scientist',
+                sections: ['summary', 'experience', 'projects', 'skills', 'case studies', 'certifications'],
+                bonusKeywords: ['dashboard', 'sql', 'business insights', 'kpi', 'forecasting', 'machine learning'],
+                proofPoints: ['Insights', 'Dashboards', 'SQL queries', 'Decision support']
+            },
+            devops: {
+                displayName: 'DevOps / Cloud Engineer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'linux', 'certifications'],
+                bonusKeywords: ['automation', 'ci/cd', 'infrastructure as code', 'monitoring', 'containerization', 'cloud'],
+                proofPoints: ['Automation', 'Cloud', 'CI/CD', 'Infrastructure']
+            },
+            mobile: {
+                displayName: 'Mobile App Developer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'github', 'app store'],
+                bonusKeywords: ['ui performance', 'offline support', 'push notifications', 'state management', 'release pipeline'],
+                proofPoints: ['App delivery', 'UI performance', 'Lifecycle', 'Release management']
+            },
+            ai: {
+                displayName: 'AI / ML Engineer',
+                sections: ['summary', 'experience', 'projects', 'skills', 'research', 'certifications'],
+                bonusKeywords: ['model training', 'nlp', 'computer vision', 'llms', 'feature engineering', 'deployment'],
+                proofPoints: ['Model building', 'Experimentation', 'ML pipelines', 'Deployment']
+            },
+            general: {
+                displayName: 'General / Mixed Profile',
+                sections: ['summary', 'experience', 'education', 'projects', 'skills'],
+                bonusKeywords: ['problem solving', 'communication', 'teamwork', 'leadership'],
+                proofPoints: ['Impact', 'Clarity', 'Consistency', 'Communication']
+            }
+        };
+
+        const commonResumeSignals = [
+            'summary', 'objective', 'experience', 'education', 'projects', 'skills', 'certifications', 'linkedin', 'github', 'portfolio', 'achievements', 'responsibilities'
+        ];
+
+        const trendData = {
+            all: [
+                { label: 'AI/ML Engineer', change: '+24%', region: 'India Metro', level: 'High Demand', bars: [30, 40, 45, 60, 70, 82] },
+                { label: 'Cloud & DevOps', change: '+19%', region: 'Global Remote', level: 'Stable Growth', bars: [28, 32, 41, 46, 58, 63] },
+                { label: 'Product Analytics', change: '+16%', region: 'APAC', level: 'Rising', bars: [22, 30, 34, 42, 51, 57] }
+            ],
+            interview: [
+                { label: 'DSA Screening', change: '+12%', region: 'Top Product Firms', level: 'Harder', bars: [35, 38, 42, 50, 54, 60] },
+                { label: 'System Design', change: '+21%', region: 'Mid-Senior Roles', level: 'Critical', bars: [20, 27, 33, 48, 55, 68] },
+                { label: 'Behavioral Depth', change: '+10%', region: 'All Sectors', level: 'More Weight', bars: [25, 29, 31, 36, 42, 46] }
+            ],
+            resume: [
+                { label: 'ATS Match Score', change: '+15%', region: 'Enterprise Hiring', level: 'Must Have', bars: [18, 22, 30, 40, 49, 58] },
+                { label: 'Portfolio Links', change: '+11%', region: 'Tech Hiring', level: 'Preferred', bars: [10, 16, 24, 29, 37, 44] },
+                { label: 'Impact Metrics', change: '+17%', region: 'Cross Industry', level: 'High Impact', bars: [14, 24, 33, 42, 50, 61] }
+            ],
+            salary: [
+                { label: 'Variable Pay Mix', change: '+9%', region: 'Product Firms', level: 'Negotiable', bars: [24, 26, 29, 33, 36, 40] },
+                { label: 'Retention Bonus', change: '+14%', region: 'Fintech', level: 'Growing', bars: [8, 12, 19, 25, 32, 39] },
+                { label: 'Remote Premium', change: '-4%', down: true, region: 'Global', level: 'Cooling', bars: [58, 52, 49, 44, 40, 36] }
+            ],
+            skills: [
+                { label: 'Generative AI', change: '+31%', region: 'Global', level: 'Breakout', bars: [22, 35, 48, 56, 71, 88] },
+                { label: 'Data Engineering', change: '+18%', region: 'BFSI + SaaS', level: 'Strong', bars: [25, 31, 38, 44, 52, 61] },
+                { label: 'Cybersecurity', change: '+20%', region: 'Enterprise', level: 'Critical', bars: [20, 28, 36, 45, 54, 66] }
+            ],
+            jobs: [
+                { label: 'Fresher Openings', change: '+13%', region: 'Service + SaaS', level: 'Improving', bars: [14, 19, 23, 30, 39, 46] },
+                { label: 'Hybrid Roles', change: '+17%', region: 'Tier-1 Cities', level: 'Mainstream', bars: [17, 22, 30, 38, 49, 58] },
+                { label: 'Contract Hiring', change: '+8%', region: 'Consulting', level: 'Selective', bars: [28, 30, 35, 39, 42, 46] }
+            ]
+        };
+
+        const insightData = {
+            all: [
+                { title: 'Hiring Momentum', value: '+18% QoQ', sub: 'Tech + Fintech roles' },
+                { title: 'Interview Intensity', value: '4.2 rounds avg', sub: 'SDE / Data profiles' },
+                { title: 'Offer Conversion', value: '34% benchmark', sub: 'Top 25% candidates' }
+            ],
+            interview: [
+                { title: 'Screen-to-Panel', value: '52% pass rate', sub: 'Aptitude to live rounds' },
+                { title: 'Top Rejection Stage', value: 'System design', sub: 'Round 3 bottleneck' },
+                { title: 'Prep Window', value: '6-8 weeks', sub: 'High confidence zone' }
+            ],
+            resume: [
+                { title: 'ATS Cutoff', value: '72/100+', sub: 'Most enterprise filters' },
+                { title: 'Keyword Density', value: '12-18%', sub: 'Role-specific skills' },
+                { title: 'Callback Lift', value: '1.7x', sub: 'With quantified impact' }
+            ],
+            salary: [
+                { title: 'Median Hike', value: '28%', sub: 'Switch candidates 2-5 yrs' },
+                { title: 'Negotiation Win', value: '41%', sub: 'Candidates who counter' },
+                { title: 'Offer Spread', value: '12-18% gap', sub: 'Across similar roles' }
+            ],
+            skills: [
+                { title: 'Skill Half-Life', value: '2.8 years', sub: 'Core stack refresh cycle' },
+                { title: 'Top Stack', value: 'GenAI + Cloud', sub: 'Highest interview demand' },
+                { title: 'Portfolio Impact', value: '2.3x', sub: 'Interview shortlist odds' }
+            ],
+            jobs: [
+                { title: 'Active Openings', value: '11.4k tracked', sub: 'Top 200 employers' },
+                { title: 'Fastest Hiring', value: 'Cyber + Data', sub: 'Sub-20 day closure' },
+                { title: 'Referral Advantage', value: '3.1x', sub: 'Compared to cold apply' }
+            ]
+        };
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        function toggleTheme() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode', darkMode);
+            localStorage.setItem('darkMode', darkMode);
+            
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = darkMode ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Apply saved theme
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+            document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+        }
+
+        // ============================================
+        // SEND MESSAGE
+        // ============================================
+        window.sendMessage = function() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+
+            // Update stats
+            messageCount++;
+            conversationCount++;
+            document.getElementById('chatCount').textContent = conversationCount;
+            localStorage.setItem('chatCount', conversationCount);
+
+            // Save to history
+            saveToHistory(message, 'user');
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Generate AI response
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateAIResponse(message);
+                addMessage(response, 'bot');
+                saveToHistory(response, 'bot');
+            }, 1500);
+        };
+
+        // ============================================
+        // ADD MESSAGE
+        // ============================================
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date();
+            const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const messageId = `msg-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+            messageDiv.innerHTML = `
+                <div class="message-content" data-message-id="${messageId}" data-message="${encodeURIComponent(text)}" onclick="speakMessage(decodeURIComponent(this.dataset.message))" title="Click to read aloud">
+                    ${formatMessage(text)}
+                    <div class="message-time">${timeStr}</div>
+                </div>
+                <div class="message-actions">
+                    <button class="message-action-btn" onclick="copyMessage(this)" title="Copy">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="message-action-btn" data-message="${encodeURIComponent(text)}" onclick="speakMessage(decodeURIComponent(this.dataset.message))" title="Speak">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // ============================================
+        // FORMAT MESSAGE (with emojis and formatting)
+        // ============================================
+        function formatMessage(text) {
+            // Convert markdown-style formatting
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            text = text.replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>');
+            text = text.replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            // Convert URLs to links
+            text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+            
+            // Convert line breaks
+            text = text.replace(/\n/g, '<br>');
+            
+            return text;
+        }
+
+        // ============================================
+        // COPY MESSAGE
+        // ============================================
+        window.copyMessage = function(btn) {
+            const messageText = btn.closest('.message').querySelector('.message-content').innerText;
+            navigator.clipboard.writeText(messageText);
+            showToast('📋 Copied to clipboard', 'success');
+        };
+
+        // ============================================
+        // SPEAK MESSAGE
+        // ============================================
+        window.speakMessage = function(text) {
+            speakTextAloud(text);
+        };
+
+        window.toggleReadChat = function() {
+            if (!('speechSynthesis' in window)) {
+                showToast('❌ Voice reading not supported in this browser', 'error');
+                return;
+            }
+
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                showToast('⏹️ Chat reading stopped', 'info');
+                return;
+            }
+
+            readChatAloud();
+        };
+
+        async function speakTextAloud(text) {
+            if (!('speechSynthesis' in window)) {
+                showToast('❌ Voice reading not supported in this browser', 'error');
+                return;
+            }
+
+            try {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                await configureSpeechUtterance(utterance, text);
+                window.speechSynthesis.speak(utterance);
+            } catch (error) {
+                console.error('Speech synthesis error:', error);
+                showToast('❌ Could not read chat aloud', 'error');
+            }
+        }
+
+        async function readChatAloud() {
+            const messages = Array.from(document.querySelectorAll('#chatMessages .message'))
+                .filter((messageElement) => !messageElement.id || messageElement.id !== 'typingIndicator');
+
+            if (messages.length === 0) {
+                showToast('No chat messages to read', 'info');
+                return;
+            }
+
+            const utterances = [];
+
+            for (const messageElement of messages) {
+                const content = messageElement.querySelector('.message-content');
+                const sender = messageElement.classList.contains('user') ? 'You' : 'AI';
+                const text = content?.dataset?.message ? decodeURIComponent(content.dataset.message) : content?.innerText || '';
+                const utterance = new SpeechSynthesisUtterance(`${sender}: ${text}`);
+                await configureSpeechUtterance(utterance, text);
+                utterances.push(utterance);
+            }
+
+            let currentIndex = 0;
+            const playNext = () => {
+                if (currentIndex >= utterances.length) {
+                    return;
+                }
+
+                const utterance = utterances[currentIndex];
+                utterance.onend = () => {
+                    currentIndex += 1;
+                    playNext();
+                };
+                utterance.onerror = () => {
+                    currentIndex += 1;
+                    playNext();
+                };
+                window.speechSynthesis.speak(utterance);
+            };
+
+            window.speechSynthesis.cancel();
+            playNext();
+            showToast('🔊 Reading chat aloud', 'info');
+        }
+
+        async function configureSpeechUtterance(utterance, text) {
+            const language = resolveVoiceLanguage(text);
+            utterance.lang = language === 'hi' ? 'hi-IN' : 'en-US';
+            utterance.rate = language === 'hi' ? 0.95 : 1;
+            utterance.pitch = 1;
+            utterance.volume = 1;
+
+            const voices = await getSpeechVoices();
+            const preferredVoices = voices.filter((voice) => voice.lang && voice.lang.toLowerCase().startsWith(language));
+            const fallbackVoices = voices.filter((voice) => voice.lang && voice.lang.toLowerCase().startsWith('en'));
+            utterance.voice = preferredVoices[0] || fallbackVoices[0] || voices[0] || null;
+        }
+
+        function getSpeechVoices() {
+            if (speechVoicesLoaded && speechVoicesCache.length > 0) {
+                return Promise.resolve(speechVoicesCache);
+            }
+
+            return new Promise((resolve) => {
+                const loadVoices = () => {
+                    const voices = window.speechSynthesis.getVoices();
+                    if (voices.length > 0) {
+                        speechVoicesCache = voices;
+                        speechVoicesLoaded = true;
+                        resolve(voices);
+                        return true;
+                    }
+                    return false;
+                };
+
+                if (loadVoices()) {
+                    return;
+                }
+
+                const onVoicesChanged = () => {
+                    if (loadVoices()) {
+                        window.speechSynthesis.removeEventListener('voiceschanged', onVoicesChanged);
+                    }
+                };
+
+                window.speechSynthesis.addEventListener('voiceschanged', onVoicesChanged);
+                setTimeout(() => {
+                    if (!speechVoicesLoaded) {
+                        const voices = window.speechSynthesis.getVoices();
+                        speechVoicesCache = voices;
+                        speechVoicesLoaded = voices.length > 0;
+                        window.speechSynthesis.removeEventListener('voiceschanged', onVoicesChanged);
+                        resolve(voices);
+                    }
+                }, 800);
+            });
+        }
+
+        function resolveVoiceLanguage(text) {
+            if (selectedVoiceLanguage === 'hi' || selectedVoiceLanguage === 'en') {
+                return selectedVoiceLanguage;
+            }
+
+            const lowerText = (text || '').toLowerCase();
+            const hasHindiScript = /[\u0900-\u097F]/.test(text || '');
+            const hasHindiWords = /(kaise|kya|kyun|kr|kar|nahi|aap|tum|mera|meri|resume|skill|job)/.test(lowerText);
+
+            return hasHindiScript || hasHindiWords ? 'hi' : 'en';
+        }
+
+        // ============================================
+        // SHOW TYPING INDICATOR
+        // ============================================
+        function showTypingIndicator() {
+            if (isTyping) return;
+
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            isTyping = true;
+        }
+
+        // ============================================
+        // REMOVE TYPING INDICATOR
+        // ============================================
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+            isTyping = false;
+        }
+
+        function getQuickPromptResponse(lowerMsg, originalMessage) {
+            if (lowerMsg.includes('technical interview')) {
+                return "🎯 **Technical Interview Plan**\n\n" +
+                    "Focus on 3 layers:\n" +
+                    "• DSA basics: arrays, strings, hash maps, trees\n" +
+                    "• Core concepts: OOP, DBMS, OS, networking\n" +
+                    "• Problem solving: explain approach, then code\n\n" +
+                    "Practice this order:\n" +
+                    "1. Read the problem slowly\n" +
+                    "2. Speak your approach out loud\n" +
+                    "3. Mention time and space complexity\n" +
+                    "4. Dry run on an example\n\n" +
+                    "If you want, I can give you 5 mock technical questions for your target role.";
+            }
+
+            if (lowerMsg.includes('resume mistakes')) {
+                return "📄 **Common Resume Mistakes**\n\n" +
+                    "Top issues I see most often:\n" +
+                    "• Generic summary with no role focus\n" +
+                    "• Responsibilities listed instead of results\n" +
+                    "• No numbers, impact, or metrics\n" +
+                    "• Missing GitHub / LinkedIn / portfolio links\n" +
+                    "• Too many skills with no proof in projects\n\n" +
+                    "Quick fix:\n" +
+                    "1. Add 3 quantified achievements\n" +
+                    "2. Keep only relevant skills for the target job\n" +
+                    "3. Put projects above internships if they are stronger\n" +
+                    "4. Use simple ATS-friendly formatting";
+            }
+
+            if (lowerMsg.includes('salary negotiation') || lowerMsg.includes('salary')) {
+                return "💰 **Salary Negotiation Guide**\n\n" +
+                    "Use this flow:\n" +
+                    "• Research the market range first\n" +
+                    "• Share your value, not just current salary\n" +
+                    "• Ask for total compensation, not only base pay\n" +
+                    "• Negotiate after the offer, not before\n\n" +
+                    "Sample line:\n" +
+                    "'I’m excited about the role. Based on my research and experience, can we discuss a compensation range that matches the scope?'\n\n" +
+                    "If you share your role and experience, I can suggest a realistic salary range.";
+            }
+
+            if (lowerMsg.includes('skills 2025') || lowerMsg.includes('best skills') || lowerMsg.includes('skills')) {
+                return "🚀 **Skills to Focus on in 2025**\n\n" +
+                    "High-value skill areas:\n" +
+                    "• AI tools and GenAI workflows\n" +
+                    "• Cloud + DevOps basics\n" +
+                    "• Full stack development fundamentals\n" +
+                    "• SQL + data analysis\n" +
+                    "• Communication and problem solving\n\n" +
+                    "Best strategy:\n" +
+                    "1. Pick one primary stack\n" +
+                    "2. Build 2 project demos\n" +
+                    "3. Add measurable impact\n" +
+                    "4. Put the stack in your resume and LinkedIn";
+            }
+
+            if (lowerMsg.includes('tell me about yourself')) {
+                return "🗣️ **Tell Me About Yourself Answer**\n\n" +
+                    "Use this structure:\n" +
+                    "1. Present: your current study/job focus\n" +
+                    "2. Past: 1-2 relevant experiences or projects\n" +
+                    "3. Strengths: skills that match the role\n" +
+                    "4. Future: why this role/company fits you\n\n" +
+                    "Example:\n" +
+                    "'I’m a motivated developer with a strong interest in building practical products. I’ve worked on projects using React and Node.js, and I like solving problems through clean, user-focused code. I’m now looking for a role where I can grow my skills and contribute to real-world applications.'";
+            }
+
+            if (lowerMsg.includes('hiring companies') || lowerMsg.includes('companies hiring now')) {
+                return "🏢 **Companies Hiring Strategy**\n\n" +
+                    "Look in 3 buckets:\n" +
+                    "• Product companies for strong engineering growth\n" +
+                    "• Service companies for broad project exposure\n" +
+                    "• Startups for faster ownership and learning\n\n" +
+                    "Action plan:\n" +
+                    "1. Make a shortlist of 10 target companies\n" +
+                    "2. Check careers pages and LinkedIn jobs\n" +
+                    "3. Search for referrals before applying\n" +
+                    "4. Match your resume to each role\n\n" +
+                    "If you want, I can help you build a target company list by role.";
+            }
+
+            if (lowerMsg.includes('career switch') || lowerMsg.includes('switch career')) {
+                return "🔄 **Career Switch Plan**\n\n" +
+                    "To switch safely, follow this sequence:\n" +
+                    "• Choose the new role clearly\n" +
+                    "• Identify missing skills\n" +
+                    "• Build 2-3 relevant projects\n" +
+                    "• Update resume and LinkedIn for the new path\n" +
+                    "• Apply to roles that match your transferable skills\n\n" +
+                    "Best approach:\n" +
+                    "1. Use one learning roadmap\n" +
+                    "2. Show proof with projects\n" +
+                    "3. Tell a clear switch story in interviews";
+            }
+
+            if (lowerMsg.includes('linkedin tips')) {
+                return "💼 **LinkedIn Profile Tips**\n\n" +
+                    "Improve these sections first:\n" +
+                    "• Headline: role + skill stack + goal\n" +
+                    "• About: short story with keywords\n" +
+                    "• Experience: results, not duties\n" +
+                    "• Featured: projects, GitHub, resume\n\n" +
+                    "Quick wins:\n" +
+                    "1. Add a clear profile photo\n" +
+                    "2. Put role keywords in headline\n" +
+                    "3. Add 3-5 project bullets with metrics\n" +
+                    "4. Turn on open to work if needed";
+            }
+
+            return null;
+        }
+
+        // ============================================
+        // GENERATE AI RESPONSE
+        // ============================================
+        function generateAIResponse(message) {
+            const lowerMsg = message.toLowerCase();
+
+            const quickPromptResponse = getQuickPromptResponse(lowerMsg, message);
+            if (quickPromptResponse) {
+                return quickPromptResponse;
+            }
+
+            if (lowerMsg.includes('industry') || lowerMsg.includes('trend') || lowerMsg.includes('market')) {
+                return "📈 **Industry Trend Snapshot (2026)**\n\n" +
+                       "**Hiring Growth by Cluster (YoY):**\n" +
+                       "• AI/ML and GenAI roles: **+24%**\n" +
+                       "• Data Engineering and Analytics: **+18%**\n" +
+                       "• Cloud and Platform roles: **+19%**\n" +
+                       "• Cybersecurity: **+20%**\n\n" +
+                       "**Interview Trend Signals:**\n" +
+                       "• System design appears in ~**63%** of mid-level tech interviews\n" +
+                       "• Behavioral depth round now has **higher weight** in final decisions\n" +
+                       "• Case + communication assessments increased for product roles\n\n" +
+                       "**Action Plan for You (next 30 days):**\n" +
+                       "1. Build one metrics-driven project case study\n" +
+                       "2. Practice 12 system design prompts with trade-off discussion\n" +
+                       "3. Prepare STAR stories mapped to leadership principles\n" +
+                       "4. Track 20 target companies with role-wise skill mapping\n\n" +
+                       "If you share your target role, I can generate a custom interview + skill roadmap.";
+            }
+
+            // Interview questions
+            if (lowerMsg.includes('interview') || lowerMsg.includes('mock')) {
+                return "🎯 **Interview Preparation Guide**\n\n" +
+                       "I can help you prepare for interviews! Here's what we offer:\n\n" +
+                       "**Industry Benchmarks (2026)**\n" +
+                       "• Average process length: 4-5 rounds\n" +
+                       "• Strong candidate conversion: 30-38%\n" +
+                       "• Most elimination happens at DSA + system design stage\n\n" +
+                       "**Technical Interviews**\n" +
+                       "• Coding problems (Arrays, Strings, DP, Graphs)\n" +
+                       "• System design questions\n" +
+                       "• Database and SQL queries\n" +
+                       "• Operating systems and networking\n\n" +
+                       "**Behavioral Interviews**\n" +
+                       "• STAR method practice\n" +
+                       "• Common behavioral questions\n" +
+                       "• Leadership scenarios\n" +
+                       "• Team collaboration examples\n\n" +
+                       "**HR Interviews**\n" +
+                       "• Salary negotiation strategies\n" +
+                       "• Culture fit assessment\n" +
+                       "• Career goals discussion\n" +
+                       "• Company research tips\n\n" +
+                       "Which type would you like to practice? You can also visit our dedicated Interview Prep section for more!";
+            }
+
+            // Resume questions
+            else if (lowerMsg.includes('resume') || lowerMsg.includes('cv')) {
+                return "📄 **Resume Optimization Guide**\n\n" +
+                       "**Key Tips for an ATS-Friendly Resume:**\n\n" +
+                       "✅ Keep it to 1-2 pages maximum\n" +
+                       "✅ Use action verbs (Developed, Led, Created, Implemented)\n" +
+                       "✅ Quantify achievements with numbers\n" +
+                       "   • 'Increased sales by 20%'\n" +
+                       "   • 'Managed team of 5 developers'\n" +
+                       "   • 'Reduced load time by 40%'\n\n" +
+                       "✅ Tailor resume for each job application\n" +
+                       "✅ Include relevant keywords from job description\n" +
+                       "✅ Highlight technical and soft skills\n" +
+                       "✅ Proofread multiple times for errors\n\n" +
+                       "**Common Mistakes to Avoid:**\n" +
+                       "❌ Using generic objective statements\n" +
+                       "❌ Listing responsibilities instead of achievements\n" +
+                       "❌ Including irrelevant work experience\n" +
+                       "❌ Poor formatting that ATS can't read\n\n" +
+                       "Would you like me to review your resume? You can upload it in the Resume Builder section!";
+            }
+
+            // Salary negotiation
+            else if (lowerMsg.includes('salary') || lowerMsg.includes('negotiation') || lowerMsg.includes('ctc')) {
+                return "💰 **Salary Negotiation Masterclass**\n\n" +
+                       "**Step-by-Step Strategy:**\n\n" +
+                       "1️⃣ **Research Market Rates**\n" +
+                       "   • Check Glassdoor, AmbitionBox, LinkedIn Salary\n" +
+                       "   • Consider location, experience, company size\n" +
+                       "   • Talk to industry peers\n\n" +
+                       "2️⃣ **Know Your Worth**\n" +
+                       "   • List your achievements and value add\n" +
+                       "   • Calculate your current CTC + benefits\n" +
+                       "   • Determine your minimum acceptable offer\n\n" +
+                       "3️⃣ **During Negotiation**\n" +
+                       "   • Never give the first number - let them offer\n" +
+                       "   • Consider total compensation (bonus, stocks, benefits)\n" +
+                       "   • Be confident but reasonable\n" +
+                       "   • Practice your pitch beforehand\n\n" +
+                       "4️⃣ **What to Negotiate Beyond Salary**\n" +
+                       "   • Signing bonus\n" +
+                       "   • Annual bonus percentage\n" +
+                       "   • Stock options / RSUs\n" +
+                       "   • Relocation assistance\n" +
+                       "   • Flexible work hours\n" +
+                       "   • Remote work options\n" +
+                       "   • Professional development budget\n" +
+                       "   • Extra vacation days\n\n" +
+                       "**Sample Phrases:**\n" +
+                       "• 'Based on my research and experience, I was expecting something in the range of...'\n" +
+                       "• 'Is there flexibility in the base salary or overall compensation package?'\n" +
+                       "• 'I'm excited about the role. Can we discuss the total compensation package?'\n\n" +
+                       "Remember: The best time to negotiate is after you receive an offer!";
+            }
+
+            // Skills
+            else if (lowerMsg.includes('skill') || lowerMsg.includes('learn') || lowerMsg.includes('technologies')) {
+                return "🚀 **Top Skills for 2025 & Beyond**\n\n" +
+                       "**Technical Skills (High Demand):**\n\n" +
+                       "💻 **Programming Languages**\n" +
+                       "• Python (Data Science, AI, Backend)\n" +
+                       "• JavaScript/TypeScript (Full Stack)\n" +
+                       "• Java (Enterprise, Android)\n" +
+                       "• Go (Cloud, Microservices)\n" +
+                       "• Rust (Systems Programming)\n\n" +
+                       "🌐 **Web Development**\n" +
+                       "• React/Next.js (Frontend)\n" +
+                       "• Node.js (Backend)\n" +
+                       "• GraphQL\n" +
+                       "• WebAssembly\n\n" +
+                       "📊 **Data Science & AI**\n" +
+                       "• Machine Learning (TensorFlow, PyTorch)\n" +
+                       "• Data Analysis (Pandas, NumPy)\n" +
+                       "• Generative AI / LLMs\n" +
+                       "• Computer Vision\n" +
+                       "• NLP\n\n" +
+                       "☁️ **Cloud & DevOps**\n" +
+                       "• AWS / Azure / GCP\n" +
+                       "• Docker & Kubernetes\n" +
+                       "• CI/CD (Jenkins, GitHub Actions)\n" +
+                       "• Infrastructure as Code (Terraform)\n\n" +
+                       "**Soft Skills (Equally Important):**\n\n" +
+                       "🗣️ Communication & Leadership\n" +
+                       "🧩 Problem Solving & Critical Thinking\n" +
+                       "🤝 Collaboration & Teamwork\n" +
+                       "🎯 Adaptability & Learning Agility\n" +
+                       "💡 Creativity & Innovation\n" +
+                       "⏰ Time Management\n\n" +
+                       "**Learning Resources:**\n" +
+                       "• Coursera / edX (Academic courses)\n" +
+                       "• Udemy / Pluralsight (Practical skills)\n" +
+                       "• LeetCode / HackerRank (Coding practice)\n" +
+                       "• GitHub (Open source contributions)\n" +
+                       "• LinkedIn Learning\n\n" +
+                       "Which area interests you most? I can provide more specific recommendations!";
+            }
+
+            // Job search
+            else if (lowerMsg.includes('job') || lowerMsg.includes('search') || lowerMsg.includes('hiring')) {
+                return "🔍 **Job Search Strategy Guide**\n\n" +
+                       "**Where to Find Jobs:**\n\n" +
+                       "📌 **Job Portals**\n" +
+                       "• LinkedIn Jobs\n" +
+                       "• Indeed\n" +
+                       "• Naukri.com\n" +
+                       "• Glassdoor\n" +
+                       "• AngelList (Startups)\n" +
+                       "• Wellfound\n\n" +
+                       "🏢 **Company Websites**\n" +
+                       "• Google Careers\n" +
+                       "• Microsoft Careers\n" +
+                       "• Amazon Jobs\n" +
+                       "• Microsoft Careers\n" +
+                       "• Check 'Careers' page of target companies\n\n" +
+                       "🤝 **Networking**\n" +
+                       "• Attend industry events\n" +
+                       "• Join professional groups on LinkedIn\n" +
+                       "• Connect with recruiters\n" +
+                       "• Ask for referrals\n\n" +
+                       "**Top Companies Hiring Now:**\n" +
+                       "• Google (Software Engineers, PMs)\n" +
+                       "• Microsoft (Cloud, AI roles)\n" +
+                       "• Amazon (Tech, Operations)\n" +
+                       "• TCS (IT Services)\n" +
+                       "• Infosys (Consulting)\n" +
+                       "• Accenture (Tech Consulting)\n" +
+                       "• Deloitte (Consulting)\n" +
+                       "• JPMorgan (FinTech)\n\n" +
+                       "**Application Tips:**\n" +
+                       "✅ Customize resume for each application\n" +
+                       "✅ Write tailored cover letters\n" +
+                       "✅ Follow up after 1-2 weeks\n" +
+                       "✅ Prepare for interviews simultaneously\n" +
+                       "✅ Track applications in a spreadsheet\n\n" +
+                       "Want me to help with a specific company or role?";
+            }
+
+            // Greetings
+            else if (lowerMsg.includes('hello') || lowerMsg.includes('hi') || lowerMsg.includes('hey')) {
+                return "👋 Hello! I'm your advanced AI career assistant.\n\n" +
+                       "I can help you with:\n" +
+                       "• 🎯 Interview preparation\n" +
+                       "• 📄 Resume optimization\n" +
+                       "• 💼 Job search strategies\n" +
+                       "• 💰 Salary negotiation\n" +
+                       "• 📊 Skill development\n" +
+                       "• 🏢 Company insights\n\n" +
+                       "What would you like to explore today?";
+            }
+
+            // Thanks
+            else if (lowerMsg.includes('thank')) {
+                return "You're very welcome! 😊\n\n" +
+                       "I'm always here to help with your career journey. Feel free to ask:\n" +
+                       "• More interview questions\n" +
+                       "• Resume tips\n" +
+                       "• Salary advice\n" +
+                       "• Career guidance\n\n" +
+                       "Good luck with your career! 🚀";
+            }
+
+            // Default response
+            else {
+                return "I understand you're asking about: **" + message + "**\n\n" +
+                       "Here's what I can help you with:\n\n" +
+                       "🎯 **Interview Preparation**\n" +
+                       "• Practice questions and tips\n" +
+                       "• Mock interview scenarios\n" +
+                       "• Technical and behavioral guides\n\n" +
+                       "📄 **Resume & Cover Letter**\n" +
+                       "• Optimization tips\n" +
+                       "• ATS-friendly formatting\n" +
+                       "• Achievement highlighting\n\n" +
+                       "💰 **Salary & Negotiation**\n" +
+                       "• Market research\n" +
+                       "• Negotiation strategies\n" +
+                       "• Compensation packages\n\n" +
+                       "📊 **Career Growth**\n" +
+                       "• Skill recommendations\n" +
+                       "• Learning resources\n" +
+                       "• Career path guidance\n\n" +
+                       "Could you please provide more details about what you'd like to know? I'll give you specific, actionable advice!";
+            }
+        }
+
+        // ============================================
+        // USE SUGGESTION
+        // ============================================
+        window.useSuggestion = function(suggestion) {
+            document.getElementById('chatInput').value = suggestion;
+            sendMessage();
+        };
+
+        // ============================================
+        // FILTER CATEGORY
+        // ============================================
+        function renderTrendCards(category) {
+            const trends = trendData[category] || trendData.all;
+            const trendGrid = document.getElementById('trendGrid');
+            trendGrid.innerHTML = trends.map(item => `
+                <div class="trend-item">
+                    <div class="trend-top">
+                        <div class="trend-label">${item.label}</div>
+                        <div class="trend-change ${item.down ? 'down' : ''}">${item.change}</div>
+                    </div>
+                    <div class="sparkline">
+                        ${item.bars.map(height => `<span style="height:${height}%"></span>`).join('')}
+                    </div>
+                    <div class="trend-meta">
+                        <span>${item.region}</span>
+                        <span>${item.level}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderInsightStrip(category) {
+            const insights = insightData[category] || insightData.all;
+            const insightStrip = document.getElementById('insightStrip');
+            insightStrip.innerHTML = insights.map(item => `
+                <div class="insight-card">
+                    <div class="insight-title">${item.title}</div>
+                    <div class="insight-value">${item.value}</div>
+                    <div class="insight-sub">${item.sub}</div>
+                </div>
+            `).join('');
+        }
+
+        window.filterCategory = function(category, ev) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (ev && ev.currentTarget) {
+                ev.currentTarget.classList.add('active');
+            }
+
+            renderTrendCards(category);
+            renderInsightStrip(category);
+
+            // Update suggestions based on category
+            const suggestions = document.getElementById('chatSuggestions');
+            let newSuggestions = '';
+
+            switch(category) {
+                case 'interview':
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('How to prepare for technical interview?')">Technical interview</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Common behavioral questions')">Behavioral questions</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('System design interview tips')">System design</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('HR interview questions')">HR questions</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Interview trend for 2026 product companies')">2026 interview trend</button>
+                    `;
+                    break;
+                case 'resume':
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('How to write a strong resume?')">Write resume</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Common resume mistakes')">Resume mistakes</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('ATS-friendly resume tips')">ATS tips</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Cover letter examples')">Cover letter</button>
+                    `;
+                    break;
+                case 'salary':
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('How to negotiate salary?')">Negotiation tips</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Average salaries by role')">Salary ranges</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to answer salary expectations?')">Salary expectations</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Total compensation guide')">Total comp</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Industry salary trend by role 2026')">Salary trend 2026</button>
+                    `;
+                    break;
+                case 'skills':
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('Top skills for AI engineer roles')">AI engineer skills</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Cloud and DevOps skill roadmap')">Cloud roadmap</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Skills trend in industry 2026')">Industry skill trend</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('What projects improve interview chances?')">Project strategy</button>
+                    `;
+                    break;
+                case 'jobs':
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('Who is hiring freshers this month?')">Freshers hiring</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Industry hiring trend by sector')">Sector trend</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Referral strategy for product companies')">Referral strategy</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to shortlist target companies?')">Company shortlist</button>
+                    `;
+                    break;
+                default:
+                    newSuggestions = `
+                        <button class="suggestion-btn" onclick="useSuggestion('How to prepare for technical interview?')">Technical interview</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Common resume mistakes')">Resume mistakes</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to negotiate salary?')">Salary negotiation</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Best skills for 2026')">Skills 2026</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Industry hiring trend by sector')">Industry trend</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Tell me about yourself answer')">Tell me about yourself</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('Companies hiring now')">Hiring companies</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('How to switch career?')">Career switch</button>
+                        <button class="suggestion-btn" onclick="useSuggestion('LinkedIn profile tips')">LinkedIn tips</button>
+                    `;
+            }
+
+            suggestions.innerHTML = newSuggestions;
+        };
+
+        // ============================================
+        // VOICE INPUT
+        // ============================================
+        window.toggleVoiceInput = function() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                showToast('❌ Voice input not supported in this browser', 'error');
+                return;
+            }
+
+            const voiceBtn = document.getElementById('voiceBtn');
+            
+            if (isListening) {
+                stopVoiceInput();
+            } else {
+                startVoiceInput();
+            }
+        };
+
+        function startVoiceInput() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            const voiceBtn = document.getElementById('voiceBtn');
+            const voiceStatus = document.getElementById('voiceStatus');
+
+            voiceBtn.classList.add('listening');
+            voiceStatus.classList.add('show');
+            isListening = true;
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                
+                document.getElementById('chatInput').value = transcript;
+            };
+
+            recognition.onerror = (event) => {
+                stopVoiceInput();
+                showToast('❌ Voice input error: ' + event.error, 'error');
+            };
+
+            recognition.onend = () => {
+                stopVoiceInput();
+                // Auto-send if we have input
+                if (document.getElementById('chatInput').value.trim()) {
+                    sendMessage();
+                }
+            };
+
+            recognition.start();
+        }
+
+        function stopVoiceInput() {
+            if (recognition) {
+                recognition.stop();
+            }
+            
+            document.getElementById('voiceBtn').classList.remove('listening');
+            document.getElementById('voiceStatus').classList.remove('show');
+            isListening = false;
+        }
+
+        // ============================================
+        // ATTACH FILE
+        // ============================================
+        window.attachFile = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf,.docx,.txt,.md';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    analyzeResumeFile(file, selectedResumeRole);
+                }
+            };
+            input.click();
+        };
+
+        async function analyzeResumeFile(file, roleHint = 'auto') {
+            if (resumeAnalysisInProgress) return;
+            resumeAnalysisInProgress = true;
+
+            addMessage(`📎 Resume uploaded: ${file.name}`, 'user');
+            showToast('🔎 Analyzing resume...', 'info');
+            showTypingIndicator();
+
+            try {
+                const resumeText = await extractResumeText(file);
+                const analysis = buildResumeAnalysis(resumeText, file.name, roleHint);
+                removeTypingIndicator();
+                addMessage(analysis, 'bot');
+                showToast('✅ Resume analyzed', 'success');
+            } catch (error) {
+                removeTypingIndicator();
+                const message = error?.message || 'Could not analyze resume';
+                addMessage(
+                    `I could not analyze this file.
+
+**Reason:** ${message}
+
+Please upload a PDF or DOCX resume for a full skills gap analysis.`,
+                    'bot'
+                );
+                showToast('⚠️ Resume analysis failed', 'error');
+            } finally {
+                resumeAnalysisInProgress = false;
+            }
+        }
+
+        async function extractResumeText(file) {
+            const fileName = file.name.toLowerCase();
+            const isTextFile = file.type.startsWith('text/') || fileName.endsWith('.txt') || fileName.endsWith('.md') || fileName.endsWith('.csv');
+
+            if (isTextFile) {
+                return await file.text();
+            }
+
+            if (fileName.endsWith('.pdf') || file.type === 'application/pdf') {
+                if (!window.pdfjsLib) {
+                    throw new Error('PDF reader is not available right now');
+                }
+
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+                const pdfData = await file.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument({ data: pdfData }).promise;
+                let extractedText = '';
+
+                for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                    const page = await pdf.getPage(pageNumber);
+                    const content = await page.getTextContent();
+                    extractedText += content.items.map((item) => item.str).join(' ') + '\n';
+                }
+
+                return extractedText;
+            }
+
+            if (fileName.endsWith('.docx') || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                if (!window.mammoth) {
+                    throw new Error('DOCX reader is not available right now');
+                }
+
+                const result = await window.mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+                return result.value || '';
+            }
+
+            if (fileName.endsWith('.doc') || file.type === 'application/msword') {
+                throw new Error('DOC files are not supported for local analysis. Please convert the resume to PDF or DOCX.');
+            }
+
+            const fallbackText = await file.text();
+            if (fallbackText && fallbackText.trim()) {
+                return fallbackText;
+            }
+
+            throw new Error('Could not extract readable text from this file');
+        }
+
+        function buildResumeAnalysis(resumeText, fileName, roleHint = 'auto') {
+            const text = (resumeText || '').toLowerCase();
+
+            const detectedSignals = commonResumeSignals.filter((signal) => text.includes(signal));
+            const contactSignals = [];
+
+            if (/@/.test(text)) contactSignals.push('email');
+            if (/\b(\+?\d[\d\s()-]{8,})\b/.test(text)) contactSignals.push('phone');
+            if (text.includes('linkedin')) contactSignals.push('linkedin');
+            if (text.includes('github')) contactSignals.push('github');
+            if (text.includes('portfolio')) contactSignals.push('portfolio');
+
+            const roleScores = Object.fromEntries(Object.keys(resumeSkillProfiles).map((role) => [role, 0]));
+            Object.entries(resumeSkillProfiles).forEach(([role, skills]) => {
+                skills.forEach((skill) => {
+                    const normalizedSkill = skill.toLowerCase();
+                    if (text.includes(normalizedSkill)) {
+                        roleScores[role] += normalizedSkill.length > 3 ? 2 : 1;
+                    }
+                });
+            });
+
+            const inferredRole = Object.entries(roleScores).sort((a, b) => b[1] - a[1])[0];
+            const roleName = roleHint !== 'auto' ? roleHint : (inferredRole && inferredRole[1] > 0 ? inferredRole[0] : 'general');
+            const targetProfile = resumeRoleProfiles[roleName] || resumeRoleProfiles.general;
+            const targetSkills = resumeSkillProfiles[roleName] || resumeSkillProfiles.fullstack;
+            const detectedSkills = targetSkills.filter((skill) => text.includes(skill));
+            const missingSkills = targetSkills.filter((skill) => !text.includes(skill)).slice(0, 8);
+
+            const missingSections = [];
+            const requiredSections = targetProfile.sections || [];
+
+            if (requiredSections.includes('summary') && !text.includes('summary') && !text.includes('objective')) missingSections.push('summary or objective');
+            if (requiredSections.includes('experience') && !text.includes('experience') && !text.includes('work experience')) missingSections.push('experience section');
+            if (requiredSections.includes('education') && !text.includes('education')) missingSections.push('education section');
+            if (requiredSections.includes('projects') && !text.includes('project')) missingSections.push('projects section');
+            if (requiredSections.includes('skills') && !text.includes('skills')) missingSections.push('skills section');
+            if (requiredSections.includes('github') && !contactSignals.includes('github')) missingSections.push('GitHub link');
+            if (requiredSections.includes('portfolio') && !contactSignals.includes('portfolio')) missingSections.push('portfolio link');
+            if (requiredSections.includes('certifications') && !text.includes('certification')) missingSections.push('certifications');
+            if (requiredSections.includes('app store') && !text.includes('play store') && !text.includes('app store')) missingSections.push('app store / play store link');
+            if (requiredSections.includes('database') && !text.includes('sql') && !text.includes('database')) missingSections.push('database examples');
+            if (requiredSections.includes('linux') && !text.includes('linux')) missingSections.push('linux / shell work');
+            if (!text.includes('achievement') && !text.includes('%') && !text.includes('increased') && !text.includes('reduced')) missingSections.push('quantified achievements');
+            if (contactSignals.length < 2) missingSections.push('contact links');
+
+            const bonusKeywords = targetProfile.bonusKeywords || [];
+            const bonusDetected = bonusKeywords.filter((keyword) => text.includes(keyword));
+            const missingBonusKeywords = bonusKeywords.filter((keyword) => !text.includes(keyword)).slice(0, 6);
+
+            let atsScore = 45;
+            atsScore += Math.min(detectedSignals.length * 4, 20);
+            atsScore += Math.min(detectedSkills.length * 3, 20);
+            atsScore += Math.min(bonusDetected.length * 2, 10);
+            atsScore += Math.max(0, 10 - missingSections.length * 2);
+            atsScore = Math.max(35, Math.min(95, atsScore));
+
+            const topStrengths = detectedSkills.slice(0, 6);
+            const missingSkillsLine = missingSkills.length > 0 ? missingSkills.map((skill) => skill.toUpperCase()).join(', ') : 'No major skill gaps detected in this track';
+            const missingSectionsLine = missingSections.length > 0 ? missingSections.join(', ') : 'No major structural gaps detected';
+            const strengthsLine = topStrengths.length > 0 ? topStrengths.map((skill) => skill.toUpperCase()).join(', ') : 'No strong technical keywords detected';
+            const bonusLine = bonusDetected.length > 0 ? bonusDetected.map((skill) => skill.toUpperCase()).join(', ') : 'No strong role-specific proof points detected';
+            const priorityLine = (targetProfile.proofPoints || []).join(', ');
+            const missingBonusLine = missingBonusKeywords.length > 0 ? missingBonusKeywords.map((skill) => skill.toUpperCase()).join(', ') : 'No extra keyword gaps detected';
+
+            return `📄 **Resume Analysis: ${fileName}**\n\n` +
+                `**Best-fit role:** ${targetProfile.displayName}\n` +
+                `**ATS score:** ${atsScore}/100\n\n` +
+                `**Detected strengths:** ${strengthsLine}\n\n` +
+                `**Role proof points found:** ${bonusLine}\n\n` +
+                `**Missing skills:** ${missingSkillsLine}\n\n` +
+                `**Missing target keywords:** ${missingBonusLine}\n\n` +
+                `**Missing sections:** ${missingSectionsLine}\n\n` +
+                `**Quick fix plan:**\n` +
+                `• Add 2 to 3 quantified impact bullets\n` +
+                `• Include role keywords around: ${priorityLine}\n` +
+                `• Add GitHub, LinkedIn, and portfolio links if available\n` +
+                `• Keep a short summary at the top that matches the target role\n` +
+                `• Mirror the target keywords from the missing skills list: ${missingSkillsLine}\n\n` +
+                `If you want, I can also turn this into a stricter job-specific version for frontend, backend, data, mobile, AI/ML, or DevOps roles.`;
+        }
+
+        // ============================================
+        // NEW CHAT
+        // ============================================
+        window.newChat = function() {
+            if (confirm('Start a new chat? Current chat will be saved to history.')) {
+                saveCurrentChat();
+                chatMessages.innerHTML = `
+                    <div class="message bot">
+                        <div class="message-content">
+                            👋 Hi! I'm your advanced AI career assistant. How can I help you today?
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                `;
+                showToast('✨ New chat started', 'success');
+            }
+        };
+
+        // ============================================
+        // SAVE CURRENT CHAT
+        // ============================================
+        function saveCurrentChat() {
+            const messages = Array.from(chatMessages.children).map(msg => ({
+                sender: msg.classList.contains('bot') ? 'bot' : 'user',
+                content: msg.querySelector('.message-content').innerText,
+                time: msg.querySelector('.message-time').innerText
+            }));
+
+            if (messages.length > 1) { // More than just welcome message
+                const chat = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString(),
+                    messages: messages,
+                    preview: messages[1]?.content.substring(0, 50) + '...'
+                };
+                chatHistory.unshift(chat);
+                if (chatHistory.length > 20) chatHistory.pop(); // Keep last 20 chats
+                localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            }
+        }
+
+        // ============================================
+        // SHOW HISTORY
+        // ============================================
+        window.showHistory = function() {
+            const historyList = document.getElementById('historyList');
+            
+            if (chatHistory.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: var(--gray-500);">No chat history yet</p>';
+            } else {
+                historyList.innerHTML = chatHistory.map(chat => `
+                    <div class="history-item" onclick="loadChat(${chat.id})">
+                        <div class="history-date">${chat.date}</div>
+                        <div class="history-preview">${chat.preview}</div>
+                    </div>
+                `).join('');
+            }
+
+            showModal('historyModal');
+        };
+
+        // ============================================
+        // LOAD CHAT
+        // ============================================
+        window.loadChat = function(chatId) {
+            const chat = chatHistory.find(c => c.id === chatId);
+            if (!chat) return;
+
+            chatMessages.innerHTML = chat.messages.map(msg => `
+                <div class="message ${msg.sender}">
+                    <div class="message-content">
+                        ${msg.content}
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            closeModal('historyModal');
+            showToast('📋 Chat loaded', 'success');
+        };
+
+        // ============================================
+        // EXPORT CHAT
+        // ============================================
+        window.exportChat = function() {
+            const messages = Array.from(chatMessages.children).map(msg => {
+                const sender = msg.classList.contains('bot') ? 'AI' : 'User';
+                const content = msg.querySelector('.message-content').innerText;
+                const time = msg.querySelector('.message-time').innerText;
+                return `[${time}] ${sender}: ${content}`;
+            }).join('\n\n');
+
+            const blob = new Blob([messages], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `chat-export-${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('📥 Chat exported successfully', 'success');
+        };
+
+        // ============================================
+        // CLEAR CHAT
+        // ============================================
+        window.clearChat = function() {
+            if (confirm('Clear all messages? This cannot be undone.')) {
+                chatMessages.innerHTML = `
+                    <div class="message bot">
+                        <div class="message-content">
+                            👋 Chat cleared. How can I help you?
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                `;
+                showToast('🧹 Chat cleared', 'info');
+            }
+        };
+
+        // ============================================
+        // SAVE TO HISTORY
+        // ============================================
+        function saveToHistory(message, sender) {
+            // Implement if needed
+        }
+
+        // ============================================
+        // TOGGLE VOICE MODE
+        // ============================================
+        window.toggleVoiceMode = function() {
+            voiceEnabled = !voiceEnabled;
+            showToast(voiceEnabled ? '🎤 Voice mode enabled' : '🎤 Voice mode disabled', 'info');
+        };
+
+        // ============================================
+        // SHOW INFO
+        // ============================================
+        window.showInfo = function() {
+            showModal('infoModal');
+        };
+
+        // ============================================
+        // SHOW TOAST
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+        window.showModal = function(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        };
+
+        window.closeModal = function(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        };
+
+        // Close modal on outside click
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Enter key to send
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        const resumeRoleSelect = document.getElementById('resumeRoleSelect');
+        if (resumeRoleSelect) {
+            selectedResumeRole = localStorage.getItem('resumeTargetRole') || 'auto';
+            resumeRoleSelect.value = selectedResumeRole;
+            resumeRoleSelect.addEventListener('change', (event) => {
+                selectedResumeRole = event.target.value || 'auto';
+                localStorage.setItem('resumeTargetRole', selectedResumeRole);
+            });
+        }
+
+        const voiceLanguageSelect = document.getElementById('voiceLanguageSelect');
+        if (voiceLanguageSelect) {
+            voiceLanguageSelect.value = selectedVoiceLanguage;
+            voiceLanguageSelect.addEventListener('change', (event) => {
+                selectedVoiceLanguage = event.target.value || 'auto';
+                localStorage.setItem('voiceLanguage', selectedVoiceLanguage);
+            });
+        }
+
+        // Initialize stats
+        document.getElementById('chatCount').textContent = conversationCount;
+        document.getElementById('avgResponse').textContent = '2.5s';
+        document.getElementById('satisfaction').textContent = '98%';
+        renderTrendCards('all');
+        renderInsightStrip('all');
+    </script>
+</body>
+</html>

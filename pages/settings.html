@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Career Bridge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; }
+        .navbar a { color: white; text-decoration: none; font-weight: 600; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .settings-form { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-section { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .form-section h3 { color: #667eea; margin-bottom: 15px; }
+        .setting-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+        .setting-item input { width: 20px; height: 20px; cursor: pointer; }
+        label { margin: 0; cursor: pointer; }
+        select { width: 100%; padding: 12px; border: 2px solid #e8e8e8; border-radius: 8px; margin-bottom: 15px; }
+        button { padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; }
+        button:hover { background: #764ba2; }
+        .alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none; background: #efe; border-left: 4px solid #28a745; color: #3c3; }
+        .alert.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>⚙️ Settings</h1>
+        <a href="student-dashboard.html">← Back</a>
+    </div>
+
+    <div class="container">
+        <div class="settings-form">
+            <div id="successMsg" class="alert"></div>
+
+            <!-- Account -->
+            <div class="form-section">
+                <h3>🔐 Account Settings</h3>
+                <p id="emailDisplay" style="margin-bottom: 15px; color: #666;">Email: student@example.com</p>
+                <button onclick="changePassword()">🔑 Change Password</button>
+            </div>
+
+            <!-- Notifications -->
+            <div class="form-section">
+                <h3>🔔 Notifications</h3>
+                
+                <div class="setting-item">
+                    <label>Email Notifications</label>
+                    <input type="checkbox" id="emailNotif" checked>
+                </div>
+
+                <div class="setting-item">
+                    <label>Job Alerts</label>
+                    <input type="checkbox" id="jobAlerts" checked>
+                </div>
+
+                <div class="setting-item">
+                    <label>Application Updates</label>
+                    <input type="checkbox" id="appUpdates" checked>
+                </div>
+
+                <div class="setting-item">
+                    <label>Interview Reminders</label>
+                    <input type="checkbox" id="interviewRemind" checked>
+                </div>
+
+                <button onclick="saveNotifications()">💾 Save</button>
+            </div>
+
+            <!-- Preferences -->
+            <div class="form-section">
+                <h3>🎨 Preferences</h3>
+
+                <label>Theme</label>
+                <select id="theme">
+                    <option value="light">☀️ Light Mode</option>
+                    <option value="dark">🌙 Dark Mode</option>
+                </select>
+
+                <label>Language</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                </select>
+
+                <button onclick="savePreferences()" style="margin-top: 10px;">💾 Save</button>
+            </div>
+
+            <!-- Danger -->
+            <div class="form-section">
+                <h3>⚠️ Danger Zone</h3>
+                <p style="color: #666; margin-bottom: 15px;">These actions cannot be undone.</p>
+                <button onclick="deleteAccount()" style="background: #e74c3c;">🗑️ Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Settings page loaded');
+
+        function showSuccess(msg) {
+            const el = document.getElementById('successMsg');
+            el.textContent = '✅ ' + msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('emailDisplay').textContent = 'Email: ' + (localStorage.getItem('userEmail') || 'student@example.com');
+
+        window.saveNotifications = function() {
+            const data = {
+                emailNotif: document.getElementById('emailNotif').checked,
+                jobAlerts: document.getElementById('jobAlerts').checked,
+                appUpdates: document.getElementById('appUpdates').checked,
+                interviewRemind: document.getElementById('interviewRemind').checked
+            };
+            localStorage.setItem('notifications', JSON.stringify(data));
+            showSuccess('Notifications saved!');
+        };
+
+        window.savePreferences = function() {
+            const data = {
+                theme: document.getElementById('theme').value,
+                language: document.getElementById('language').value
+            };
+            localStorage.setItem('preferences', JSON.stringify(data));
+            showSuccess('Preferences saved!');
+        };
+
+        window.changePassword = function() {
+            alert('📧 Password change feature coming soon!\n\nUse "Forgot Password" link on login page.');
+        };
+
+        window.deleteAccount = function() {
+            if(confirm('Are you SURE? This cannot be undone!')) {
+                if(prompt('Type "DELETE" to confirm:') === 'DELETE') {
+                    alert('🚧 Account deletion requires support.\n\nPlease contact support@careerbridge.com');
+                }
+            }
+        };
+
+        const saved = localStorage.getItem('notifications');
+        if(saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('emailNotif').checked = data.emailNotif;
+            document.getElementById('jobAlerts').checked = data.jobAlerts;
+            document.getElementById('appUpdates').checked = data.appUpdates;
+            document.getElementById('interviewRemind').checked = data.interviewRemind;
+        }
+
+        const pref = localStorage.getItem('preferences');
+        if(pref) {
+            const data = JSON.parse(pref);
+            document.getElementById('theme').value = data.theme;
+            document.getElementById('language').value = data.language;
+        }
+    </script>
+</body>
+</html>

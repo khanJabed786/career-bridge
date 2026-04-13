@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Applications - Career Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar h1 { font-size: 1.5rem; }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .navbar a:hover { background: rgba(255,255,255,0.3); }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .status-filter {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            min-width: 150px;
+        }
+        
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .application-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid #667eea;
+        }
+        
+        .application-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .candidate-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .job-title {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .company-name {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .app-date {
+            color: #999;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+        
+        .skills-preview {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            color: #555;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-shortlisted { background: #d4edda; color: #155724; }
+        .status-interview { background: #cce5ff; color: #004085; }
+        .status-selected { background: #28a745; color: white; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .view-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .view-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .toast-success { background: linear-gradient(135deg, #28a745 0%, #20c997 100%); }
+        .toast-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .toast-error { background: linear-gradient(135deg, #e74c3c 0%, #f5576c 100%); }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1><i class="fas fa-file-alt"></i> View Applications</h1>
+        <a href="company-dashboard.html"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search by candidate name or job title..." onkeyup="filterApplications()">
+            <select class="status-filter" id="statusFilter" onchange="filterApplications()">
+                <option value="all">All Status</option>
+                <option value="pending">Applied</option>
+                <option value="shortlisted">Shortlisted</option>
+                <option value="interview">Interview</option>
+                <option value="selected">Selected</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+
+        <div class="applications-grid" id="applicationsGrid">
+            <div class="empty-state">
+                <i class="fas fa-file-alt" style="font-size: 3em; margin-bottom: 10px;"></i>
+                <p>Loading applications...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config/supabase-config.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/company/view-applications.js"></script>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            console.log('✅ View Applications page loaded');
+
+            let allApplications = [];
+            let companyProfile = null;
+
+            async function loadCompanyProfile() {
+                const savedProfile = localStorage.getItem('companyProfile');
+                if (savedProfile) {
+                    companyProfile = JSON.parse(savedProfile);
+                }
+            }
+
+            async function loadApplications() {
+                try {
+                    // Load from localStorage
+                    const savedApps = localStorage.getItem('companyApplications');
+                    if (savedApps) {
+                        allApplications = JSON.parse(savedApps);
+                        
+                        // Filter for this company
+                        if (companyProfile?.company_name) {
+                            allApplications = allApplications.filter(app => 
+                                app.company_name === companyProfile.company_name
+                            );
+                        }
+                        
+                        displayApplications(allApplications);
+                    } else {
+                        document.getElementById('applicationsGrid').innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-file-alt" style="font-size: 3em; margin-bottom: 10px;"></i>
+                                <p>No applications found</p>
+                            </div>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error loading applications:', error);
+                    showToast('Error loading applications', 'error');
+                }
+            }
+
+            function displayApplications(applications) {
+                const grid = document.getElementById('applicationsGrid');
+                
+                if (!applications || applications.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-file-alt" style="font-size: 3em; margin-bottom: 10px;"></i>
+                            <p>No applications found</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = applications.map(app => {
+                    const candidateName = app.candidate || app.studentName || app.student_name || 'Unknown';
+                    const skills = app.student_skills || app.skills || [];
+                    const skillsPreview = skills.slice(0, 3).map(s => 
+                        `<span class="skill-tag">${s}</span>`
+                    ).join('');
+                    
+                    return `
+                        <div class="application-card" onclick="viewApplicationDetails('${app.id}')">
+                            <div class="card-header">
+                                <span class="candidate-name">${candidateName}</span>
+                                <span class="status-badge status-${app.status || 'pending'}">${getStatusText(app.status)}</span>
+                            </div>
+                            <div class="job-title">${app.job_title || 'Position'}</div>
+                            <div class="company-name">${app.company_name || 'Company'}</div>
+                            <div class="app-date">Applied: ${new Date(app.created_at || app.date).toLocaleDateString()}</div>
+                            ${skillsPreview ? `<div class="skills-preview">${skillsPreview}</div>` : ''}
+                            <div class="card-footer">
+                                <button class="view-btn" onclick="event.stopPropagation(); viewApplicationDetails('${app.id}')">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            window.filterApplications = function() {
+                const search = document.getElementById('searchInput').value.toLowerCase();
+                const status = document.getElementById('statusFilter').value;
+                
+                const filtered = allApplications.filter(app => {
+                    const candidateName = (app.candidate || app.studentName || app.student_name || '').toLowerCase();
+                    const jobTitle = (app.job_title || '').toLowerCase();
+                    const matchesSearch = candidateName.includes(search) || jobTitle.includes(search);
+                    const matchesStatus = status === 'all' || app.status === status;
+                    return matchesSearch && matchesStatus;
+                });
+                
+                displayApplications(filtered);
+            };
+
+            function getStatusText(status) {
+                const map = {
+                    'pending': 'Applied',
+                    'applied': 'Applied',
+                    'shortlisted': 'Shortlisted',
+                    'interview': 'Interview',
+                    'selected': 'Selected',
+                    'rejected': 'Rejected'
+                };
+                return map[status] || status || 'Applied';
+            }
+
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            window.viewApplicationDetails = function(applicationId) {
+                if (window.viewApplicationDetails) {
+                    window.viewApplicationDetails(applicationId);
+                } else {
+                    showToast('View details function not available', 'error');
+                }
+            };
+
+            async function init() {
+                await loadCompanyProfile();
+                await loadApplications();
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>

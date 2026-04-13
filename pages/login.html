@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Career Bridge</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Same styles as before - keeping all CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --gradient-secondary: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, 50px) scale(1.1); }
+            50% { transform: translate(0, 100px) scale(0.9); }
+            75% { transform: translate(-50px, 50px) scale(1.05); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-2xl);
+            width: 100%;
+            max-width: 450px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
+            animation: rotate 30s linear infinite;
+        }
+
+        .login-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .login-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+            font-weight: 400;
+        }
+
+        .login-body {
+            padding: 35px 30px;
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: none;
+            animation: slideInRight 0.3s ease;
+            border-left: 4px solid transparent;
+            align-items: center;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border-left-color: var(--error);
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            border-left-color: var(--success);
+            color: #166534;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            border-left-color: var(--primary);
+            color: #1e40af;
+        }
+
+        .alert i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+
+        /* Input Wrapper */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+            z-index: 1;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px 14px 50px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--gray-700);
+            font-family: 'Inter', sans-serif;
+        }
+
+        input:hover {
+            border-color: var(--gray-300);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        input.error {
+            border-color: var(--error);
+            background: #fef2f2;
+        }
+
+        input::placeholder {
+            color: var(--gray-400);
+            font-weight: 300;
+        }
+
+        /* Password wrapper */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray-400);
+            transition: all 0.3s ease;
+            padding: 8px;
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+            font-size: 1.2rem;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        /* Remember & Forgot */
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            cursor: pointer;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .remember-forgot input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .remember-forgot a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remember-forgot a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .remember-forgot a i {
+            font-size: 0.8rem;
+        }
+
+        /* Button */
+        .login-btn {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .login-btn:hover:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .login-footer {
+            background: var(--gray-100);
+            padding: 25px 30px;
+            text-align: center;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .login-footer p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .login-footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .login-footer a i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-2xl);
+            animation: scaleIn 0.3s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-content p {
+            color: var(--gray-700);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .login-container {
+                max-width: 100%;
+            }
+
+            .login-header h1 {
+                font-size: 2rem;
+            }
+
+            .login-body {
+                padding: 25px 20px;
+            }
+
+            .remember-forgot {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: var(--dark);
+            }
+
+            .login-container {
+                background: var(--dark-light);
+            }
+
+            .login-body {
+                background: var(--dark-light);
+            }
+
+            label {
+                color: var(--gray-300);
+            }
+
+            input[type="email"],
+            input[type="password"] {
+                background: var(--dark);
+                border-color: var(--gray-700);
+                color: white;
+            }
+
+            .remember-forgot label {
+                color: var(--gray-300);
+            }
+
+            .login-footer {
+                background: var(--dark);
+                border-color: var(--gray-700);
+            }
+
+            .login-footer p {
+                color: var(--gray-400);
+            }
+
+            .loading-content {
+                background: var(--dark-light);
+            }
+
+            .loading-content p {
+                color: white;
+            }
+
+            .toggle-password {
+                background: var(--dark);
+                color: var(--gray-400);
+            }
+
+            .toggle-password:hover {
+                background: var(--gray-700);
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loadingMessage">Authenticating...</p>
+        </div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🚀 Career Bridge</h1>
+            <p>Welcome Back!</p>
+        </div>
+
+        <div class="login-body">
+            <!-- Alerts -->
+            <div id="errorAlert" class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span></span>
+            </div>
+            <div id="successAlert" class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span></span>
+            </div>
+            <div id="infoAlert" class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <span></span>
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            placeholder="your@email.com" 
+                            required
+                            autocomplete="email"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="Enter your password" 
+                            required
+                            autocomplete="current-password"
+                        >
+                        <span class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="remember-forgot">
+                    <label>
+                        <input type="checkbox" id="rememberMe" name="remember">
+                        <i class="fas fa-check-circle"></i> Remember me
+                    </label>
+                    <a href="#" id="forgotPassword">
+                        Forgot password? <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span>Login to Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            <p>
+                Don't have an account?
+                <a href="signup.html">
+                    Sign up now
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- IMPORTANT: Script order - pehle Supabase library, phir config -->
+    <!-- IMPORTANT: Script order - pehle Supabase library, phir config -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config/supabase-config.js"></script>
+
+<script>
+(function() {
+    'use strict';
+    
+    console.log('🔐 Login page loaded');
+
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberMeCheckbox = document.getElementById('rememberMe');
+    const loginBtn = document.getElementById('loginBtn');
+    const togglePassword = document.getElementById('togglePassword');
+    
+    const errorAlert = document.getElementById('errorAlert');
+    const successAlert = document.getElementById('successAlert');
+    const infoAlert = document.getElementById('infoAlert');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingMessage = document.getElementById('loadingMessage');
+    const forgotPasswordLink = document.getElementById('forgotPassword');
+
+    // ============================================
+    // PASSWORD TOGGLE
+    // ============================================
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            const icon = togglePassword.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+    }
+
+    // ============================================
+    // LOAD REMEMBERED EMAIL
+    // ============================================
+    try {
+        const rememberedEmail = localStorage.getItem('rememberedEmail');
+        if (rememberedEmail && emailInput) {
+            emailInput.value = rememberedEmail;
+            if (rememberMeCheckbox) rememberMeCheckbox.checked = true;
+        }
+    } catch (e) {}
+
+    // ============================================
+    // URL PARAMETERS
+    // ============================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlEmail = urlParams.get('email');
+    if (urlEmail && emailInput) {
+        emailInput.value = urlEmail;
+        setTimeout(() => showInfo('Account created! Please login.'), 100);
+    }
+
+    if (urlParams.get('registered') === 'true') {
+        setTimeout(() => showSuccess('Registration successful! Please login.'), 100);
+    }
+
+    // ============================================
+    // ALERT FUNCTIONS
+    // ============================================
+    function hideAllAlerts() {
+        if (errorAlert) errorAlert.style.display = 'none';
+        if (successAlert) successAlert.style.display = 'none';
+        if (infoAlert) infoAlert.style.display = 'none';
+    }
+
+    function showError(message) {
+        hideAllAlerts();
+        if (errorAlert) {
+            errorAlert.querySelector('span').textContent = message;
+            errorAlert.style.display = 'flex';
+        }
+        console.error('❌ Error:', message);
+        setTimeout(() => { if (errorAlert) errorAlert.style.display = 'none'; }, 5000);
+    }
+
+    function showSuccess(message) {
+        hideAllAlerts();
+        if (successAlert) {
+            successAlert.querySelector('span').textContent = message;
+            successAlert.style.display = 'flex';
+        }
+        console.log('✅ Success:', message);
+        setTimeout(() => { if (successAlert) successAlert.style.display = 'none'; }, 5000);
+    }
+
+    function showInfo(message) {
+        hideAllAlerts();
+        if (infoAlert) {
+            infoAlert.querySelector('span').textContent = message;
+            infoAlert.style.display = 'flex';
+        }
+        console.log('ℹ️ Info:', message);
+        setTimeout(() => { if (infoAlert) infoAlert.style.display = 'none'; }, 5000);
+    }
+
+    function showLoading(message = 'Authenticating...') {
+        if (loadingMessage) loadingMessage.textContent = message;
+        if (loadingOverlay) loadingOverlay.style.display = 'flex';
+        if (loginBtn) loginBtn.disabled = true;
+        loginBtn.innerHTML = '<span class="spinner"></span> Processing...';
+    }
+
+    function hideLoading() {
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
+        if (loginBtn) loginBtn.disabled = false;
+        loginBtn.innerHTML = '<span>Login to Account</span> <i class="fas fa-arrow-right"></i>';
+    }
+
+    // ============================================
+    // GET SUPABASE CLIENT
+    // ============================================
+    function getSupabaseClient() {
+        return window.supabaseClient;
+    }
+
+    // ============================================
+    // FORM VALIDATION
+    // ============================================
+    function validateForm() {
+        const email = emailInput ? emailInput.value.trim() : '';
+        const password = passwordInput ? passwordInput.value : '';
+
+        if (!email) {
+            showError('Please enter your email');
+            if (emailInput) emailInput.focus();
+            return false;
+        }
+
+        if (!isValidEmail(email)) {
+            showError('Please enter a valid email address');
+            if (emailInput) emailInput.focus();
+            return false;
+        }
+
+        if (!password) {
+            showError('Please enter your password');
+            if (passwordInput) passwordInput.focus();
+            return false;
+        }
+
+        if (password.length < 6) {
+            showError('Password must be at least 6 characters');
+            if (passwordInput) passwordInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    // ============================================
+    // FORGOT PASSWORD
+    // ============================================
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            const email = emailInput ? emailInput.value.trim() : '';
+            
+            if (!email) {
+                showError('Please enter your email address first');
+                if (emailInput) emailInput.focus();
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+            
+            try {
+                const supabase = await waitForSupabase();
+                
+                showLoading('Sending reset link...');
+                
+                const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + '/pages/reset-password.html',
+                });
+
+                if (error) throw error;
+
+                showSuccess(`Password reset link sent to ${email}`);
+            } catch (error) {
+                console.error('Reset password error:', error);
+                showError('Error sending reset link. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        });
+    }
+
+    // ============================================
+    // WAIT FOR SUPABASE CLIENT
+    // ============================================
+    function waitForSupabase() {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 30;
+            
+            const checkInterval = setInterval(() => {
+                const client = getSupabaseClient();
+                if (client) {
+                    clearInterval(checkInterval);
+                    console.log('✅ Supabase client ready');
+                    resolve(client);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    reject(new Error('Supabase client not available'));
+                }
+                attempts++;
+            }, 500);
+        });
+    }
+
+    // ============================================
+    // CHECK IF ALREADY LOGGED IN
+    // ============================================
+    async function checkExistingLogin() {
+        try {
+            const supabase = await waitForSupabase();
+            
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (session?.user) {
+                console.log('👤 Already logged in:', session.user.email);
+                showInfo('Already logged in. Redirecting...');
+                
+                const role = session.user.user_metadata?.role || 'student';
+                
+                setTimeout(() => {
+                    redirectToDashboard(role);
+                }, 1500);
+            }
+        } catch (err) {
+            console.log('No active session or client not ready');
+        }
+    }
+
+    function redirectToDashboard(role) {
+        const pages = {
+            'company': 'company-dashboard.html',
+            'admin': 'admin-dashboard.html',
+            'student': 'student-dashboard.html'
+        };
+        window.location.href = pages[role] || pages.student;
+    }
+
+    // ============================================
+    // FORM SUBMISSION
+    // ============================================
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const rememberMe = rememberMeCheckbox ? rememberMeCheckbox.checked : false;
+
+            try {
+                // Wait for Supabase client
+                const supabase = await waitForSupabase();
+
+                showLoading('Authenticating...');
+
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+                if (error) {
+                    let errorMessage = 'Login failed';
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorMessage = 'Invalid email or password';
+                    } else if (error.message.includes('Email not confirmed')) {
+                        errorMessage = 'Please verify your email first';
+                    } else {
+                        errorMessage = error.message;
+                    }
+                    
+                    showError(errorMessage);
+                    hideLoading();
+                    
+                    if (passwordInput) {
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    }
+                    return;
+                }
+
+                if (!data || !data.user) {
+                    showError('Login failed: No user data returned');
+                    hideLoading();
+                    return;
+                }
+
+                console.log('✅ Login successful! User ID:', data.user.id);
+
+                // Save remembered email
+                if (rememberMe) {
+                    try { localStorage.setItem('rememberedEmail', email); } catch (e) {}
+                } else {
+                    try { localStorage.removeItem('rememberedEmail'); } catch (e) {}
+                }
+
+                // Get role from user metadata
+                const role = data.user.user_metadata?.role || 'student';
+
+                showSuccess('Login successful! Redirecting...');
+                
+                setTimeout(() => redirectToDashboard(role), 1500);
+
+            } catch (err) {
+                console.error('❌ Unexpected error:', err);
+                if (err.message === 'Supabase client not available') {
+                    showError('Authentication service not available. Please refresh the page.');
+                } else {
+                    showError('Error: ' + (err.message || 'Unknown error'));
+                }
+                hideLoading();
+            }
+        });
+    }
+
+    // Check for existing login
+    checkExistingLogin();
+
+    console.log('🔐 Login page initialized');
+})();
+</script>
+</body>
+</html>

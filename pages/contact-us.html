@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Career Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            background: linear-gradient(135deg, #1c588f 0%, #1f6cb3 50%, #2b86d4 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .top-link { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 24px; }
+        .row { margin: 10px 0; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .field {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 10px;
+            padding: 11px 12px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            font-size: 0.98rem;
+        }
+        .field::placeholder { color: rgba(255, 255, 255, 0.75); }
+        textarea.field { min-height: 120px; resize: vertical; }
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 10px 18px;
+            font-weight: 700;
+            cursor: pointer;
+            background: #ffffff;
+            color: #1f6cb3;
+        }
+        .meta { font-size: 0.86rem; opacity: 0.9; }
+        .success {
+            display: none;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(52, 211, 153, 0.7);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-top: 12px;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="top-link" href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        <h1>Contact Us</h1>
+        <div class="card">
+            <p class="row"><i class="fas fa-envelope"></i> Email: support@careerbridge.com</p>
+            <p class="row"><i class="fas fa-phone"></i> Phone: +91 99999 99999</p>
+            <p class="row"><i class="fas fa-clock"></i> Support Hours: Mon - Sat, 9:00 AM to 6:00 PM</p>
+            <p class="row"><i class="fas fa-location-dot"></i> Location: New Delhi, India</p>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top:0;">Raise a Support Ticket</h3>
+            <form id="supportForm">
+                <div class="grid">
+                    <input class="field" id="name" type="text" placeholder="Your Name" required>
+                    <input class="field" id="email" type="email" placeholder="Your Email" required>
+                </div>
+                <input class="field" id="subject" type="text" placeholder="Subject" required>
+                <textarea class="field" id="message" placeholder="Explain your issue..." maxlength="700" required></textarea>
+                <div class="actions">
+                    <span class="meta" id="charCount">0/700</span>
+                    <button class="btn" type="submit">Submit Ticket</button>
+                </div>
+                <div class="success" id="successBox"></div>
+            </form>
+        </div>
+
+        <div class="card" id="latestTicket" style="display:none;"></div>
+    </div>
+
+    <script>
+        (function () {
+            const STORAGE_KEY = 'supportTickets';
+            const form = document.getElementById('supportForm');
+            const messageInput = document.getElementById('message');
+            const count = document.getElementById('charCount');
+            const successBox = document.getElementById('successBox');
+            const latestTicket = document.getElementById('latestTicket');
+
+            function readTickets() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    return raw ? JSON.parse(raw) : [];
+                } catch (error) {
+                    return [];
+                }
+            }
+
+            function writeTickets(tickets) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+            }
+
+            function renderLatestTicket() {
+                const tickets = readTickets();
+                if (!tickets.length) {
+                    latestTicket.style.display = 'none';
+                    return;
+                }
+                const latest = tickets[0];
+                latestTicket.style.display = 'block';
+                latestTicket.innerHTML =
+                    '<h3 style="margin-top:0;">Latest Submitted Ticket</h3>' +
+                    '<p><strong>ID:</strong> ' + latest.id + '</p>' +
+                    '<p><strong>Subject:</strong> ' + latest.subject + '</p>' +
+                    '<p><strong>Status:</strong> Received</p>' +
+                    '<p><strong>Time:</strong> ' + new Date(latest.createdAt).toLocaleString() + '</p>';
+            }
+
+            messageInput.addEventListener('input', () => {
+                count.textContent = messageInput.value.length + '/700';
+            });
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = messageInput.value.trim();
+
+                if (!name || !email || !subject || !message) {
+                    successBox.style.display = 'block';
+                    successBox.style.background = 'rgba(239,68,68,0.2)';
+                    successBox.style.borderColor = 'rgba(248,113,113,0.8)';
+                    successBox.textContent = 'Please fill all fields before submit.';
+                    return;
+                }
+
+                const ticket = {
+                    id: 'CB-' + Date.now().toString().slice(-8),
+                    name,
+                    email,
+                    subject,
+                    message,
+                    createdAt: new Date().toISOString()
+                };
+
+                const tickets = readTickets();
+                tickets.unshift(ticket);
+                writeTickets(tickets);
+
+                form.reset();
+                count.textContent = '0/700';
+                successBox.style.display = 'block';
+                successBox.style.background = 'rgba(16,185,129,0.2)';
+                successBox.style.borderColor = 'rgba(52,211,153,0.7)';
+                successBox.textContent = 'Ticket submitted successfully. Your ID: ' + ticket.id;
+                renderLatestTicket();
+            });
+
+            renderLatestTicket();
+        })();
+    </script>
+</body>
+</html>

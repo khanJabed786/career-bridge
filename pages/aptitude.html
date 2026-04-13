@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Tests - Career Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --shadow: 0 10px 40px rgba(16,185,129,0.1);
+            --shadow-hover: 0 20px 60px rgba(16,185,129,0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            animation: float 20s infinite;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes float {
+            0%,100% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(50px,50px) scale(1.1); }
+            50% { transform: translate(0,100px) scale(0.9); }
+            75% { transform: translate(-50px,50px) scale(1.05); }
+        }
+
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .navbar-menu a:hover,
+        .navbar-menu a.active {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1em;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Tests Grid */
+        .tests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .test-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease-out;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .test-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .test-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .badge-beginner { background: #d4edda; color: #155724; }
+        .badge-intermediate { background: #fff3cd; color: #856404; }
+        .badge-advanced { background: #f8d7da; color: #721c24; }
+        .badge-expert { background: #cce5ff; color: #004085; }
+
+        .test-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(5,150,105,0.1) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .test-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .test-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .test-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .test-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .test-progress {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .test-progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .test-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .test-stats {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .test-stats i {
+            color: var(--primary);
+        }
+
+        .start-btn {
+            padding: 10px 25px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Test Container */
+        .test-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .test-container.active {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .test-header h2 {
+            color: #333;
+        }
+
+        .test-info {
+            display: flex;
+            gap: 20px;
+            color: #666;
+        }
+
+        .test-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--error);
+            background: #fee2e2;
+            padding: 8px 16px;
+            border-radius: 30px;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .option-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(16,185,129,0.05) 0%, rgba(5,150,105,0.05) 100%);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(5,150,105,0.1) 100%);
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .option-text {
+            flex: 1;
+            color: #333;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-prev {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .nav-next {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-submit {
+            background: var(--error);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Results Container */
+        .result-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-container.active {
+            display: block;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .result-score {
+            font-size: 4em;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 15px 40px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .result-detail-item {
+            text-align: center;
+        }
+
+        .result-detail-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .result-detail-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .result-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .result-btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .result-btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .result-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideInRight 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .toast-success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .toast-error { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .toast-info { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .result-details {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-rocket"></i> Career Bridge
+        </div>
+        <div class="navbar-menu">
+            <a href="student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+            <a href="reports.html"><i class="fas fa-flag"></i> Reports</a>
+            <a href="#" class="active"><i class="fas fa-brain"></i> Aptitude</a>
+            <a href="interview-prep.html"><i class="fas fa-calendar-alt"></i> Interview</a>
+            <a href="ai-chat.html"><i class="fas fa-robot"></i> AI Chat</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-brain"></i> Aptitude Tests</h1>
+            <p>Assess your skills • Track your progress • Improve daily</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <div class="stat-value" id="testsTaken">8</div>
+                <div class="stat-label">Tests Taken</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-value" id="avgScore">78%</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                <div class="stat-value" id="bestScore">95%</div>
+                <div class="stat-label">Best Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-value" id="totalTime">4.5h</div>
+                <div class="stat-label">Total Time</div>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-btn active" onclick="filterTests('all')">All Tests</button>
+            <button class="category-btn" onclick="filterTests('aptitude')">Aptitude</button>
+            <button class="category-btn" onclick="filterTests('technical')">Technical</button>
+            <button class="category-btn" onclick="filterTests('programming')">Programming</button>
+            <button class="category-btn" onclick="filterTests('verbal')">Verbal</button>
+        </div>
+
+        <!-- Tests Grid -->
+        <div class="tests-grid" id="testsGrid">
+            <!-- Tests will be loaded here -->
+        </div>
+
+        <!-- Test Container -->
+        <div class="test-container" id="testContainer">
+            <div class="test-header">
+                <div>
+                    <h2 id="currentTestTitle">Quantitative Aptitude</h2>
+                    <div class="test-info">
+                        <span><i class="fas fa-question-circle"></i> <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span></span>
+                        <span><i class="fas fa-signal"></i> <span id="difficulty">Medium</span></span>
+                    </div>
+                </div>
+                <div class="timer" id="timer">10:00</div>
+            </div>
+
+            <div class="question-container" id="questionContainer">
+                <!-- Question will be loaded here -->
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn nav-prev" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Previous</button>
+                <button class="nav-btn nav-next" onclick="nextQuestion()">Next <i class="fas fa-arrow-right"></i></button>
+                <button class="nav-btn nav-submit" onclick="submitTest()">Submit Test</button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="result-container" id="resultContainer">
+            <i class="fas fa-check-circle" style="font-size: 4em; color: var(--success);"></i>
+            <h2 style="color: #333; margin: 20px 0;">Test Completed!</h2>
+            
+            <div class="result-score" id="resultScore">85%</div>
+            <div class="result-badge" id="resultGrade">Excellent!</div>
+
+            <div class="result-details">
+                <div class="result-detail-item">
+                    <div class="result-detail-value" id="correctAnswers">17</div>
+                    <div class="result-detail-label">Correct</div>
+                </div>
+                <div class="result-detail-item">
+                    <div class="result-detail-value" id="wrongAnswers">3</div>
+                    <div class="result-detail-label">Wrong</div>
+                </div>
+                <div class="result-detail-item">
+                    <div class="result-detail-value" id="timeTaken">8:30</div>
+                    <div class="result-detail-label">Time Taken</div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button class="result-btn result-btn-primary" onclick="viewAnswers()"><i class="fas fa-eye"></i> View Answers</button>
+                <button class="result-btn result-btn-secondary" onclick="backToTests()"><i class="fas fa-arrow-left"></i> Back to Tests</button>
+                <button class="result-btn result-btn-primary" onclick="retakeTest()"><i class="fas fa-redo"></i> Retake Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('✅ Aptitude page loaded');
+
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let tests = [];
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timer = null;
+        let timeLeft = 0;
+        let testStartTime = null;
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        function init() {
+            loadTests();
+            updateStats();
+        }
+
+        // ============================================
+        // LOAD TESTS
+        // ============================================
+        function loadTests() {
+            tests = [
+                {
+                    id: 1,
+                    title: 'Quantitative Aptitude',
+                    category: 'aptitude',
+                    difficulty: 'beginner',
+                    description: 'Test your mathematical and numerical skills',
+                    icon: 'fa-calculator',
+                    questions: 10,
+                    time: 10,
+                    attempts: 1234,
+                    successRate: 85,
+                    completed: true,
+                    score: 85
+                },
+                {
+                    id: 2,
+                    title: 'Logical Reasoning',
+                    category: 'aptitude',
+                    difficulty: 'intermediate',
+                    description: 'Test your logical thinking and problem-solving',
+                    icon: 'fa-puzzle-piece',
+                    questions: 8,
+                    time: 8,
+                    attempts: 987,
+                    successRate: 78,
+                    completed: true,
+                    score: 78
+                },
+                {
+                    id: 3,
+                    title: 'Verbal Ability',
+                    category: 'verbal',
+                    difficulty: 'beginner',
+                    description: 'Test your English language skills',
+                    icon: 'fa-book-open',
+                    questions: 8,
+                    time: 8,
+                    attempts: 756,
+                    successRate: 82,
+                    completed: false,
+                    score: null
+                },
+                {
+                    id: 4,
+                    title: 'Python Programming',
+                    category: 'programming',
+                    difficulty: 'advanced',
+                    description: 'Test your Python knowledge',
+                    icon: 'fa-python',
+                    questions: 8,
+                    time: 10,
+                    attempts: 543,
+                    successRate: 65,
+                    completed: true,
+                    score: 65
+                },
+                {
+                    id: 5,
+                    title: 'Java Programming',
+                    category: 'programming',
+                    difficulty: 'intermediate',
+                    description: 'Test your Java programming skills',
+                    icon: 'fa-java',
+                    questions: 8,
+                    time: 10,
+                    attempts: 432,
+                    successRate: 72,
+                    completed: false,
+                    score: null
+                },
+                {
+                    id: 6,
+                    title: 'SQL Database',
+                    category: 'technical',
+                    difficulty: 'beginner',
+                    description: 'Test your SQL query knowledge',
+                    icon: 'fa-database',
+                    questions: 8,
+                    time: 8,
+                    attempts: 678,
+                    successRate: 88,
+                    completed: false,
+                    score: null
+                }
+            ];
+
+            displayTests(tests);
+        }
+
+        // ============================================
+        // DISPLAY TESTS
+        // ============================================
+        function displayTests(testsToShow) {
+            const container = document.getElementById('testsGrid');
+            if (!container) return;
+
+            if (testsToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-search"></i>
+                        <p>No tests found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = testsToShow.map(test => {
+                const badgeClass = `badge-${test.difficulty}`;
+                const progress = test.completed ? 100 : 0;
+                
+                return `
+                    <div class="test-card" onclick="startTest(${test.id})">
+                        <span class="test-badge ${badgeClass}">${test.difficulty}</span>
+                        
+                        <div class="test-icon">
+                            <i class="fas ${test.icon}"></i>
+                        </div>
+
+                        <div class="test-title">${test.title}</div>
+                        <div class="test-description">${test.description}</div>
+
+                        <div class="test-meta">
+                            <span><i class="fas fa-clock"></i> ${test.time} min</span>
+                            <span><i class="fas fa-question-circle"></i> ${test.questions} Qs</span>
+                            <span><i class="fas fa-users"></i> ${test.attempts}</span>
+                        </div>
+
+                        ${test.completed ? `
+                            <div class="test-progress">
+                                <div class="test-progress-bar" style="width: ${test.score}%"></div>
+                            </div>
+                            <div class="test-footer">
+                                <div class="test-stats">
+                                    <span><i class="fas fa-chart-line"></i> ${test.successRate}% success</span>
+                                    <span><i class="fas fa-star" style="color: #ffc107;"></i> ${test.score}%</span>
+                                </div>
+                                <button class="start-btn" onclick="event.stopPropagation(); retakeTest(${test.id})">Retake</button>
+                            </div>
+                        ` : `
+                            <div class="test-footer">
+                                <div class="test-stats">
+                                    <span><i class="fas fa-chart-line"></i> ${test.successRate}% success</span>
+                                </div>
+                                <button class="start-btn" onclick="event.stopPropagation(); startTest(${test.id})">Start</button>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // FILTER TESTS
+        // ============================================
+        window.filterTests = function(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const filtered = category === 'all' ? tests : tests.filter(t => t.category === category);
+            displayTests(filtered);
+        };
+
+        // ============================================
+        // START TEST
+        // ============================================
+        window.startTest = function(testId) {
+            const test = tests.find(t => t.id === testId);
+            if (!test) return;
+
+            currentTest = test;
+            currentQuestionIndex = 0;
+            userAnswers = new Array(test.questions).fill(-1);
+            timeLeft = test.time * 60;
+            testStartTime = Date.now();
+
+            // Hide tests grid, show test container
+            document.getElementById('testsGrid').style.display = 'none';
+            document.querySelector('.category-tabs').style.display = 'none';
+            document.getElementById('testContainer').classList.add('active');
+            
+            document.getElementById('currentTestTitle').textContent = test.title;
+            document.getElementById('totalQuestions').textContent = test.questions;
+            document.getElementById('difficulty').textContent = test.difficulty;
+
+            startTimer();
+            displayQuestion();
+
+            showToast(`Starting ${test.title} test`, 'info');
+        };
+
+        // ============================================
+        // START TIMER
+        // ============================================
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        // ============================================
+        // DISPLAY QUESTION
+        // ============================================
+        function displayQuestion() {
+            const container = document.getElementById('questionContainer');
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+
+            // Sample questions for demo
+            const questions = [
+                {
+                    question: 'What is 15% of 200?',
+                    options: ['30', '25', '35', '20']
+                },
+                {
+                    question: 'If a man walks at 5 km/hr for 8 hours, what is the distance?',
+                    options: ['30 km', '35 km', '40 km', '45 km']
+                },
+                {
+                    question: 'What is the area of a circle with radius 7? (π=22/7)',
+                    options: ['154', '196', '198', '210']
+                },
+                {
+                    question: 'Solve: 2x + 5 = 15',
+                    options: ['3', '5', '10', '20']
+                },
+                {
+                    question: 'What is the average of 10, 20, 30, 40, 50?',
+                    options: ['25', '30', '35', '40']
+                }
+            ];
+
+            const q = questions[currentQuestionIndex % questions.length];
+
+            container.innerHTML = `
+                <div class="question-text">${q.question}</div>
+                <div class="options-grid">
+                    ${q.options.map((opt, index) => `
+                        <div class="option-card ${userAnswers[currentQuestionIndex] === index ? 'selected' : ''}" 
+                             onclick="selectAnswer(${index})">
+                            <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                            <div class="option-text">${opt}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // ============================================
+        // SELECT ANSWER
+        // ============================================
+        window.selectAnswer = function(index) {
+            userAnswers[currentQuestionIndex] = index;
+            displayQuestion(); // Refresh to show selected state
+        };
+
+        // ============================================
+        // NEXT QUESTION
+        // ============================================
+        window.nextQuestion = function() {
+            if (currentQuestionIndex < currentTest.questions - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        };
+
+        // ============================================
+        // PREVIOUS QUESTION
+        // ============================================
+        window.prevQuestion = function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        };
+
+        // ============================================
+        // SUBMIT TEST
+        // ============================================
+        window.submitTest = function() {
+            if (!confirm('Are you sure you want to submit the test?')) return;
+
+            clearInterval(timer);
+
+            const timeSpent = Math.floor((Date.now() - testStartTime) / 1000);
+            const minutes = Math.floor(timeSpent / 60);
+            const seconds = timeSpent % 60;
+
+            // Calculate score (demo)
+            const correct = Math.floor(Math.random() * 8) + 5; // Random score between 5-13
+            const total = currentTest.questions;
+            const percentage = Math.round((correct / total) * 100);
+
+            let grade = 'Good';
+            if (percentage >= 90) grade = 'Excellent!';
+            else if (percentage >= 80) grade = 'Very Good';
+            else if (percentage >= 70) grade = 'Good';
+            else if (percentage >= 60) grade = 'Average';
+            else grade = 'Need Improvement';
+
+            // Update results
+            document.getElementById('resultScore').textContent = percentage + '%';
+            document.getElementById('resultGrade').textContent = grade;
+            document.getElementById('correctAnswers').textContent = correct;
+            document.getElementById('wrongAnswers').textContent = total - correct;
+            document.getElementById('timeTaken').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // Update test completion status
+            currentTest.completed = true;
+            currentTest.score = percentage;
+
+            // Hide test container, show results
+            document.getElementById('testContainer').classList.remove('active');
+            document.getElementById('resultContainer').classList.add('active');
+
+            // Update stats
+            updateStats();
+            
+            showToast('✅ Test submitted successfully!', 'success');
+        };
+
+        // ============================================
+        // BACK TO TESTS
+        // ============================================
+        window.backToTests = function() {
+            document.getElementById('resultContainer').classList.remove('active');
+            document.getElementById('testsGrid').style.display = 'grid';
+            document.querySelector('.category-tabs').style.display = 'flex';
+            displayTests(tests);
+        };
+
+        // ============================================
+        // VIEW ANSWERS
+        // ============================================
+        window.viewAnswers = function() {
+            showToast('📋 Answers will be shown here', 'info');
+        };
+
+        // ============================================
+        // RETAKE TEST
+        // ============================================
+        window.retakeTest = function(testId) {
+            if (testId) {
+                startTest(testId);
+            } else if (currentTest) {
+                startTest(currentTest.id);
+            }
+        };
+
+        // ============================================
+        // UPDATE STATS
+        // ============================================
+        function updateStats() {
+            const completed = tests.filter(t => t.completed).length;
+            const scores = tests.filter(t => t.completed).map(t => t.score);
+            const avgScore = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+            const bestScore = scores.length ? Math.max(...scores) : 0;
+            const totalTime = completed * 10; // Demo calculation
+
+            document.getElementById('testsTaken').textContent = completed;
+            document.getElementById('avgScore').textContent = avgScore + '%';
+            document.getElementById('bestScore').textContent = bestScore + '%';
+            document.getElementById('totalTime').textContent = totalTime + 'm';
+        }
+
+        // ============================================
+        // SHOW TOAST
+        // ============================================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
