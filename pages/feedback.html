@@ -142,6 +142,20 @@
             color: white;
         }
 
+        .menu-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(102,126,234,0.14);
+            color: #4f46e5;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
         /* Main Container */
         .container {
             max-width: 1200px;
@@ -726,12 +740,21 @@
                 font-size: 1.2em;
             }
 
+            .menu-toggle {
+                display: inline-flex;
+            }
+
             .navbar-menu {
                 width: 100%;
                 gap: 8px;
                 overflow-x: auto;
-                padding-bottom: 4px;
+                padding: 8px 0 4px;
                 justify-content: flex-start;
+                display: none;
+            }
+
+            .navbar.open .navbar-menu {
+                display: flex;
             }
 
             .navbar-menu a {
@@ -824,6 +847,9 @@
         <div class="navbar-brand">
             <i class="fas fa-rocket"></i> Career Bridge
         </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu(this)" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="navbar-menu">
             <a href="student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
             <a href="#" class="active"><i class="fas fa-comment"></i> Feedback</a>
@@ -976,6 +1002,16 @@
             let studentName = null;
             let studentEmail = null;
             let studentProfilePicture = null;
+
+            window.toggleMobileMenu = function(btn) {
+                const nav = btn.closest('.navbar');
+                if (!nav) return;
+                nav.classList.toggle('open');
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.className = nav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+                }
+            };
 
             // ============================================
             // GET CURRENT USER - FIXED WITH REAL DATA

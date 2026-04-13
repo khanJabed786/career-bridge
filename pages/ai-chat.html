@@ -198,6 +198,20 @@
             transform: translateY(-2px);
         }
 
+        .menu-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(139,92,246,0.12);
+            color: var(--primary);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
         .navbar-right {
             display: flex;
             align-items: center;
@@ -1153,11 +1167,20 @@
                 margin-bottom: 16px;
             }
 
+            .menu-toggle {
+                display: inline-flex;
+            }
+
             .navbar-menu {
                 width: 100%;
                 overflow-x: auto;
-                padding-bottom: 4px;
+                padding: 8px 0 4px;
                 gap: 8px;
+                display: none;
+            }
+
+            .navbar.open .navbar-menu {
+                display: flex;
             }
 
             .navbar-menu a {
@@ -1240,6 +1263,9 @@
         <div class="navbar-brand">
             <i class="fas fa-robot"></i> Career Bridge AI
         </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu(this)" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="navbar-menu">
             <a href="student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
             <a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
@@ -1561,6 +1587,16 @@
         let selectedVoiceLanguage = localStorage.getItem('voiceLanguage') || 'auto';
         let speechVoicesCache = [];
         let speechVoicesLoaded = false;
+
+        window.toggleMobileMenu = function(btn) {
+            const nav = btn.closest('.navbar');
+            if (!nav) return;
+            nav.classList.toggle('open');
+            const icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = nav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
+            }
+        };
 
         const resumeSkillProfiles = {
             frontend: ['html', 'css', 'javascript', 'typescript', 'react', 'next.js', 'vue', 'angular', 'tailwind', 'ui', 'ux', 'testing', 'git', 'api'],
