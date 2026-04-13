@@ -96,13 +96,26 @@
             border-radius: 20px;
             padding: 15px 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            gap: 10px;
             margin-bottom: 30px;
             box-shadow: var(--shadow);
             position: relative;
             z-index: 10;
             animation: slideDown 0.5s ease-out;
+        }
+
+        .navbar-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(102,126,234,0.14);
+            color: #4f46e5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         @keyframes slideDown {
@@ -116,6 +129,49 @@
             background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-right: auto;
+        }
+
+        .top-search-btn {
+            height: 38px;
+            border: none;
+            border-radius: 12px;
+            padding: 0 12px;
+            background: rgba(102,126,234,0.14);
+            color: #4f46e5;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .top-search-panel {
+            display: none;
+            background: rgba(255,255,255,0.96);
+            border-radius: 14px;
+            padding: 10px;
+            margin: -16px 0 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 10;
+        }
+
+        .top-search-panel.show {
+            display: block;
+        }
+
+        .top-search-inner {
+            display: flex;
+            gap: 8px;
+        }
+
+        .top-search-inner input {
+            flex: 1;
+            border: 1px solid #d6dcff;
+            border-radius: 10px;
+            padding: 0 10px;
+            height: 38px;
         }
 
         .navbar-menu {
@@ -787,6 +843,17 @@
                 display: inline-flex;
             }
 
+            .top-search-btn {
+                width: 38px;
+                padding: 0;
+                justify-content: center;
+                font-size: 0;
+            }
+
+            .top-search-btn i {
+                font-size: 1rem;
+            }
+
             .navbar-menu {
                 width: 100%;
                 gap: 8px;
@@ -880,9 +947,11 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="navbar-brand">
-            <i class="fas fa-rocket"></i> Career Bridge
-        </div>
+        <div class="navbar-logo"><i class="fas fa-rocket"></i></div>
+        <div class="navbar-brand">Career Bridge</div>
+        <button class="top-search-btn" onclick="toggleTopSearch()" aria-label="Search">
+            <i class="fas fa-search"></i> Search
+        </button>
         <button class="menu-toggle" onclick="toggleMobileMenu(this)" aria-label="Toggle menu">
             <i class="fas fa-bars"></i>
         </button>
@@ -895,6 +964,14 @@
             <a href="ai-chat.html"><i class="fas fa-robot"></i> AI Chat</a>
         </div>
     </nav>
+
+    <div class="top-search-panel" id="topSearchPanel">
+        <div class="top-search-inner">
+            <input type="text" id="topSearchInput" placeholder="Search reports..." onkeydown="if(event.key==='Enter'){applyTopSearch();}">
+            <button class="modal-btn modal-btn-primary" onclick="applyTopSearch()"><i class="fas fa-search"></i></button>
+            <button class="modal-btn modal-btn-secondary" onclick="closeTopSearch()"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="container">
@@ -1044,6 +1121,7 @@
             let studentName = null;
             let studentEmail = null;
             let studentProfilePicture = null;
+            let topSearchQuery = '';
 
             window.toggleMobileMenu = function(btn) {
                 const nav = btn.closest('.navbar');
@@ -1053,6 +1131,25 @@
                 if (icon) {
                     icon.className = nav.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
                 }
+            };
+
+            window.toggleTopSearch = function() {
+                const panel = document.getElementById('topSearchPanel');
+                if (!panel) return;
+                panel.classList.toggle('show');
+                if (panel.classList.contains('show')) {
+                    document.getElementById('topSearchInput')?.focus();
+                }
+            };
+
+            window.closeTopSearch = function() {
+                document.getElementById('topSearchPanel')?.classList.remove('show');
+            };
+
+            window.applyTopSearch = function() {
+                topSearchQuery = (document.getElementById('topSearchInput')?.value || '').trim().toLowerCase();
+                filterReports();
+                closeTopSearch();
             };
 
             // ============================================
@@ -1236,6 +1333,13 @@
                     filtered = allReports.filter(r => r.status === 'pending');
                 } else if (currentTab === 'resolved') {
                     filtered = allReports.filter(r => r.status === 'resolved');
+                }
+
+                if (topSearchQuery) {
+                    filtered = filtered.filter(r => {
+                        const hay = [r.type, r.category, r.description, r.status, r.urgency].join(' ').toLowerCase();
+                        return hay.includes(topSearchQuery);
+                    });
                 }
                 
                 displayReports(filtered);
