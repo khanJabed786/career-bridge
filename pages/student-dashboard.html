@@ -101,8 +101,9 @@
             color: #333; 
             padding: 15px 30px; 
             display: flex; 
-            justify-content: space-between; 
+            justify-content: flex-start; 
             align-items: center; 
+            gap: 14px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
             position: fixed; 
             top: 0; 
@@ -113,20 +114,34 @@
             height: 70px;
             border-bottom: 1px solid rgba(102,126,234,0.2);
         }
-        .navbar-brand { 
+        .navbar-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
+            box-shadow: 0 4px 10px rgba(102,126,234,0.35);
+            flex-shrink: 0;
+        }
+        .navbar-project-name { 
             font-size: 1.5em; 
             font-weight: 700; 
             display: flex; 
             align-items: center; 
-            gap: 10px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            white-space: nowrap;
+            margin-right: auto;
         }
-        .navbar-brand i { animation: rotate 10s linear infinite; }
+        .navbar-logo i { animation: rotate 10s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .navbar-menu { display: flex; gap: 10px; flex: 1; justify-content: center; }
+        .navbar-menu { display: none; gap: 10px; flex: 1; justify-content: center; }
         .navbar-menu a { 
             color: #555; 
             text-decoration: none; 
@@ -143,9 +158,26 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(102,126,234,0.3);
         }
-        .navbar-right { display: flex; align-items: center; gap: 20px; }
+        .navbar-right { display: none; align-items: center; gap: 20px; }
+        .top-search-btn {
+            border: none;
+            border-radius: 20px;
+            background: rgba(102,126,234,0.12);
+            color: #4956a6;
+            height: 38px;
+            padding: 0 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .top-search-btn:hover {
+            background: rgba(102,126,234,0.2);
+        }
         .mobile-menu-toggle {
-            display: none;
+            display: inline-flex;
             width: 40px;
             height: 40px;
             border: none;
@@ -229,6 +261,37 @@
         .profile-menu a i { width: 20px; }
         .profile-menu a:last-child { border-bottom: none; }
         .profile-menu a:last-child:hover { background: #e74c3c; }
+
+        .top-search-panel {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 930;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(102,126,234,0.18);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            display: none;
+        }
+        .top-search-panel.show {
+            display: block;
+        }
+        .top-search-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .top-search-inner input {
+            flex: 1;
+            border: 1px solid #d8defd;
+            border-radius: 10px;
+            height: 40px;
+            padding: 0 12px;
+            font-size: 0.95em;
+        }
         
         /* Sidebar - FIXED SCROLL ISSUE */
         .sidebar { 
@@ -779,17 +842,22 @@
                 padding: 0 14px;
                 gap: 10px;
             }
-            .navbar-brand {
-                font-size: 1.1em;
+            .navbar-project-name {
+                font-size: 1.08em;
             }
-            .mobile-menu-toggle {
-                display: inline-flex;
+            .top-search-btn {
+                height: 34px;
+                width: 34px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 10px;
+                font-size: 0;
+            }
+            .top-search-btn i {
+                font-size: 1rem;
             }
             .navbar-menu {
                 display: none;
-            }
-            .navbar-right {
-                gap: 12px;
             }
             .sidebar {
                 width: 260px;
@@ -914,11 +982,24 @@
                 width: 34px;
                 height: 34px;
             }
+            .top-search-panel {
+                padding: 8px 12px;
+            }
+            .top-search-inner {
+                gap: 8px;
+            }
+            .top-search-inner input {
+                height: 36px;
+                font-size: 0.9em;
+            }
         }
 
         @media (max-width: 480px) {
-            .navbar-brand {
-                font-size: 1em;
+            .navbar-project-name {
+                font-size: 0.95em;
+                max-width: 110px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .dashboard-stats {
                 grid-template-columns: 1fr;
@@ -952,31 +1033,30 @@
 
     <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="navbar-brand">
-            <i class="fas fa-rocket"></i> Career Bridge
+        <div class="navbar-logo">
+            <i class="fas fa-rocket"></i>
         </div>
+        <div class="navbar-project-name">Career Bridge</div>
+        <button class="top-search-btn" onclick="toggleTopSearch()" aria-label="Search jobs">
+            <i class="fas fa-search"></i> Search
+        </button>
+        <div class="notification-bell" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notifCount">0</span>
+        </div>
+        <div class="profile-pic" id="profilePicNav" onclick="toggleProfileMenu()">👤</div>
         <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
-        <div class="navbar-menu">
-            <a onclick="switchTab('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</a>
-            <a onclick="switchTab('jobs')"><i class="fas fa-search"></i> Find Jobs</a>
-            <a onclick="switchTab('applications')"><i class="fas fa-file-alt"></i> Applications</a>
-            <a onclick="window.location.href='feedback.html'"><i class="fas fa-comment"></i> Feedback</a>
-            <a onclick="window.location.href='reports.html'"><i class="fas fa-flag"></i> Reports</a>
-            <a onclick="window.location.href='interview-prep.html'"><i class="fas fa-calendar-alt"></i> Interview Prep</a>
-            <a onclick="window.location.href='aptitude.html'"><i class="fas fa-brain"></i> Aptitude</a>
-            <a onclick="window.location.href='ai-chat.html'"><i class="fas fa-robot"></i> AI Chat</a>
-            <a onclick="window.location.href='resume-builder.html'"><i class="fas fa-file-pdf"></i> Resume</a>
-        </div>
-        <div class="navbar-right">
-            <div class="notification-bell" onclick="showNotifications()">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notifCount">0</span>
-            </div>
-            <div class="profile-pic" id="profilePicNav" onclick="toggleProfileMenu()">👤</div>
-        </div>
     </nav>
+
+    <div class="top-search-panel" id="topSearchPanel">
+        <div class="top-search-inner">
+            <input type="text" id="topSearchInput" placeholder="Search jobs by title, company, location..." onkeydown="if(event.key==='Enter'){applyTopSearch();}">
+            <button class="btn-small" onclick="applyTopSearch()"><i class="fas fa-search"></i> Search</button>
+            <button class="btn-small btn-outline" onclick="closeTopSearch()"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
 
     <!-- PROFILE MENU -->
     <div class="profile-menu" id="profileMenu">
@@ -2740,6 +2820,39 @@
                 document.getElementById('mainContent').scrollTop = 0;
             };
 
+            window.toggleTopSearch = function() {
+                const panel = document.getElementById('topSearchPanel');
+                if (!panel) return;
+                panel.classList.toggle('show');
+                if (panel.classList.contains('show')) {
+                    const input = document.getElementById('topSearchInput');
+                    if (input) {
+                        setTimeout(() => input.focus(), 50);
+                    }
+                }
+            };
+
+            window.closeTopSearch = function() {
+                document.getElementById('topSearchPanel')?.classList.remove('show');
+            };
+
+            window.applyTopSearch = function() {
+                const input = document.getElementById('topSearchInput');
+                const query = (input?.value || '').trim();
+                switchTab('jobs');
+
+                const titleField = document.getElementById('searchTitle');
+                const companyField = document.getElementById('searchCompany');
+                const locationField = document.getElementById('searchLocation');
+
+                if (titleField) titleField.value = query;
+                if (companyField) companyField.value = '';
+                if (locationField) locationField.value = '';
+
+                searchJobs();
+                closeTopSearch();
+            };
+
             window.toggleMobileSidebar = function() {
                 if (window.innerWidth > 768) {
                     return;
@@ -2774,6 +2887,16 @@
                 const profileMenu = document.getElementById('profileMenu');
                 if (profilePic && profileMenu && !profilePic.contains(e.target) && !profileMenu.contains(e.target)) {
                     profileMenu.classList.remove('show');
+                }
+
+                const searchPanel = document.getElementById('topSearchPanel');
+                const searchBtn = document.querySelector('.top-search-btn');
+                if (searchPanel && searchBtn) {
+                    const insidePanel = searchPanel.contains(e.target);
+                    const onSearchBtn = searchBtn.contains(e.target);
+                    if (!insidePanel && !onSearchBtn) {
+                        closeTopSearch();
+                    }
                 }
 
                 if (window.innerWidth <= 768) {
