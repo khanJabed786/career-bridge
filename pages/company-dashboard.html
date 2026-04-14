@@ -139,6 +139,11 @@
         .logo-preview { width: 80px; height: 80px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 2em; color: #999; border: 2px dashed #667eea; cursor: pointer; overflow: hidden; }
         .logo-preview img { width: 100%; height: 100%; object-fit: cover; }
         .logo-upload-btn { background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+
+        .notification-list { display: flex; flex-direction: column; gap: 12px; }
+        .notification-item { padding: 12px 14px; border-radius: 10px; border: 1px solid #e5e9ff; background: #f8faff; }
+        .notification-item.unread { border-color: #cdd7ff; background: #eef2ff; }
+        .notification-item .meta { color: #6b7280; font-size: 0.85em; margin-top: 4px; }
         
         /* New styles for government fields */
         .government-section { 
@@ -867,6 +872,14 @@
         </div>
     </div>
 
+    <div id="companyNotificationsModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('companyNotificationsModal')">×</button>
+            <div class="modal-header"><i class="fas fa-bell"></i> Notifications</div>
+            <div class="modal-body" id="companyNotificationsContent"></div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config/supabase-config.js"></script>
     <script src="../js/auth/auth.js"></script>
@@ -890,8 +903,62 @@
             COMPANY_JOBS: 'companyJobs',
             COMPANY_PROFILE: 'companyProfile',
             VERIFICATION_REQUESTS: 'verificationRequests',
-            FEEDBACK: 'feedback'
+            FEEDBACK: 'feedback',
+            NOTIFICATIONS: 'notifications'
         };
+
+        function getCompanyNotifications() {
+            const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS) || '[]');
+            const email = (companyProfile?.company_email || companyProfile?.email || companyEmail || '').toLowerCase();
+            if (!email) return [];
+
+            return all
+                .filter(item => String(item.user_id || item.company_email || '').toLowerCase() === email)
+                .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        }
+
+        function markCompanyNotificationsAsRead() {
+            const all = JSON.parse(localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS) || '[]');
+            const email = (companyProfile?.company_email || companyProfile?.email || companyEmail || '').toLowerCase();
+            if (!email) return;
+
+            let changed = false;
+            const updated = all.map(item => {
+                const isMine = String(item.user_id || item.company_email || '').toLowerCase() === email;
+                if (isMine && !item.read) {
+                    changed = true;
+                    return { ...item, read: true, read_at: new Date().toISOString() };
+                }
+                return item;
+            });
+
+            if (changed) {
+                localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(updated));
+            }
+        }
+
+        function renderCompanyNotifications() {
+            const container = document.getElementById('companyNotificationsContent');
+            if (!container) return;
+
+            const items = getCompanyNotifications();
+            if (!items.length) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>No notifications yet</p></div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="notification-list">
+                    ${items.map(item => `
+                        <div class="notification-item ${item.read ? '' : 'unread'}">
+                            <div><strong>${item.type === 'verification' ? 'Verification Update' : 'Update'}</strong></div>
+                            <div>${item.message || 'You have a new update.'}</div>
+                            <div class="meta">${new Date(item.created_at || Date.now()).toLocaleString()}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
 
         function getLearningHubStore() {
             const raw = localStorage.getItem('learningHubData');
@@ -1758,9 +1825,18 @@
                     loadCompanyFeedbackHistory();
                 }
 
+                if (e.key === STORAGE_KEYS.NOTIFICATIONS) {
+                    updateUnseenCount();
+                    const notificationModal = document.getElementById('companyNotificationsModal');
+                    if (notificationModal && notificationModal.classList.contains('show')) {
+                        renderCompanyNotifications();
+                    }
+                }
+
             });
 
             loadCompanyFeedbackHistory();
+            updateUnseenCount();
         }
 
         window.switchTab = function(tab) {
@@ -1816,14 +1892,11 @@
         };
 
         window.openCompanyNotifications = function() {
-            switchTab('applications');
-            const statusFilter = document.getElementById('filterStatus');
-            if (statusFilter) {
-                statusFilter.value = 'pending';
-            }
-            if (window.filterApplications) {
-                filterApplications();
-            }
+            renderCompanyNotifications();
+            showModal('companyNotificationsModal');
+            markCompanyNotificationsAsRead();
+            renderCompanyNotifications();
+            updateUnseenCount();
         };
 
         window.toggleCompanySidebar = function() {
@@ -2217,10 +2290,12 @@
 
         function updateUnseenCount() {
             const unseenCount = applications.filter(a => !a.seen && (a.status === 'pending' || a.status === 'applied')).length;
+            const unreadNotificationCount = getCompanyNotifications().filter(item => !item.read).length;
+            const totalTopCount = unseenCount + unreadNotificationCount;
             document.getElementById('unseenCount').textContent = unseenCount;
             const topCount = document.getElementById('topNotificationCount');
             if (topCount) {
-                topCount.textContent = unseenCount;
+                topCount.textContent = totalTopCount;
             }
         }
 
