@@ -25,11 +25,11 @@
         .notification-badge { position: absolute; top: -6px; right: -6px; background: #ff4757; color: white; border-radius: 999px; font-size: 0.72em; line-height: 1; padding: 3px 6px; min-width: 18px; text-align: center; }
         .menu-btn { width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.2); color: white; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
         .menu-btn:hover { background: rgba(255,255,255,0.3); }
-        .company-info { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 30px; cursor: pointer; transition: all 0.3s; }
+        .company-info { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.2); width: 38px; height: 38px; border-radius: 50%; cursor: pointer; transition: all 0.3s; }
         .company-info:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
         .company-logo { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-weight: 600; overflow: hidden; }
         .company-logo img { width: 100%; height: 100%; object-fit: cover; }
-        .company-info .company-name-wrap { display: flex; align-items: center; gap: 8px; }
+        .company-info .company-name-wrap { display: none; }
         
         .admin-container { display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: calc(100vh - 70px); background: #f5f7fa; }
         
@@ -168,7 +168,6 @@
             body.company-sidebar-open .admin-sidebar { transform: translateX(0); }
             .navbar-project-name { font-size: 1.02em; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
             .company-info { width: 38px; height: 38px; border-radius: 50%; padding: 0; justify-content: center; }
-            .company-info .company-name-wrap { display: none; }
             .top-search-btn { width: 36px; padding: 0; justify-content: center; font-size: 0; }
             .top-search-btn i { font-size: 1rem; }
             .top-search-inner input { height: 36px; }
