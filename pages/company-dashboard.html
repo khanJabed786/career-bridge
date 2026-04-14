@@ -103,6 +103,9 @@
         
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; margin-top: 20px; }
+        .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+        .post-job-lock-note { display: none; margin-bottom: 16px; padding: 12px 14px; border-radius: 10px; background: #fff3cd; border-left: 4px solid #ffc107; color: #856404; }
+        .post-job-lock-note.show { display: block; }
         
         .resume-view { margin-top: 20px; }
         .resume-view iframe { width: 100%; height: 600px; border: 2px solid #667eea; border-radius: 8px; background: #f0f0f0; }
@@ -349,6 +352,9 @@
             <!-- Post Job Tab -->
             <div id="post-job" class="admin-tab">
                 <h2 style="color: #333; margin-bottom: 25px;"><i class="fas fa-plus-circle" style="color: #667eea;"></i> Post a New Job</h2>
+                <div id="postJobLockNote" class="post-job-lock-note">
+                    <i class="fas fa-lock"></i> Company verification pending hai. Verification approve hone tak job post nahi kar sakte.
+                </div>
                 <form class="post-job-form" id="postJobForm">
                     <div class="form-row">
                         <div class="form-group">
@@ -391,7 +397,7 @@
                     </div>
                     <!-- Hidden status field - always active -->
                     <input type="hidden" id="jobStatus" value="active">
-                    <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Post Job</button>
+                    <button type="submit" id="postJobSubmitBtn" class="submit-btn"><i class="fas fa-paper-plane"></i> Post Job</button>
                 </form>
             </div>
 
@@ -1702,6 +1708,37 @@
                     verifyBtn.style.display = 'inline-flex';
                 }
             }
+
+            enforcePostJobAccess();
+        }
+
+        function isCompanyVerified() {
+            return !!(companyProfile?.is_verified || companyProfile?.verified);
+        }
+
+        function enforcePostJobAccess() {
+            const form = document.getElementById('postJobForm');
+            if (!form) return;
+
+            const lockNote = document.getElementById('postJobLockNote');
+            const submitBtn = document.getElementById('postJobSubmitBtn');
+            const verified = isCompanyVerified();
+
+            form.querySelectorAll('input, select, textarea').forEach(field => {
+                if (field.id === 'jobStatus') return;
+                field.disabled = !verified;
+            });
+
+            if (submitBtn) {
+                submitBtn.disabled = !verified;
+                submitBtn.innerHTML = verified
+                    ? '<i class="fas fa-paper-plane"></i> Post Job'
+                    : '<i class="fas fa-lock"></i> Verification Required';
+            }
+
+            if (lockNote) {
+                lockNote.classList.toggle('show', !verified);
+            }
         }
 
         // ============================================
@@ -1840,6 +1877,11 @@
         }
 
         window.switchTab = function(tab) {
+            if (tab === 'post-job' && !isCompanyVerified()) {
+                showToast('Verification pending: profile verify hone ke baad hi job post kar paoge', 'warning');
+                tab = 'profile';
+            }
+
             document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tab).classList.add('active');
             document.querySelectorAll('.sidebar-item').forEach(item => {
@@ -2732,6 +2774,12 @@
         // ============================================
         document.getElementById('postJobForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            if (!isCompanyVerified()) {
+                showToast('Company verify hone ke baad hi job post kar sakte ho', 'warning');
+                switchTab('profile');
+                return;
+            }
 
             const now = new Date();
             const job = {
