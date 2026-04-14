@@ -2930,30 +2930,69 @@
         // UPDATE DASHBOARD
         // ============================================
         function getRealUserBreakdown() {
-            const studentEmails = new Set();
-            const companyEmails = new Set();
+            const studentKeys = new Set();
+            const companyKeys = new Set();
+
+            const addUnique = (set, value, prefix) => {
+                const raw = String(value || '').toLowerCase().trim();
+                if (!raw) return;
+                set.add(`${prefix}:${raw}`);
+            };
 
             (users || []).forEach(user => {
                 const role = String(user?.role || '').toLowerCase();
-                const email = String(user?.email || user?.user_email || '').toLowerCase().trim();
-                if (!email) return;
+                const email = user?.email || user?.user_email;
+                const id = user?.id || user?.user_id;
 
-                if (role === 'student') studentEmails.add(email);
-                if (role === 'company') companyEmails.add(email);
+                if (role === 'student') {
+                    addUnique(studentKeys, email, 'email');
+                    addUnique(studentKeys, id, 'id');
+                }
+
+                if (role === 'company') {
+                    addUnique(companyKeys, email, 'email');
+                    addUnique(companyKeys, id, 'id');
+                }
             });
 
             (companies || []).forEach(company => {
-                const email = String(company?.email || company?.company_email || '').toLowerCase().trim();
-                if (email) companyEmails.add(email);
+                addUnique(companyKeys, company?.email || company?.company_email, 'email');
+                addUnique(companyKeys, company?.id || company?.company_id, 'id');
             });
 
             (applications || []).forEach(app => {
-                const email = String(app?.student_email || app?.studentEmail || '').toLowerCase().trim();
-                if (email) studentEmails.add(email);
+                addUnique(studentKeys, app?.student_email || app?.studentEmail, 'email');
+                addUnique(studentKeys, app?.student_id || app?.studentId, 'id');
             });
 
-            const studentCount = studentEmails.size;
-            const companyCount = companyEmails.size;
+            (feedbacks?.student || []).forEach(item => {
+                addUnique(studentKeys, item?.student_email || item?.email, 'email');
+                addUnique(studentKeys, item?.student_id || item?.user_id, 'id');
+            });
+
+            // Student profile keys saved in localStorage by profile page: studentProfile_<userId>
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (!key || !key.startsWith('studentProfile_')) continue;
+
+                    const raw = localStorage.getItem(key);
+                    if (!raw) continue;
+
+                    try {
+                        const profile = JSON.parse(raw);
+                        addUnique(studentKeys, profile?.email || profile?.student_email, 'email');
+                        addUnique(studentKeys, profile?.id || profile?.student_id || key.replace('studentProfile_', ''), 'id');
+                    } catch (error) {
+                        // Ignore malformed profile entries
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to scan student profiles from localStorage', error);
+            }
+
+            const studentCount = studentKeys.size;
+            const companyCount = companyKeys.size;
 
             return {
                 studentCount,
