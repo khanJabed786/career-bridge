@@ -2503,6 +2503,22 @@
         </div>
     </div>
 
+    <!-- Activity Detail Modal -->
+    <div id="activityDetailModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('activityDetailModal')">×</button>
+            <div class="modal-header">
+                <i class="fas fa-list-check"></i> Activity Details
+            </div>
+            <div class="modal-body" id="activityDetailContent">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn btn-approve" onclick="closeModal('activityDetailModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Company Detail Modal -->
     <div id="companyDetailModal" class="modal">
         <div class="modal-content">
@@ -2670,6 +2686,7 @@
         let currentCompanyId = null;
         let currentRequestId = null;
         let adminProfile = null;
+        let recentActivityItems = [];
 
         // Chart instances
         let userChart = null;
@@ -3034,14 +3051,18 @@
 
             if (recentActivity.length === 0) {
                 activityTable.innerHTML = '<tr><td colspan="5" class="empty-state"><i class="fas fa-clock"></i><p>No recent activity</p></td></tr>';
+                recentActivityItems = [];
             } else {
-                activityTable.innerHTML = recentActivity.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(act => `
+                const sortedActivity = recentActivity.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+                recentActivityItems = sortedActivity;
+
+                activityTable.innerHTML = sortedActivity.map((act, index) => `
                     <tr>
                         <td><strong>${act.event}</strong></td>
                         <td>${act.user}</td>
                         <td>${new Date(act.date).toLocaleString()}</td>
                         <td><span class="status-badge status-${act.status}">${act.status}</span></td>
-                        <td><button class="action-btn btn-view" onclick="viewActivity('${act.event}')"><i class="fas fa-eye"></i> View</button></td>
+                        <td><button class="action-btn btn-view" onclick="viewActivity(${index})"><i class="fas fa-eye"></i> View</button></td>
                     </tr>
                 `).join('');
             }
@@ -4463,8 +4484,99 @@
             }
         };
 
-        window.viewActivity = function(event) {
-            showToast(`📋 Event: ${event}`, 'info');
+        window.viewActivity = function(activityIndex) {
+            const activity = recentActivityItems[activityIndex];
+            if (!activity) {
+                showToast('Activity details not found', 'warning');
+                return;
+            }
+
+            let detailedBlock = '';
+
+            if (activity.event === 'Verification request') {
+                const req = verificationRequests.find(r => r.company_name === activity.user) || null;
+                if (req) {
+                    detailedBlock = `
+                        <div class="info-card" style="margin-top: 14px;">
+                            <h4><i class="fas fa-building"></i> Verification Request</h4>
+                            <p><strong>Company:</strong> ${req.company_name || 'N/A'}</p>
+                            <p><strong>Email:</strong> ${req.company_email || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-${req.status || 'pending'}">${req.status || 'pending'}</span></p>
+                            <p><strong>Requested At:</strong> ${req.requested_at ? new Date(req.requested_at).toLocaleString() : 'N/A'}</p>
+                        </div>
+                    `;
+                }
+            } else if (activity.event.startsWith('Report:')) {
+                const reportType = activity.event.replace('Report:', '').trim().toLowerCase();
+                const report = reports.find(r => String(r.reporter_name || '').toLowerCase() === String(activity.user || '').toLowerCase() && String(r.type || '').toLowerCase() === reportType) || reports.find(r => String(r.reporter_name || '').toLowerCase() === String(activity.user || '').toLowerCase());
+                if (report) {
+                    detailedBlock = `
+                        <div class="info-card" style="margin-top: 14px;">
+                            <h4><i class="fas fa-flag"></i> Report Details</h4>
+                            <p><strong>Type:</strong> ${report.type || 'N/A'}</p>
+                            <p><strong>Reporter:</strong> ${report.reporter_name || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-${report.status || 'pending'}">${report.status || 'pending'}</span></p>
+                            <p><strong>Description:</strong> ${report.description || report.details || 'N/A'}</p>
+                        </div>
+                    `;
+                }
+            } else if (activity.event === 'Feedback submitted') {
+                const studentFeedback = (feedbacks.student || []).find(f => String(f.student_name || '').toLowerCase() === String(activity.user || '').toLowerCase());
+                const companyFeedback = (feedbacks.company || []).find(f => String(f.company_name || '').toLowerCase() === String(activity.user || '').toLowerCase());
+                const fb = studentFeedback || companyFeedback;
+                if (fb) {
+                    detailedBlock = `
+                        <div class="info-card" style="margin-top: 14px;">
+                            <h4><i class="fas fa-comment-dots"></i> Feedback Details</h4>
+                            <p><strong>From:</strong> ${fb.student_name || fb.company_name || 'N/A'}</p>
+                            <p><strong>Subject:</strong> ${fb.subject || 'N/A'}</p>
+                            <p><strong>Category:</strong> ${fb.category || 'N/A'}</p>
+                            <p><strong>Message:</strong> ${fb.message || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-${fb.resolved ? 'resolved' : 'pending'}">${fb.resolved ? 'resolved' : 'pending'}</span></p>
+                        </div>
+                    `;
+                }
+            } else if (activity.event === 'Announcement posted') {
+                const ann = announcements.find(a => a.title === activity.user) || null;
+                if (ann) {
+                    detailedBlock = `
+                        <div class="info-card" style="margin-top: 14px;">
+                            <h4><i class="fas fa-bullhorn"></i> Announcement Details</h4>
+                            <p><strong>Title:</strong> ${ann.title || 'N/A'}</p>
+                            <p><strong>Target:</strong> ${ann.target || ann.audience || 'All users'}</p>
+                            <p><strong>Message:</strong> ${ann.message || ann.description || 'N/A'}</p>
+                            <p><strong>Created At:</strong> ${ann.created_at ? new Date(ann.created_at).toLocaleString() : 'N/A'}</p>
+                        </div>
+                    `;
+                }
+            } else if (activity.event.includes('registered')) {
+                const user = users.find(u => String(u.email || '').toLowerCase() === String(activity.user || '').toLowerCase());
+                const company = companies.find(c => String(c.name || '').toLowerCase() === String(activity.user || '').toLowerCase());
+                if (user || company) {
+                    detailedBlock = `
+                        <div class="info-card" style="margin-top: 14px;">
+                            <h4><i class="fas fa-id-card"></i> Registration Details</h4>
+                            <p><strong>Name:</strong> ${(user?.name || company?.name || activity.user || 'N/A')}</p>
+                            <p><strong>Email:</strong> ${(user?.email || company?.email || 'N/A')}</p>
+                            <p><strong>Role:</strong> ${(user?.role || 'company')}</p>
+                            <p><strong>Status:</strong> <span class="status-badge status-${user?.status || company?.status || 'pending'}">${user?.status || company?.status || 'pending'}</span></p>
+                        </div>
+                    `;
+                }
+            }
+
+            const content = `
+                <div style="background: #f8f9ff; padding: 20px; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;"><i class="fas fa-clock"></i> ${activity.event}</h3>
+                    <p><strong>User/Entity:</strong> ${activity.user || 'N/A'}</p>
+                    <p><strong>Date & Time:</strong> ${activity.date ? new Date(activity.date).toLocaleString() : 'N/A'}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${activity.status || 'pending'}">${activity.status || 'pending'}</span></p>
+                    ${detailedBlock || '<div class="info-card" style="margin-top: 14px;"><h4><i class="fas fa-info-circle"></i> Details</h4><p>Is activity ke detailed record currently available nahi hai, lekin event successfully capture ho chuka hai.</p></div>'}
+                </div>
+            `;
+
+            document.getElementById('activityDetailContent').innerHTML = content;
+            showModal('activityDetailModal');
         };
 
         window.viewJobDetails = function(jobId) {
