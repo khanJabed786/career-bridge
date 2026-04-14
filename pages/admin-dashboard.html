@@ -1921,9 +1921,9 @@
                     </div>
                     <div class="stat-card" onclick="switchAdminTab('verify-companies')">
                         <div class="stat-icon"><i class="fas fa-building"></i></div>
-                        <div class="stat-label">Verified Companies</div>
-                        <div class="stat-value" id="verifiedCompanies">0</div>
-                        <div class="stat-change"><i class="fas fa-clock"></i> <span id="pendingCompaniesCount2">0</span> pending</div>
+                        <div class="stat-label">Companies</div>
+                        <div class="stat-value" id="companyCount">0</div>
+                        <div class="stat-change"><i class="fas fa-check-circle"></i> <span id="verifiedCompanies">0</span> verified | <span id="pendingCompaniesCount2">0</span> pending</div>
                     </div>
                     <div class="stat-card" onclick="switchAdminTab('users')">
                         <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
@@ -2912,17 +2912,52 @@
         // ============================================
         // UPDATE DASHBOARD
         // ============================================
+        function getRealUserBreakdown() {
+            const studentEmails = new Set();
+            const companyEmails = new Set();
+
+            (users || []).forEach(user => {
+                const role = String(user?.role || '').toLowerCase();
+                const email = String(user?.email || user?.user_email || '').toLowerCase().trim();
+                if (!email) return;
+
+                if (role === 'student') studentEmails.add(email);
+                if (role === 'company') companyEmails.add(email);
+            });
+
+            (companies || []).forEach(company => {
+                const email = String(company?.email || company?.company_email || '').toLowerCase().trim();
+                if (email) companyEmails.add(email);
+            });
+
+            (applications || []).forEach(app => {
+                const email = String(app?.student_email || app?.studentEmail || '').toLowerCase().trim();
+                if (email) studentEmails.add(email);
+            });
+
+            const studentCount = studentEmails.size;
+            const companyCount = companyEmails.size;
+
+            return {
+                studentCount,
+                companyCount,
+                totalUsers: studentCount + companyCount
+            };
+        }
+
         function updateDashboard() {
             const verifiedCompanies = companies.filter(c => c.status === 'verified').length;
             const pendingCompanies = companies.filter(c => c.status === 'pending').length;
-            const studentCount = users.filter(u => u.role === 'student').length;
-            const companyCount = users.filter(u => u.role === 'company').length;
+            const userBreakdown = getRealUserBreakdown();
+            const studentCount = userBreakdown.studentCount;
+            const companyCount = userBreakdown.companyCount;
             const pendingRequests = verificationRequests.filter(r => r.status === 'pending').length;
             const pendingReports = reports.filter(r => r.status === 'pending').length;
             const pendingFeedbacks = (feedbacks.student?.filter(f => !f.resolved).length || 0) + 
                                      (feedbacks.company?.filter(f => !f.resolved).length || 0);
             
-            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('totalUsers').textContent = userBreakdown.totalUsers;
+            document.getElementById('companyCount').textContent = companyCount;
             document.getElementById('verifiedCompanies').textContent = verifiedCompanies;
             document.getElementById('studentCount').textContent = studentCount;
             document.getElementById('totalApplications').textContent = applications.length;
@@ -4727,8 +4762,9 @@
 
             const userCtx = document.getElementById('userGrowthChart')?.getContext('2d');
             if (userCtx) {
-                const studentCount = users.filter(u => u.role === 'student').length;
-                const companyCount = users.filter(u => u.role === 'company').length;
+                const userBreakdown = getRealUserBreakdown();
+                const studentCount = userBreakdown.studentCount;
+                const companyCount = userBreakdown.companyCount;
                 const adminCount = users.filter(u => u.role === 'admin').length;
                 
                 userChart = new Chart(userCtx, {
