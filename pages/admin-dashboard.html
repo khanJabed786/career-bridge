@@ -130,55 +130,57 @@
 
         /* Navbar */
         .admin-navbar {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            border-bottom: 1px solid rgba(102,126,234,0.2);
+            color: #333;
             padding: 15px 30px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             gap: 14px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: slideIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: slideIn 0.5s ease-out;
         }
 
         .navbar-logo {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            font-size: 1em;
+            box-shadow: 0 4px 10px rgba(102,126,234,0.35);
             flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .navbar-project-name {
             display: flex;
             align-items: center;
-            font-size: 1.3em;
+            font-size: 1.5em;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-right: auto;
             white-space: nowrap;
         }
 
         .navbar-logo i {
             animation: rotate 10s linear infinite;
-            color: #ffd700;
-            filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
         }
 
         .top-search-btn {
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.18);
-            color: white;
+            border: none;
+            background: rgba(102,126,234,0.12);
+            color: #4956a6;
             border-radius: 20px;
             height: 38px;
             padding: 0 14px;
@@ -191,16 +193,16 @@
         }
 
         .top-search-btn:hover {
-            background: rgba(255,255,255,0.28);
+            background: rgba(102,126,234,0.2);
         }
 
         .menu-btn {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.18);
-            color: white;
+            border: none;
+            background: rgba(102,126,234,0.12);
+            color: #4b5aa7;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -209,19 +211,20 @@
         }
 
         .menu-btn:hover {
-            background: rgba(255,255,255,0.28);
+            background: rgba(102,126,234,0.2);
         }
 
         .notification-bell {
             position: relative;
             font-size: 1.3em;
+            color: #555;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 0.3s;
         }
 
         .notification-bell:hover {
-            transform: scale(1.2) rotate(15deg);
-            color: #ffd700;
+            transform: scale(1.2);
+            color: #667eea;
         }
 
         .notification-badge {
@@ -246,10 +249,9 @@
             padding: 0;
             justify-content: center;
             border-radius: 50%;
-            background: rgba(255,255,255,0.15);
+            background: transparent;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(5px);
+            border: none;
         }
 
         .profile-section span,
@@ -258,25 +260,24 @@
         }
 
         .profile-section:hover {
-            background: rgba(255,255,255,0.25);
+            background: transparent;
             transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            border-color: rgba(255,255,255,0.5);
+            box-shadow: none;
         }
 
         .profile-pic {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffd700, #ffa500);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 1.1em;
-            color: #333;
+            font-size: 1.2rem;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(102,126,234,0.3);
             transition: all 0.3s;
         }
 
@@ -1624,7 +1625,9 @@
 
         @media (max-width: 768px) {
             .admin-navbar {
-                padding: 12px 16px;
+                padding: 0 14px;
+                gap: 10px;
+                height: 70px;
             }
 
             .top-search-btn {
@@ -1682,8 +1685,8 @@
             }
 
             .navbar-project-name {
-                font-size: 1.05em;
-                max-width: 140px;
+                font-size: 1.08em;
+                max-width: 130px;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
