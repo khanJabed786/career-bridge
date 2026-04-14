@@ -2674,6 +2674,7 @@
         // Chart instances
         let userChart = null;
         let companyChart = null;
+        let verificationAutoRefreshTimer = null;
 
         // ============================================
         // GET SUPABASE CLIENT
@@ -3125,6 +3126,25 @@
             // Update pending count
             document.getElementById('pendingCompaniesCount').textContent = pendingRequests.length;
             document.getElementById('pendingCompaniesCount2').textContent = pendingRequests.length;
+        }
+
+        function startVerificationAutoRefresh() {
+            if (verificationAutoRefreshTimer) {
+                clearInterval(verificationAutoRefreshTimer);
+            }
+
+            verificationAutoRefreshTimer = setInterval(() => {
+                const verifyTab = document.getElementById('verify-companiesTab');
+                if (!verifyTab || !verifyTab.classList.contains('active')) return;
+                if (document.hidden) return;
+
+                const activeEl = document.activeElement;
+                const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+                const rejectFormOpen = !!document.querySelector('#verificationRequestsList .reject-reason[style*="display: block"]');
+                if (isTyping || rejectFormOpen) return;
+
+                loadVerificationRequests();
+            }, 30000);
         }
 
         // ============================================
@@ -5042,13 +5062,9 @@
                 
                 // Then load all data
                 loadAllData();
-                
-                // Auto-refresh verification requests every 10 seconds if tab is active
-                setInterval(() => {
-                    if (document.getElementById('verify-companiesTab').classList.contains('active')) {
-                        loadVerificationRequests();
-                    }
-                }, 10000);
+
+                // Smart auto-refresh for verification requests (non-intrusive)
+                startVerificationAutoRefresh();
 
                 // Realtime sync across tabs/windows via localStorage updates
                 window.addEventListener('storage', function(e) {
